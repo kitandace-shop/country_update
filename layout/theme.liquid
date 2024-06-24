@@ -280,7 +280,7 @@
     {% endif %}
     <script>
         // Fetch the visitor's geolocation data using IPinfo API
-        fetch('https://ipinfo.io/json?token=<YOUR_IPINFO_TOKEN>')
+        fetch('https://ipinfo.io/json?token=3e5b63f313b6c1')
           .then(response => response.json())
           .then(data => {
             // Store the location data in local storage or use it directly
@@ -296,21 +296,6 @@
           .catch(error => {
             console.error('Error fetching geolocation data:', error);
           });
-      
-        // Function to update the country flag based on the visitor's country code
-        function updateCountryFlag(countryCode) {
-          var flagImage = document.querySelector('.country-switcher__flag-image');
-          if (flagImage) {
-            switch(countryCode) {
-              case 'US':
-                flagImage.src = '{{ "us-flag.png" | asset_url }}';
-                break;
-              case 'CA':
-                flagImage.src = '{{ "ca-flag.png" | asset_url }}';
-                break;
-              default:
-                flagImage.src = '{{ "weightless-feel/logo.png" | asset_url }}';
-            }
           }
         }
       </script>
