@@ -1,0 +1,65 @@
+<div class="hero-banner hero-banner--split">
+    <div class="hero-banner__media">
+        {% assign image_class = "background-image background-image--" | append: section.settings.focal-point %}
+        {% render 'responsive-image' with image: section.settings.hero-banner-image, image_class: image_class %}
+    </div>
+
+    <div class="hero-banner__content">
+        {% if section.settings.hero-banner-title != blank %}
+            <h1 class="hero-banner__title hero-banner__title--split">{{ section.settings.hero-banner-title }}</h1>
+        {% endif %}
+
+        {% if section.settings.hero-banner-button-text != blank and section.settings.hero-banner-link != blank %}
+            <a href="{{ section.settings.hero-banner-link }}" class="button button--primary hero-banner__button">{{ section.settings.hero-banner-button-text }}
+            </a>
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Homepage Hero",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--no-gap page-section--hero-banner",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "hero-banner-image",
+            "label": "Image"
+        },
+        {
+            "type": "select",
+            "id": "focal-point",
+            "label": "Image focal Point",
+            "options": [
+                { "value": "top-left", "label": "Top left"},
+                { "value": "top-center", "label": "Top center"},
+                { "value": "top-right", "label": "Top right"},
+                { "value": "left", "label": "Left"},
+                { "value": "center", "label": "Center"},
+                { "value": "right", "label": "Right"},
+                { "value": "bottom-left", "label": "Bottom left"},
+                { "value": "bottom-center", "label": "Bottom center"},
+                { "value": "bottom-right", "label": "Bottom right"}
+            ],
+            "default": "center",
+            "info": "Used to keep the subject of the photo in view."
+        },
+        {
+            "type": "text",
+            "id": "hero-banner-title",
+            "label": "Heading"
+        },
+        {
+            "type": "text",
+            "id": "hero-banner-button-text",
+            "label": "Button Label"
+        },
+        {
+           "type": "url",
+            "id": "hero-banner-link",
+            "label": "Button Link"
+        }
+    ]
+}
+{% endschema %}

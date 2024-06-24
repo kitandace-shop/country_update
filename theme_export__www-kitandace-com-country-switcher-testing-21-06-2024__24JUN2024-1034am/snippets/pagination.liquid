@@ -1,0 +1,55 @@
+{%- if paginate.parts.size > 0 -%}
+    <div class="page-section page-section--pagination page-section--no-gap">
+        <nav class="pagination" role="navigation" aria-label="{{ 'accessibility.pagination.label' | t }}">
+            <ul class="pagination__list" role="list">
+                <li>
+                    <a
+                        href="{{ paginate.previous.url }}{{ anchor }}"
+                        class="pagination__item pagination__item--previous {% unless paginate.previous.is_link %}pagination__item--disabled{% endunless %}"
+                        aria-label="{{ 'accessibility.pagination.previous' | t }}"
+                    >
+                        {% render 'icon', name: 'pagination--previous', class: 'svg--baseline' %}
+                    </a>
+                </li>
+
+                {%- for part in paginate.parts -%}
+                    <li>
+                    {%- if part.is_link -%}
+                        <a
+                        href="{{ part.url }}{{ anchor }}"
+                        class="pagination__item link"
+                        aria-label="{{ 'accessibility.pagination.page' | t: number: part.title }}"
+                        >
+                        {{- part.title -}}
+                        </a>
+                    {%- else -%}
+                        {%- if part.title == paginate.current_page -%}
+                        <a
+                            role="link"
+                            aria-disabled="true"
+                            class="pagination__item pagination__item--current"
+                            aria-current="page"
+                            aria-label="{{ 'accessibility.pagination.page' | t: number: part.title }}"
+                        >
+                            {{- part.title -}}
+                        </a>
+                        {%- else -%}
+                        <span class="pagination__item">{{ part.title }}</span>
+                        {%- endif -%}
+                    {%- endif -%}
+                    </li>
+                {%- endfor -%}
+
+                <li>
+                    <a
+                        href="{{ paginate.next.url }}{{ anchor }}"
+                        class="pagination__item pagination__item--prev pagination__item-arrow {% unless paginate.next.is_link %}pagination__item--disabled{% endunless %}"
+                        aria-label="{{ 'accessibility.pagination.next' | t }}"
+                    >
+                        {% render 'icon', name: 'pagination--next', class: 'svg--baseline' %}
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+  {%- endif -%}

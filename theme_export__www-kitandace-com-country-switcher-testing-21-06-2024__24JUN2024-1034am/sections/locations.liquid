@@ -1,0 +1,57 @@
+{%- comment -%}
+  Locations section
+{%- endcomment -%}
+
+
+<div class="locations">
+    {% if section.settings.title != blank %}
+        <h2 class="locations__title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    <div class="carousel carousel--locations animate-in animate-in--slide-right swiper">
+        <ul class="swiper-wrapper">
+          {%- for location in shop.metaobjects.store.values -%}
+            <li class="swiper-slide">
+                {% render 'card--location' location: location %}
+            </li>
+          {%- endfor -%}
+        </ul>
+    </div>
+
+    {% comment %} Swiper Scrollbar and Swiper Arrows {% endcomment %}
+
+    <div class="swiper-controllers">
+        <div class="swiper-scrollbar" tabindex="-1"></div>
+        <div class="swiper-arrows__wrapper">
+            <div class="swiper-arrow__container swiper-arrow__container--prev">
+                <button type="button" class="swiper-arrow swiper-button-prev locations-button-prev " tabindex="-1">
+                    {% render 'icon', name: 'carousel--prev', class: 'svg--baseline' %}
+                    <span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span>
+                </button>
+            </div>
+            <div class="swiper-arrow__container swiper-arrow__container--next">
+                <button type="button" class="swiper-arrow swiper-button-next locations-button-next" tabindex="-1">
+                    {% render 'icon', name: 'carousel--next', class: 'svg--baseline' %}
+                    <span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span>
+                </button>
+            </div>
+        </div>
+        </div>
+    </div>
+
+</div>
+
+{% schema %}
+  {
+    "name": "Locations",
+    "tag": "section",
+    "class": "page-section--locations page-section--gap-bottom",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title"
+      }
+    ]
+  }
+{% endschema %}

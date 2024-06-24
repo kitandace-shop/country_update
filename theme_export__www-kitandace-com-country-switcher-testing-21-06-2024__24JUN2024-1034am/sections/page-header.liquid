@@ -1,0 +1,106 @@
+{% liquid
+    if section.settings.page-header-image != blank
+        assign page-header--type = 'page-header--image'
+        assign page-content = 'background-media__content page-header__content background-media__content--center'
+    else
+        assign page-content = 'page-header__content'
+        assign page-header--type = 'page-header--text container'
+    endif
+%}
+
+<div class="page-header {{ page-header--type }}">
+    {% if section.settings.page-header-image != blank %}
+        <div class="background-media background-media--image">
+            <div class="background-media__background">
+                {% render 'responsive-image' with
+                    image:         section.settings.page-header-image,
+                    image_mobile:   section.settings.page-header-image-mobile,
+                    image_class:   "background-image",
+                    lazy:          false
+                %}
+            </div>
+    {% endif %}
+
+        <div class="{{ page-content }}">
+            {% if section.settings.page-header-title != blank %}
+                <h1 class="page-header__title">{{ section.settings.page-header-title }}</h1>
+            {% endif %}
+
+            {% if section.settings.page-header-text != blank %}
+                <div class="page-header__text">{{ section.settings.page-header-text }}</div>
+            {% endif %}
+
+                <div class="page-header__button-collection">
+                    {% if section.settings.page-header-button-text != blank and section.settings.page-header-link != blank %}
+                        <a href="{{ section.settings.page-header-link }}" class="button button--primary page-header__button">{{ section.settings.page-header-button-text }}
+                        </a>
+                    {% endif %}
+
+                    {% if section.settings.page-header-button-text2 != blank and section.settings.page-header-link2 != blank %}
+                        <a href="{{ section.settings.page-header-link2 }}" class="button button--primary page-header__button">{{ section.settings.page-header-button-text2 }}
+                        </a>
+                    {% endif %}
+                </div>
+
+        </div>
+
+    {% if section.settings.page-header-image != blank %}
+        </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Page Hero",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--no-gap",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "page-header-image",
+            "label": "Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "page-header-image-mobile",
+            "label": "Image - Mobile"
+        },
+        {
+            "type": "text",
+            "id": "page-header-title",
+            "label": "Heading"
+        },
+        {
+            "type": "textarea",
+            "id": "page-header-text",
+            "label": "Subheading"
+        },
+       {
+            "type": "text",
+            "id": "page-header-button-text",
+            "label": "Primary Button Label"
+        },
+        {
+           "type": "url",
+            "id": "page-header-link",
+            "label": "Primary Button Link"
+        },
+        {
+            "type": "text",
+            "id": "page-header-button-text2",
+            "label": "Secondary Button Label"
+        },
+        {
+           "type": "url",
+            "id": "page-header-link2",
+            "label": "Secondary Button Link"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Page Hero",
+            "category": "Page Heros"
+        }
+    ]
+}
+{% endschema %}

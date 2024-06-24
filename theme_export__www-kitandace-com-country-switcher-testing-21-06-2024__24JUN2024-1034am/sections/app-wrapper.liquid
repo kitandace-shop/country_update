@@ -1,0 +1,56 @@
+<div class="app-wrapper {% if section.settings.include_background_color == true %}app-wrapper--background{% endif %} {% if section.settings.include_padding == true %}app-wrapper--padding{% endif %}">
+
+    <div class="{% if section.settings.include_container %}container{% endif %}">
+        {% if section.settings.app_title != blank%}
+            <h2 class="app-wrapper__header">{{ section.settings.app_title }}</h2>
+        {% endif %}
+
+        {% for block in section.blocks %}
+        {% render block %}
+        {% endfor %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "App Wrapper",
+    "tag": "section",
+    "class": "page-section page-section--app-wrapper page-section--full-bleed",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "include_container",
+        "default": true,
+        "label": "Make section container the same as theme"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_padding",
+        "default": true,
+        "label": "Make section padding the same as theme"
+      },
+      {
+        "type": "checkbox",
+        "id": "include_background_color",
+        "default": true,
+        "label": "Add background colour to section"
+      },
+      {
+        "type": "text",
+        "id": "app_title",
+        "label": "Section Title"
+      }
+    ],
+    "blocks": [
+        {
+            "type": "@app"
+        }
+    ],
+    "presets": [
+        {
+            "name": "App Wrapper",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

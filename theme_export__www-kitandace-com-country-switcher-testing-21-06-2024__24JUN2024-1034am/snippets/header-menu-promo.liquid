@@ -1,0 +1,37 @@
+{% comment %}
+Renders header menu promo content.
+
+Accepts:
+    (required)
+    - promo_block: {Object} The block object for the associated promo block
+{% endcomment %}
+
+{% assign mobile = mobile | default: false %}
+
+<li class="header-menu__item header-menu__item--promo">
+    <a
+        href="{{ promo_block.settings.promo_content_link }}"
+        class="header-menu__link header-menu__link--promo"
+        tabindex="0"
+        aria-labelledby="{% if mobile %}mobile-{% endif %}{{ promo_block.settings.promo_content_cta | handleize }}-label"
+    >
+        <div class="promo__image">
+            {% render 'responsive-image'
+                image: promo_block.settings.promo_content_image,
+                image_class: "background-image"
+            %}
+        </div>
+
+        {% if promo_block.settings.promo_content_title -%}
+            <div class="promo__title">
+                {{ promo_block.settings.promo_content_title }}
+            </div>
+        {%- endif %}
+
+        {% if promo_block.settings.promo_content_cta -%}
+            <div id="{% if mobile %}mobile-{% endif %}{{ promo_block.settings.promo_content_cta | handleize }}-label" class="promo__cta">
+                {{ promo_block.settings.promo_content_cta }}
+            </div>
+        {%- endif %}
+    </a>
+</li>

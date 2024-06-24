@@ -1,0 +1,163 @@
+{% comment %}
+    Renders a menu item for the mobile header display.
+
+    Accepts:
+        (required)
+        - link: {Object} The link associated with the menu item
+        - level: {Number} The current level in the menu
+        - has_promo: {Boolean} Whether there's a promo block associated with the menu item
+
+        (optional)
+        - promo_block: {Object} The block object for the associated promo block
+{% endcomment %}
+
+{%- liquid
+    assign next_level = level | plus: 1
+    assign menu_item_class = 'header-menu__item header-menu__item--level-' | append: level
+    assign menu_button_class = 'header-menu__button'
+    assign menu_link_class = 'header-menu__link'
+
+    if link.levels > 0
+        assign menu_list_class = 'header-menu__list header-menu__list--level-' | append: next_level
+
+        if level == 1
+            assign menu_item_class = menu_item_class | append: ' header-menu__item--dropdown'
+        endif
+
+        if link.levels > 1 or has_promo or has_featured
+            assign menu_list_class = menu_list_class | append: ' is-mega'
+        endif
+    endif
+
+    if link.url == '#'
+        assign menu_link_class = menu_link_class | append: ' header-menu__link--empty'
+    endif
+
+    if link.active or link.child_active
+        assign menu_button_class = menu_button_class | append: ' header-menu__button--active'
+        assign menu_link_class = menu_link_class | append: ' header-menu__link--active'
+    endif
+-%}
+
+<li class="{{ menu_item_class }}">
+
+    <a
+        href="{{ link.url }}"
+        class="{{ menu_link_class }}"
+        tabindex="0"
+        aria-labelledby="{{ link.title | downcase | handleize }}-label"
+        {% if link.active %}aria-current="page"{% endif %}
+    >
+        <span id="{{ link.title | downcase | handleize }}-label" class="header-menu__title">
+            {{ link.title }}
+        </span>
+    </a>
+
+
+    {% if link.levels > 0 -%}
+        {% if level == 1 -%}
+            <button
+                class="{{ menu_button_class }}"
+                tabindex="0"
+                aria-controls="{{ link.title | handleize }}-menu"
+                aria-expanded="false"
+            >
+                <span class="button__icon">
+                    {% render 'icon', name: 'arrow--down', class: '' %}
+                    <span class="sr-only">{{ link.title }} {{ 'accessibility.submenu' | t }}</span>
+                </span>
+            </button>
+        {%- endif %}
+
+        <ul
+            id="{{ link.title | handleize }}-menu"
+            class="{{ menu_list_class }}"
+            {% if level == 1 %}
+            role="region"
+            aria-labelledby="{{ link.title | downcase | handleize }}-label"
+            {% endif %}
+        >
+            {% liquid
+                for child_link in link.links
+                    if child_link.url == link.url
+                        continue
+                    endif
+
+                    if child_link.levels > 0
+                        capture dropdown_items
+                            echo dropdown_items
+                            render 'header-menu-item--desktop' link: child_link, level: next_level, has_promo: false, has_featured: false
+                        endcapture
+                    else
+                        capture childless_items
+                            echo childless_items
+                            render 'header-menu-item--desktop' link: child_link, level: next_level, has_promo: false, has_featured: false
+                        endcapture
+                    endif
+                endfor
+
+                capture menu_items
+                    if dropdown_items != blank
+                        echo dropdown_items
+                    endif
+
+                    if childless_items != blank
+                        echo childless_items
+                    endif
+                endcapture
+            %}
+
+            {% if level == 1 and link.levels > 1 or has_promo or has_featured-%}
+                <div class="header-menu_columns">
+                    {% liquid
+                        assign column_class = 'header-menu__column header-menu__column--links'
+
+                        if link.levels > 1
+                            assign column_class = column_class | append: ' multi-level'
+                        endif
+                    %}
+
+                    <div class="{{ column_class }}">
+                        {{ menu_items }}
+                    </div>
+
+                    {% if has_featured -%}
+                        {% liquid
+                            for block in section.blocks
+                                assign setting_title = block.settings.featured_main_menu_title | downcase
+                                assign link_title = link.title | downcase
+
+                                if setting_title == link_title
+                                    assign has_featured = true
+                                    assign featured_block = block
+
+                                    render 'header-menu-featured' featured_block: featured_block
+                                endif
+                            endfor
+                        %}
+                    {% endif %}
+
+                    {% if has_promo -%}
+                        <div class="header-menu__promo">
+                        {% liquid
+                            for block in section.blocks
+                                assign setting_title = block.settings.promo_content_menu_title | downcase
+                                assign link_title = link.title | downcase
+
+                                if setting_title == link_title
+                                    assign has_promo = true
+                                    assign promo_block = block
+
+                                    render 'header-menu-promo' promo_block: promo_block
+                                endif
+                            endfor
+                        %}
+                        </div>
+                    {% endif %}
+                </div>
+            {%- else -%}
+                {{ menu_items }}
+            {%- endif %}
+        </ul>
+    {%- endif %}
+</li>

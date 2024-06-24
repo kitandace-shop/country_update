@@ -1,0 +1,43 @@
+{% if media.media_type == "image" %}
+    {% assign image_src = media.src %}
+{% endif %}
+
+{% if media %}
+
+    {% if new_variant_images contains image_src %}
+        {% if container_position == "first" %}
+            <div class="product__feature-image carousel--featured-product swiper {% if product.selected_or_first_available_variant.image.src == image_src  %} current-variant {% endif %}" data-product-featured-image="{{ media.id }}"><!-- open container -->
+                <div class="swiper-wrapper"><!-- open wrapper -->
+        {% else %}
+                </div><!-- close wrapper -->
+                <div class="pagination-wrapper">
+                    <div class="product-swiper-pagination"></div>
+                </div>
+            </div><!-- close container -->
+            <div class="product__feature-image carousel--featured-product swiper {% if product.selected_or_first_available_variant.image.src == image_src  %} current-variant {% endif %}" data-product-featured-image="{{ media.id }}">
+                <div class="swiper-wrapper">
+        {% endif %}
+    {% endif %}
+
+    <div class="swiper-slide" tabindex="-1" data-index="{{ forloop }}" data-hash="slide{{ forloop }}">
+        {% render 'media' with media: media, featured_media: featured_media, height: 530, product_image_scale: 2 %}
+    </div>
+
+
+{%- endif -%}
+
+{% if container_position == "last" %}
+                </div><!-- close wrapper -->
+            <div class="pagination-wrapper">
+                <div class="swiper-scrollbar"></div>
+            </div>
+            </div><!-- close container -->
+            <div class="product__feature-image carousel--featured-product swiper {% unless product.selected_or_first_available_variant.image.src  %} current-variant {% endunless %}" data-product-featured-image="placeholder">
+                <div class="swiper-wrapper">
+
+                </div>
+            <div class="pagination-wrapper">
+                <div class="swiper-scrollbar"></div>
+            </div>
+        </div><!-- close container -->
+{% endif %}

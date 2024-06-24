@@ -1,0 +1,14 @@
+{% comment %} menu_list passed as argument {% endcomment %}
+{% if linklists[menu_list].links.size > 0 %}
+    <nav class="menu{% if menu_classes %} {{menu_classes}} {% endif %}" aria-label="{{ linklists[menu_list].title }}">
+        <ul class="menu__list">
+            {% for link in linklists[menu_list].links %}
+                <li class="menu__item">
+                    <a class="menu__link" href="{{ link.url }}">
+                        <p class="menu__title">{{ link.title }}</p>
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    </nav>
+{% endif %}

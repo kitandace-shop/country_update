@@ -1,0 +1,232 @@
+{% if section.blocks.size > 0 -%}
+
+    {% capture tab_content_womens -%}
+        {% for block in section.blocks -%}
+            {% if block.settings.collection != blank and block.settings.collection_tab == 'womens' %}
+                {%- assign collection = collections[block.settings.collection] -%}
+                {% assign block_count_womens = block_count_womens | plus: 1 %}
+                <li class="swiper-slide">
+                    {% render 'card--collection', collection: collection, collection_description: block.settings.collection_description %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% endcapture %}
+
+    {% capture tab_content_mens -%}
+        {% for block in section.blocks -%}
+            {% if block.settings.collection != blank and block.settings.collection_tab == 'mens' %}
+                {% assign block_count_mens = block_count_mens | plus: 1 %}
+                {%- assign collection = collections[block.settings.collection] -%}
+
+                <li class="swiper-slide">
+                    {% render 'card--collection', collection: collection, collection_description: block.settings.collection_description %}
+                </li>
+            {% endif %}
+        {% endfor %}
+    {% endcapture %}
+{% endif %}
+
+<div id="{{ section.settings.section_id | handleize }}" class="scroll-margin tabs-wrapper--collection-list" data-section-id="{{ section.id }}">
+    <div class="tabs--horizontal js-tabs--horizontal">
+        <div class="tab__list-container--horizontal swiper swiper--tabs" data-block-count="2">
+            <div
+                class="tab__list--horizontal js-tab__list--horizontal grid-width-2 swiper-wrapper swiper-wrapper--tabs"
+                role="tablist"
+                aria-label="{{ section.settings.tab_label }}"
+            >
+                <button
+                    type="button" id="tab-womens-{{ section.id }}--button"
+                    class="tab__button--horizontal js-tab__button--horizontal h3 swiper-slide"
+                    role="tab"
+                    aria-selected="true"
+                    aria-controls="tab-womens-{{ section.id }}--content"
+                    tabindex="0"
+                >
+                    {{ section.settings.tab_title_womens }}
+                </button>
+                <button
+                    type="button" id="tab-mens-{{ section.id }}--button"
+                    class="tab__button--horizontal js-tab__button--horizontal h3 swiper-slide"
+                    role="tab"
+                    aria-selected="false"
+                    aria-controls="tab-mens-{{ section.id }}--content"
+                    tabindex="-1"
+                >
+                    {{ section.settings.tab_title_mens }}
+                </button>
+            </div>
+
+            {% unless section.settings.mobile_layout == 'accordion' -%}
+                <div class="swiper-button-prev swiper-button-prev--tabs swiper-arrow" tabindex="-1">
+                    <span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span>
+                </div>
+
+                <div class="swiper-button-next swiper-button-next--tabs swiper-arrow" tabindex="-1">
+                    <span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span>
+                </div>
+            {%- endunless %}
+        </div>
+
+        <div
+            id="tab-womens-{{ section.id }}--content"
+            class="tab__content--horizontal js-tab__content--horizontal"
+            role="tabpanel"
+            aria-labelledby="tab-womens-{{ section.id }}--button"
+            tabindex="0"
+        >
+            <div class='tab-content__wrapper'>
+                <div class="content__collection-wrapper">
+                    <a class="in-page-link visually-hidden skip-link" href="#Navigation-womens-{{ section.id }}">{{ 'custom.product.accessibility.skip_to_content' | t }}</a>
+                    <div
+                        class="swiper carousel--featured-collection-tab swiper--collection-tab content__products "
+                        data-slide-count="{{ block_count_womens }}"
+                    >
+                        <ul class="swiper-wrapper">
+                        {{ tab_content_womens }}
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="Navigation-womens-{{ section.id }}" class="swiper-navigation">
+                    <div class="swiper-arrow swiper-button-prev swiper-button-prev--content" id="swiper-prev-womens-{{ section.id }}">
+                        <span class="sr-only">Previous</span>
+                        {% render 'icon', name: 'carousel--prev', class: 'scroll__arrow' %}
+                    </div>
+                    <div class="swiper-arrow swiper-button-next swiper-button-next--content" id="swiper-next-womens-{{ section.id }}">
+                        <span class="sr-only">Next</span>
+                        {% render 'icon', name: 'carousel--next', class: 'scroll__arrow' %}
+                    </div>
+                </div>
+
+                <div class="swiper-controllers">
+                    <div id="Scrollbar-womens-{{ section.id }}" class="swiper-scrollbar" tabindex="-1"></div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            id="tab-mens-{{ section.id }}--content"
+            class="tab__content--horizontal js-tab__content--horizontal"
+            role="tabpanel"
+            aria-labelledby="tab-mens-{{ section.id }}--button"
+            tabindex="0"
+        >
+            <div class='tab-content__wrapper'>
+                <div class="content__collection-wrapper">
+                    <a class="in-page-link visually-hidden skip-link" href="#Navigation-mens-{{ section.id }}">{{ 'custom.product.accessibility.skip_to_content' | t }}</a>
+                    <div
+                        class="swiper carousel--featured-collection-tab swiper--collection-tab"
+                        data-slide-count="{{ block_count_mens }}"
+                    >
+                        <ul class="swiper-wrapper">
+                            {{ tab_content_mens }}
+                        </ul>
+                    </div>
+                </div>
+
+                <div id="Navigation-mens-{{ section.id }}" class="swiper-navigation">
+                    <div class="swiper-arrow swiper-button-prev swiper-button-prev--content" id="swiper-prev-mens-{{ section.id }}" >
+                        <span class="sr-only">Previous</span>
+                        {% render 'icon', name: 'carousel--prev', class: 'scroll__arrow' %}
+                    </div>
+                    <div class="swiper-arrow swiper-button-next swiper-button-next--content" id="swiper-next-mens-{{ section.id }}" >
+                        <span class="sr-only">Next</span>
+                        {% render 'icon', name: 'carousel--next', class: 'scroll__arrow' %}
+                    </div>
+                </div>
+
+                <div class="swiper-controllers">
+                    <div id="Scrollbar-mens-{{ section.id }}" class="swiper-scrollbar" tabindex="-1"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Collection list - Tabs",
+    "tag": "section",
+    "class": "page-section page-section--tabs page-section--full-bleed page-section--tabs-collection",
+    "max_blocks": 30,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section ID",
+            "info": "This is used to link to this section from another part of the page. Content added here will be [handleized](https://shopify.dev/docs/api/liquid/filters/handleize) and used as the ID. Example: 'Section Title' can be converted into an anchor link by using '#section-title' for a Button Link on this page."
+        },
+        {
+            "type": "text",
+            "label": "Section ID",
+            "id": "section_id"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type": "text",
+            "id": "tab_label",
+            "label": "Tab list label",
+            "info": "A label that describes the purpose of the set of tabs. Used for accessibility."
+        },
+        {
+            "label": "Tab Title - Womens",
+            "id": "tab_title_womens",
+            "type": "text",
+            "default": "Womens"
+        },
+        {
+            "label": "Tab Title - Mens",
+            "id": "tab_title_mens",
+            "type": "text",
+            "default": "Mens"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "label": "Collection",
+                    "id": "collection",
+                    "type": "collection"
+                },
+                {
+                    "label": "Collection Tab",
+                    "id": "collection_tab",
+                    "type": "select",
+                    "options": [
+                        {
+                            "value": "mens",
+                            "label": "Mens"
+                        },
+                        {
+                            "value": "womens",
+                            "label": "Womens"
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Collection list - Tabs",
+            "category": "Collection",
+            "blocks": [
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,24 @@
+<div class="css-grid__item card card--default card--page {{ class }}">
+    <a href="{{ page.url }}">
+        {% comment %} Add metafield for page image? {% endcomment %}
+        {% comment %} {% if page.image %}
+            <div class="card__image-wrapper">
+                {% render 'responsive-image' with image: page.image, image_class: 'background-image' %}
+            </div>
+        {% endif %} {% endcomment %}
+
+        <div class="card__content">
+            <h3 class="card__title">{{ page.title }}</h3>
+
+            <div class="card__copy">
+                {% if page.excerpt.size > 0 %}
+                    {{ page.excerpt }}
+                {% else %}
+                    {{ page.content | strip_html | truncate: 150 }}
+                {% endif %}
+            </div>
+
+            <span class="card__link button--primary button">{{ 'blogs.article.read_more' | t }}</span>
+        </div>
+    </a>
+</div>

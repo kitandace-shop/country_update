@@ -1,0 +1,168 @@
+{% liquid
+    assign product = all_products[section.settings.product]
+    assign current_variant = product.selected_or_first_available_variant
+    assign featured_image = current_variant.featured_image | default: product.featured_image
+    if section.settings.image1
+        assign featured_image = section.settings.image1
+    endif
+    assign featured_image_2 = product.images[1]
+    if section.settings.image2
+        assign featured_image_2 = section.settings.image2
+    endif
+    if product == empty
+        assign onboarding_title = 'homepage.onboarding.product_title' | t
+    endif
+
+    assign product_tags = product.tags | join: ', ' | downcase
+%}
+
+<div data-section-id="{{ section.id }}" data-section-type="product" class="featured-product">
+    <a href="{{product.url}}">
+        <div class="featured-product__image">
+            {% comment %} Shows up on mobile and desktop {% endcomment %}
+            {% render 'responsive-image' with
+            image: featured_image,
+            image_class: "background-image background-image--1"
+            %}
+
+            {% comment %} Shows up on desktop only {% endcomment %}
+            {% render 'responsive-image' with
+            image: featured_image_2,
+            image_class: "background-image background-image--2"
+            %}
+        </div>
+    </a>
+
+    <div class="featured-product__content">
+        <h2 class="h4 featured-product__title">{{ product.title | default: onboarding_title }}</h2>
+
+        {% if section.settings.display_price %}
+            <div class="price__wrapper">
+                <div class="product__price">
+                    {% if product.compare_at_price_max > product.price %}
+                        <span class="visually-hidden">{{ 'products.product.regular_price' | t }}</span>
+                        <s class="price__sale">
+                            {% if current_variant.compare_at_price > current_variant.price %}
+                                {% render 'price-format', price: current_variant.compare_at_price %}
+                            {% endif %}
+                        </s>
+                    {% endif %}
+
+                    <span class="price__original {% if current_variant.compare_at_price > current_variant.price %}price__original--sale{% endif %}">
+                        {% render 'price-format', price: current_variant.price %}
+                    </span>
+                </div>
+
+            </div>
+        {% endif %}
+
+        <a href="{{product.url}}" class="button button--primary button--transparent button__featured-product">{{ 'custom.ctas.shop_now_label' | t }}</a>
+    </div>
+
+    {% unless product == empty %}
+        <script type="application/json" data-product-json>
+            {{ product | json }}
+        </script>
+    {% endunless %}
+</div>
+
+{% schema %}
+{
+    "name": "Featured product",
+    "tag": "section",
+    "class": "page-section page-section--gap-bottom page-section--full-bleed page-section--featured-product",
+    "settings": [
+        {
+            "type": "product",
+            "id": "product",
+            "label": "Product"
+        },
+        {
+            "type": "header",
+            "content": "Images",
+            "info": "If you upload images, they will replace the images from the product page."
+        },
+        {
+            "type": "image_picker",
+            "id": "image1",
+            "label": "Image 1 (Mobile and Desktop)",
+            "info": "Will replace image from product page. Shows up on both mobile and desktop."
+        },
+        {
+            "type": "image_picker",
+            "id": "image2",
+            "label": "Image 2 (Desktop Only)",
+            "info": "Will replace image from product page. Only shows up on desktop."
+        },
+        {
+            "type": "checkbox",
+            "id": "display_price",
+            "label": "Show Price"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Featured Product",
+            "category": "Collection"
+        }
+    ]
+}
+{% endschema %}
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": "{{ shop.url }}{{ product.url }}",
+    {% if product.featured_image %}
+        "image": [
+            "https:{{ product.featured_image.src | image_url: width: product.featured_image.width }}"
+        ],
+    {% endif %}
+    "description": {{ product.description | strip_html | json }},
+    {% if current_variant.sku != blank %}
+        "sku": {{ current_variant.sku | json }},
+    {% endif %}
+    "brand": {
+        "@type": "Thing",
+        "name": {{ product.vendor | json }}
+    },
+    {% if product.variants %}
+        "offers": [
+            {% for variant in product.variants %}
+                {
+                    "@type" : "Offer",
+                    "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+                    "price" : "{{ variant.price | divided_by: 100.00 }}",
+                    "priceCurrency" : "{{ shop.currency }}",
+                    "url" : "{{ shop.url }}{{ variant.url }}",
+                    "itemOffered" :
+                    {
+                        "@type" : "Product",
+                        {% if variant.image %}
+                            "image": "http:{{ variant.image.src | image_url: width: variant.image.width }}",
+                        {% endif %}
+                        {% if variant.title != blank %}
+                            "name" : {{ variant.title | json }},
+                        {% endif %}
+                        {% if variant.sku != blank %}
+                            "sku": {{ variant.sku | json }},
+                        {% endif %}
+                        {% if variant.weight != blank %}
+                            "weight": {
+                                "@type": "QuantitativeValue",
+                                {% if variant.weight_unit != blank %}
+                                    "unitCode": "{{ variant.weight_unit }}",
+                                {% endif %}
+                                "value": "{{ variant.weight | weight_with_unit: variant.weight_unit }}"
+                            },
+                        {% endif %}
+                        "url": "{{ shop.url }}{{ variant.url }}"
+                    }
+                }{% unless forloop.last %},{% endunless %}
+            {% endfor %}
+        ]
+    {% endif %}
+}
+</script>

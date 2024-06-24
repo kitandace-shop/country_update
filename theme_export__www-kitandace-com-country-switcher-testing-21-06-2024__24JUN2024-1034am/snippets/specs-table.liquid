@@ -1,0 +1,50 @@
+{% comment %}
+    *** Snippet - Specs Table ***
+
+    --- Variables ---
+    specification_titles: Array (Default: product.metafields.iamota.specification_title) (Required)
+    specification_modal_informations: Array (Default: product.metafields.iamota.specification_modal_info) (Optional)
+    specification_descriptions: Array (Default: product.metafields.iamota.specification_description) (Required)
+    specification_row_limit: Integer (Default: 10)
+
+    --- How to use this snippet ---
+
+        -- Used on the PDP --
+        {% render "specs-table", close_icon_url: close_icon_url %}
+
+        -- Using this snippet on other locations besides the PDP --
+        {% render "specs-table",
+            specification_titles            : specification_titles
+            specification_modal_informations: specification_modal_informations
+            specification_descriptions      : specification_descriptions
+            specification_row_limit         : specification_row_limit
+        %}
+{% endcomment %}
+
+{% liquid
+    assign specification_row_limit          = specification_row_limit | default: 10
+%}
+
+<table aria-describedby="specification-caption" class="specification-table">
+    <tr class="visually-hidden">
+        <th scope="col">
+            {{ 'custom.specs_table.table_header_1' | t }}
+        </th>
+        <th scope="col">
+            {{ 'custom.specs_table.table_header_2' | t }}
+        </th>
+    </tr>
+    {% for title in specification_titles limit: specification_row_limit %}
+        <tr>
+            <td class="specification-title">
+                {{ title }}
+                {% if specification_modal_informations[forloop.index0] != blank %}
+                    {% render 'toggletip' with toggletip_text: specification_modal_informations[forloop.index0] %}
+                {% endif %}
+                </td>
+            <td>
+                {{ specification_descriptions[forloop.index0] }}
+            </td>
+        </tr>
+    {% endfor %}
+</table>

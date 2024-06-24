@@ -1,0 +1,43 @@
+<div class="newsletter-section container" id="newsletter">
+    {% if section.settings.section_title != blank %}
+        <h2 class="newsletter__title h3">{{ section.settings.section_title | escape }}</h2>
+    {% endif %}
+
+    {% if section.settings.subheading != blank %}
+        <p class="newsletter__content">{{ section.settings.subheading | escape }}</p>
+    {% endif %}
+
+    {% render 'newsletter-form', id: 'newsletter' %}
+</div>
+
+{% schema %}
+{
+    "name": "Newsletter",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--newsletter",
+    "settings": [
+        {
+            "type": "text",
+            "id": "section_title",
+            "label": "Heading",
+            "default": "Subscribe to our newsletter"
+        },
+        {
+            "type": "text",
+            "id": "subheading",
+            "label": "Subheading",
+            "default": "A short sentence describing what someone will receive by subscribing"
+        },
+        {
+            "type": "paragraph",
+            "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Newsletter",
+            "category": "Promotional"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,355 @@
+
+
+{% assign swatch_count = 0 %}
+{% liquid
+    assign variants_count = product.variants.size
+    assign has_variants = false
+
+    if variants_count > 1
+        assign has_variants = true
+    endif
+
+    comment
+        Get list of related products based on product tag (associated with product collection)
+    endcomment
+        assign group_collection = null
+        assign promo_message = ''
+
+        for tag in product.tags
+            if tag contains 'Promo::'
+                assign tag_string_array = tag | split: '::'
+                assign promo_message = tag_string_array | last | strip | escape
+            endif
+
+            if tag contains 'prodGroup::'
+                assign group_name = tag | split: '::' | last | strip
+                for coll in product.collections
+                    if coll.title == group_name
+                    assign group_collection = coll
+                    break
+                    endif
+                endfor
+            endif
+        endfor
+
+    comment
+        Get swatches from related products
+    endcomment
+    assign card_swatches_display = false
+    assign swatch_option = false
+    assign finalProductValues = null
+    assign number = 0
+
+    for option in product.options_with_values
+        assign downcase_option_name = option.name | downcase
+        if downcase_option_name == settings.product_card_swatch_type
+            assign finalProductValues = finalProductValues | concat: option.values
+            assign number = number | plus: 1
+        endif
+    endfor
+
+    if group_collection.products_count > 1
+        for group_product in group_collection.products
+            if group_product != product
+                for option in group_product.options_with_values
+                    assign downcase_option_name = option.name | downcase
+                    if downcase_option_name == settings.product_card_swatch_type
+                        assign finalProductValues = finalProductValues | concat: option.values
+                        assign number = number | plus: 1
+                    endif
+                endfor
+            endif
+        endfor
+    endif
+
+%}
+
+<div class="css-grid__item card card--default card--product">
+    {% render 'card-label', product: product %}
+
+    <div class="wishlist-button">
+        <button data-with-epi="true" class="swym-button swym-add-to-wishlist-view-product product_{{product.id}}" data-swaction="addToWishlist" data-product-id="{{product.id | json}}" data-variant-id="{{product.variants[0].id}}" data-product-url="{{ shop.url }}{{ product.url }}"></button>
+    </div>
+
+        <div class="card__image-wrapper">
+            {% assign product_card_image = false %}
+            {% assign product_card_image_secondary = false %}
+            {% assign selected_variant_image = false %}
+
+            {% unless product_card_image %}
+                {% assign product_card_image = product.featured_image %}
+            {% endunless %}
+
+            {% unless product_card_image_secondary %}
+                {% assign product_card_image_secondary = product.images[1] %}
+            {% endunless %}
+
+            {% if product_card_image %}
+                <div class="card__image card__image--primary">
+                    {% render 'responsive-image' with image: product_card_image, image_class: 'card__product-image background-image image--primary' %}
+                </div>
+            {% endif %}
+
+            {% if product_card_image %}
+                <div class="card__image card__image--secondary">
+                    {% render 'responsive-image' with image: product_card_image_secondary, image_class: 'card__product-image background-image image--secondary' %}
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="card__content">
+            <div class="card__content-heading">
+                {% if product.title != blank %}
+                    <a href="{{ product.url | within: collection }}" aria-labelledby="collection-card__sale-{{ product.id }} collection-card__new-{{ product.id }} collection-card__sold-out-{{ product.id }} collection-card__title-{{ product.id }}" class="card__link">
+                        <h3 class="card__title" id="collection-card__title-{{ product.id }}">{{ product.title }}</h3>
+                    </a>
+                {% endif %}
+
+
+                <div class="card__price">
+                    {% if product.price_varies %}
+                        {% capture lowest_price %}
+                            {% render 'price-format', price: product.price_min %}
+                        {% endcapture %}
+                        {{ 'products.product.from_text_html' | t: price: lowest_price }}
+                    {% else %}
+                        {% if product.compare_at_price_max > product.price %}
+                            <span class="visually-hidden" data-compare-text>
+                                {{ 'products.product.regular_price' | t }}
+                            </span>
+                            <s data-compare-price class="card__price--sale">
+                                {% if product.compare_at_price > product.price %}
+                                    {% render 'price-format', price: product.compare_at_price %}
+                                {% endif %}
+                            </s>
+                        {% endif %}
+
+                        <span class="card__price--original">
+                            {% render 'price-format', price: product.price %}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+
+            <div class='card__color-swatches'>
+                {%- assign finalProductValuesNum = finalProductValues | size -%}
+                {% comment %} Max number of swatches to show on product card {% endcomment %}
+                {%- assign swatchMaxNumber = 5 -%}
+                {%- assign swatchMaxNumberMobile = 3 -%}
+                {% comment %} Loop through each value in the combined finalProductValues (created at the top of the file) {% endcomment %}
+                {% for value in finalProductValues %}
+                    {% if swatch_count < swatchMaxNumber %}
+
+                        {% assign variant_featured_image = "" %}
+                        {% assign variant_url = "" %}
+                        {% assign swatch_background_color = swatch_color %}
+                        {% assign swatch_background_image = swatch_image %}
+                        {% assign swatch_count = swatch_count | plus:1 %}
+
+                        {% comment %} If this product has a group_collection, loop through it to create variant swatches {% endcomment %}
+                        {% if group_collection %}
+                            {% for prod in group_collection.products %}
+                                {% for variant in prod.variants %}
+                                    {% if variant.options contains value %}
+                                        {% assign variant_featured_image = variant.featured_image %}
+                                        {% assign variant_featured_image2 = prod.images[1] %}
+                                        {% if collection.url %}
+                                            {% if routes.root_url == "/" %}
+                                                {% assign variant_url = variant.url %}
+                                            {% else %}
+                                                {% assign variant_url = variant.url | remove: routes.root_url %}
+                                            {% endif %}
+                                        {% else %}
+                                            {% assign variant_url = variant.url %}
+                                        {% endif %}
+                                        {% comment %} Create a collection aware variant url to maintain similar URLs {% endcomment %}
+                                        {% assign collection_aware_variant_url = collection.url | append: variant_url %}
+                                        {% break %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% endfor %}
+                        {% else %}
+                            {% for variant in product.variants %}
+                                {% if variant.options contains value %}
+                                    {% assign variant_featured_image = variant.featured_image %}
+                                    {% for prodImage in product.images %}
+                                        {% comment %} Choose the image after the variant image for the hover effect {% endcomment %}
+                                        {% if prodImage == variant.featured_image  %}
+                                            {% assign prodImageIndex = forloop.index %}
+                                            {% assign newIndex = prodImageIndex | plus: 1 %}
+                                            {% assign variant_featured_image2 = product.images[newIndex] %}
+                                        {% endif %}
+                                    {% endfor %}
+                                    {% if collection.url %}
+                                        {% if routes.root_url == "/" %}
+                                            {% assign variant_url = variant.url %}
+                                        {% else %}
+                                            {% assign variant_url = variant.url | remove: routes.root_url %}
+                                        {% endif %}
+                                    {% else %}
+                                        {% assign variant_url = variant.url %}
+                                    {% endif %}
+                                    {% comment %} Create a collection aware variant url to maintain similar URLs {% endcomment %}
+                                    {% assign collection_aware_variant_url = collection.url | append: variant_url %}
+                                    {% break %}
+                                {% endif %}
+                            {% endfor %}
+                        {% endif %}
+                        {%- liquid
+                            assign image           = variant_featured_image
+                            assign image2         = variant_featured_image2
+                            assign image_mobile    = image
+                            assign image_desktop   = image
+                            assign image_mobile2    = image2
+                            assign image_desktop2   = image2
+
+                            assign widths_mobile   = '180,360,540,680' | split: ','
+                            assign widths_desktop  = '720,900,1080,1296,1944,2592,3024' | split: ','
+
+                            assign image_width     = image.width
+                            assign image_height    = image.height
+                            assign image_width2     = image2.width
+                            assign image_height2   = image2.height
+
+                            assign is_lazyloaded   = true
+                            assign is_background   = false
+                        -%}
+                        {%- if image != "" and image != null -%}
+
+                            {%- liquid
+                                assign width_fullsize      = image_desktop.width | default: 5760
+                                assign image_desktop_width = image_desktop.width | default: 5760
+                                assign image_mobile_width  = image_mobile.width | default: 5760
+                                assign src_fullsize   = image_desktop.src | image_url: width: width_fullsize
+
+                                capture src_set_mobile
+                                    for width in widths_mobile
+                                        assign width_num = width | plus: 0 | round
+                                        if image_mobile_width >= width_num or forloop.first
+                                            if image_mobile.cloudinary_src
+                                                echo image_mobile.cloudinary_src | append: 'w_' | append: width_num | append: ',q_auto,dpr_auto'
+                                            else
+                                                echo image_mobile | image_url: width: width_num
+                                            endif
+                                            echo ' ' | append: width_num | append: 'w,'
+                                        endif
+                                    endfor
+                                endcapture
+                                assign src_set_mobile = src_set_mobile | strip
+
+                                capture src_set_desktop
+                                    for width in widths_desktop
+                                        assign width_num = width | plus: 0 | round
+                                        if image_desktop_width >= width_num or forloop.first
+                                            if image_desktop.cloudinary_src
+                                                echo image_desktop.cloudinary_src | append: 'w_' | append: width_num | append: ',q_auto,dpr_auto'
+                                            else
+                                                echo image_desktop | image_url: width: width_num
+                                            endif
+                                            echo ' ' | append: width_num | append: 'w,'
+                                        endif
+                                    endfor
+
+                                    if width_fullsize > width_num
+                                        echo src_fullsize | append: ' ' | append: width_fullsize | append: 'w'
+                                    endif
+                                endcapture
+                                assign src_set_desktop = src_set_desktop | strip
+                                assign src_set = src_set_mobile | append: src_set_desktop
+                            -%}
+                        {%- endif -%}
+                        {%- if image2 != "" and image2 != null -%}
+
+                            {%- liquid
+                                assign width_fullsize2      = image_desktop2.width | default: 5760
+                                assign image_desktop_width2 = image_desktop2.width | default: 5760
+                                assign image_mobile_width2  = image_mobile2.width | default: 5760
+                                assign src_fullsize2   = image_desktop2.src | image_url: width: width_fullsize2
+
+
+                                capture src_set_mobile2
+                                    for width in widths_mobile
+                                        assign width_num = width | plus: 0 | round
+                                        if image_mobile_width >= width_num or forloop.first
+                                            if image_mobile2.cloudinary_src
+                                                echo image_mobile2.cloudinary_src | append: 'w_' | append: width_num | append: ',q_auto,dpr_auto'
+                                            else
+                                                echo image_mobile2 | image_url: width: width_num
+                                            endif
+                                            echo ' ' | append: width_num | append: 'w,'
+                                        endif
+                                    endfor
+                                endcapture
+                                assign src_set_mobile2 = src_set_mobile2 | strip
+
+                                capture src_set_desktop2
+                                    for width in widths_desktop
+                                        assign width_num = width | plus: 0 | round
+                                        if image_desktop_width2 >= width_num or forloop.first
+                                            if image_desktop2.cloudinary_src
+                                                echo image_desktop2.cloudinary_src | append: 'w_' | append: width_num | append: ',q_auto,dpr_auto'
+                                            else
+                                                echo image_desktop2 | image_url: width: width_num
+                                            endif
+                                            echo ' ' | append: width_num | append: 'w,'
+                                        endif
+                                    endfor
+
+                                    if width_fullsize2 > width_num
+                                        echo src_fullsize2 | append: ' ' | append: width_fullsize2 | append: 'w'
+                                    endif
+                                endcapture
+                                assign src_set_desktop2 = src_set_desktop2 | strip
+                                assign src_set2 = src_set_mobile2 | append: src_set_desktop2
+                            -%}
+                        {%- endif -%}
+                        <div class="card__swatch--color-option {% if swatch_count == 1 %}selected{% endif %}"
+                            data-swatch="{{ value }}"
+                            data-swatch-url="{{ collection_aware_variant_url }}"
+                            aria-describedly="{{ value }}"
+                            tabindex="0"
+                            {%- if image != "" and image != null -%}
+                                data-desktop-media="(min-width: {{ widths_mobile | last | plus: 0 | round | plus: 1 }}px)"
+                                data-desktop-srcset="{{ src_set_desktop }}"
+                                data-mobile-srcset="{{ src_set_mobile }}"
+                                data-image-src="{{ src_fullsize }}"
+                                data-image-srcset="{{ src_set }}"
+                            {%- endif -%}
+                            {%- if image2 != "" and image2 != null -%}
+                                data-desktop-media2="(min-width: {{ widths_mobile | last | plus: 0 | round | plus: 1 }}px)"
+                                data-desktop-srcset2="{{ src_set_desktop2 }}"
+                                data-mobile-srcset2="{{ src_set_mobile2 }}"
+                                data-image-src2="{{ src_fullsize2 }}"
+                                data-image-srcset2="{{ src_set2 }}"
+                            {%- endif -%}
+                        >
+                            <label class="card__swatch-option-label">
+                                <span class="card__swatch-option-label-inner form__option-label-inner-{{ value | handleize }}"
+                                ></span>
+                                <span class="card__swatch-option-label-visually-hidden">{{ value }}</span>
+                            </label>
+                        </div>
+                    {% endif %}
+                {% endfor %}
+                {% if finalProductValuesNum > swatchMaxNumber %}
+                    <div class='card__more-colors-link'>
+                        <a href='{{ product.url | within: collection }}'>+{{ finalProductValuesNum | minus: swatchMaxNumber }}</a>
+                    </div>
+                {% endif %}
+
+                {% if finalProductValuesNum > swatchMaxNumberMobile %}
+                    <div class='card__more-colors-link card__more-colors-link--mobile'>
+                        <a href='{{ product.url | within: collection }}'>+{{ finalProductValuesNum | minus: swatchMaxNumberMobile }}</a>
+                    </div>
+                {% endif %}
+
+
+            </div>
+
+            {%- if promo_message != '' -%}
+                <div class="card__promo-message">
+                    {{ promo_message }}
+                </div>
+            {%- endif -%}
+        </div>
+</div>

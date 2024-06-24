@@ -1,0 +1,216 @@
+{% liquid
+    assign has_video          = false
+    assign desktop_video      = section.settings.desktop-hero-banner-video
+    assign mobile_video       = section.settings.mobile-hero-banner-video
+    assign desktop_hero_image = section.settings.desktop-hero-image
+    assign mobile_hero_image  = section.settings.mobile-hero-image
+
+    if desktop_video != blank or mobile_video != blank
+        assign hero_type = 'video'
+        assign has_video = true
+    else
+        assign hero_type = 'image'
+    endif
+%}
+
+<div class="background-media background-media--{{ hero_type }} hero-banner hero-banner--{{ section.settings.hero_text_color }}">
+
+    {% comment %} Capture background image to use in different places below {% endcomment %}
+    {% capture hero_image %}
+        <div class="background-media__background">
+            {% render 'responsive-image' with
+                    image_desktop: desktop_hero_image,
+                    image_mobile:  mobile_hero_image,
+                    image_class:   "background-image",
+                    lazy:          false
+                %}
+        </div>
+    {% endcapture %}
+
+    {% comment %} Hero Background Image/Video - Start {% endcomment %}
+    {% if has_video %}
+        {% comment %} Gathering video source urls and types to use in javascripts {% endcomment %}
+        {% comment %} Desktop video {% endcomment %}
+        {%- capture desktop_video_source_urls -%}
+            {%- assign source_urls = '' -%}
+            {%- for source in desktop_video.sources -%}
+                {%- assign source_urls = source_urls | append: source.url -%}
+                {%- unless forloop.last -%}
+                    {%- assign source_urls = source_urls | append: "," -%}
+                {%- endunless -%}
+            {%- endfor  -%}
+            {{- source_urls -}}
+        {%- endcapture -%}
+        {%- capture desktop_video_source_types -%}
+            {%- assign source_types = '' -%}
+            {%- for source in desktop_video.sources -%}
+                {%- assign source_types = source_types | append: source.mime_type -%}
+                {%- unless forloop.last -%}
+                    {% assign source_types = source_types | append: "," -%}
+                {%- endunless -%}
+            {%- endfor -%}
+            {{- source_types -}}
+        {%- endcapture -%}
+
+        {% comment %} Mobile video {% endcomment %}
+        {%- capture mobile_video_source_urls -%}
+            {%- assign source_urls = '' -%}
+            {%- for source in mobile_video.sources -%}
+                {%- assign source_urls = source_urls | append: source.url -%}
+                {%- unless forloop.last -%}
+                    {%- assign source_urls = source_urls | append: "," -%}
+                {%- endunless -%}
+            {%- endfor  -%}
+            {{- source_urls -}}
+        {%- endcapture -%}
+        {%- capture mobile_video_source_types -%}
+            {%- assign source_types = '' -%}
+            {%- for source in mobile_video.sources -%}
+                {%- assign source_types = source_types | append: source.mime_type -%}
+                {%- unless forloop.last -%}
+                    {% assign source_types = source_types | append: "," -%}
+                {%- endunless -%}
+            {%- endfor -%}
+            {{- source_types -}}
+        {%- endcapture -%}
+
+        {% comment %} Hero background video - Start {% endcomment %}
+        <div class="video-block video-block--dynamic-video video-block--html5 {% if desktop_hero_image or mobile_hero_image %}is-postered{% endif %} video-block--is-paused">
+            {% comment %} Video Control - Start {% endcomment %}
+            <div class="video-block__controls">
+                <div class="video-block__controls-static">
+                    <button class="video-block__control video-block__control--play">
+                        {% render 'icon', name: 'play' %}
+                        <span class="sr-only">{{ 'accessibility.play_video' | t }}</span>
+                    </button>
+
+                    <button class="video-block__control video-block__control--pause">
+                        {% render 'icon', name: 'pause' %}
+                        <span class="sr-only">{{ 'accessibility.pause_video' | t }}</span>
+                    </button>
+                </div>
+            </div>
+            {% comment %} Video Control - End {% endcomment %}
+
+            <video class="video-block__video" preload="preload" muted="muted" loop="loop" autoplay="autoplay" playsinline
+            data-video-sources='{
+                "desktop_video_source_urls" : "{{ desktop_video_source_urls }}",
+                "desktop_video_source_types": "{{ desktop_video_source_types }}",
+                "mobile_video_source_urls"  : "{{ mobile_video_source_urls }}",
+                "mobile_video_source_types" : "{{ mobile_video_source_types }}"
+            }'
+            >
+            </video>
+
+            {% comment %} Hero background image - Start {% endcomment %}
+            {{ hero_image }}
+            {% comment %} Hero background image - End {% endcomment %}
+        </div>
+        {% comment %} Hero background video - End {% endcomment %}
+    {% else %}
+        {% comment %} Hero background image - Start {% endcomment %}
+        {{ hero_image }}
+        {% comment %} Hero background image - End {% endcomment %}
+    {% endif %}
+    {% comment %} Hero Background Image/Video - End {% endcomment %}
+
+    {% comment %} Hero Content - Start {% endcomment %}
+    <div class="background-media__content">
+        <div class="container">
+            {% if section.settings.hero-banner-title != blank %}
+                <h1 class="hero-banner__title">{{ section.settings.hero-banner-title }}</h1>
+            {% endif %}
+
+            <div class="hero-banner__button-collection">
+                {% if section.settings.hero-banner-button-text != blank and section.settings.hero-banner-link != blank %}
+                    <a href="{{ section.settings.hero-banner-link }}" class="button button--primary">{{ section.settings.hero-banner-button-text }}
+                    </a>
+                {% endif %}
+
+                {% if section.settings.hero-banner-button-text2 != blank and section.settings.hero-banner-link2 != blank %}
+                    <a href="{{ section.settings.hero-banner-link2 }}" class="button button--primary">{{ section.settings.hero-banner-button-text2 }}
+                    </a>
+                {% endif %}
+            </div>
+
+        </div>
+    </div>
+    {% comment %} Hero Content - End {% endcomment %}
+</div>
+
+{% schema %}
+{
+    "name": "Homepage Hero",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--no-gap page-section--hero-banner",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "desktop-hero-image",
+            "label": "Desktop Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile-hero-image",
+            "label": "Mobile Image"
+        },
+        {
+            "type": "video",
+            "id": "desktop-hero-banner-video",
+            "label": "Video"
+        },
+        {
+            "type": "video",
+            "id": "mobile-hero-banner-video",
+            "label": "Mobile Video"
+        },
+        {
+            "type": "text",
+            "id": "hero-banner-title",
+            "label": "Heading"
+        },
+        {
+            "type": "select",
+            "id": "hero_text_color",
+            "label": "Hero Font Colour",
+            "options": [
+                {
+                    "value": "white",
+                    "label": "White"
+                },
+                {
+                    "value": "black",
+                    "label": "Black"
+                }
+            ],
+            "default": "black"
+        },
+        {
+            "type": "text",
+            "id": "hero-banner-button-text",
+            "label": "Primary Button Label"
+        },
+        {
+           "type": "url",
+            "id": "hero-banner-link",
+            "label": "Primary Button Link"
+        },
+        {
+            "type": "text",
+            "id": "hero-banner-button-text2",
+            "label": "Secondary Button Label"
+        },
+        {
+           "type": "url",
+            "id": "hero-banner-link2",
+            "label": "Secondary Button Link"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Homepage Hero",
+            "category": "Page Heros"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,124 @@
+<div id="{{ section.settings.section_id | handleize }}" class="scroll-margin intro-block intro-block--default">
+    <div class="intro-block__container intro-block--{{ section.settings.intro-block-background-color }} intro-block--icon-{{ section.settings.intro-block-icon-toggle }}">
+        {% if section.settings.intro-block-icon-toggle == "on" %}
+            {% render 'icon', name: 'logo', class: 'intro-block__icon' %}
+        {% endif %}
+
+        <div class="intro-block__content intro-block__content--{{ section.settings.intro-block-alignment }}">
+            {% if section.settings.intro-block-title != blank %}
+                {{ section.settings.intro-block-title }}
+            {% endif %}
+
+            {% if section.settings.intro-block-text != blank %}
+                <div class="intro-block__body">
+                    {{ section.settings.intro-block-text }}
+                </div>
+            {% endif %}
+
+            {% if section.settings.intro-block-button-text != blank and section.settings.intro-block-link != blank %}
+                <a href="{{ section.settings.intro-block-link }}" class="button button--tertiary">
+                    {{ section.settings.intro-block-button-text }}
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+
+{% schema %}
+{
+    "name": "Intro Block",
+    "tag": "div",
+    "class": "page-section page-section--no-gap page-section--full-bleed page-section--intro-block",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section ID",
+            "info": "This is used to link to this section from another part of the page. Content added here will be [handleized](https://shopify.dev/docs/api/liquid/filters/handleize) and used as the ID. Example: 'Section Title' can be converted into an anchor link by using '#section-title' for a Button Link on this page."
+        },
+        {
+            "type": "text",
+            "label": "Section ID",
+            "id": "section_id"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type": "select",
+            "id": "intro-block-background-color",
+            "label": "Background Color",
+            "options": [
+                {
+                  "value": "shoreline",
+                  "label": "Shoreline"
+                },
+                {
+                  "value": "navy",
+                  "label": "Navy"
+                }
+              ],
+              "default": "shoreline"
+        },
+        {
+            "type": "select",
+            "id": "intro-block-icon-toggle",
+            "label": "Icon Toggle",
+            "options": [
+                {
+                  "value": "on",
+                  "label": "On"
+                },
+                {
+                  "value": "off",
+                  "label": "Off"
+                }
+              ],
+              "default": "off"
+        },
+        {
+            "type": "richtext",
+            "id": "intro-block-title",
+            "label": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "intro-block-text",
+            "label": "Text"
+        },
+        {
+            "type": "text",
+            "id": "intro-block-button-text",
+            "label": "Button Label"
+        },
+        {
+           "type": "url",
+            "id": "intro-block-link",
+            "label": "Button Link"
+        },
+        {
+            "type": "select",
+            "id": "intro-block-alignment",
+            "label": "Text Alignment",
+            "options": [
+                {
+                  "value": "left",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                }
+              ],
+              "default": "left"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Intro Block",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

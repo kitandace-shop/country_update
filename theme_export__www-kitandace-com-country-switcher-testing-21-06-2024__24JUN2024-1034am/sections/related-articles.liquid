@@ -1,0 +1,85 @@
+{% liquid
+    assign section_heading = section.settings.section_heading
+%}
+
+<div class='page-section page-section--gap page-section--related-blog-articles'>
+    <div class='container'>
+
+        {% if section_heading != blank %}
+            <h2 class='related-blog-articles__title'>
+                {{ section_heading }}
+            </h2>
+        {% endif %}
+
+        <ul class="css-grid css-grid--default css-grid--medium-3 css-grid--blog-post blog-post">
+
+            {% comment %}
+                This section will pull 3 related articles for the current article.
+            {% endcomment %}
+            {% liquid
+                assign this_article = article.title
+                assign this_tags = article.tags
+                assign current_related_articles_num = 0
+                assign max_related_articles = 3
+                assign related_articles = ""
+            %}
+
+            {% comment %}
+                Find the articles that has the same tags with the current article
+            {% endcomment %}
+            {% for blog_post in blog.articles %}
+                {% unless this_article == blog_post.title %}
+                    {% for tag in blog_post.tags %}
+                        {% if this_tags contains tag and max_related_articles > current_related_articles_num %}
+                            <li class="css-grid__item">
+                                {% include 'card--post', article: blog_post %}
+                            </li>
+
+                            {% liquid
+                                comment
+                                    Store the ID of the related article for crosschecking in the recent articles loop below
+                                endcomment
+                                assign related_articles = related_articles | append: blog_post.id | append: ","
+                                assign current_related_articles_num = current_related_articles_num | plus: 1
+                                break
+                            %}
+                        {% endif %}
+                    {% endfor %}
+                {% endunless %}
+            {% endfor %}
+
+            {% comment %} If the number of the articles that have the same tags as the current article is still less than the maximum number, look for latest articles to fill the rest spots{% endcomment %}
+            {% if max_related_articles > current_related_articles_num %}
+                {% for recent_post in blog.articles %}
+                    {% comment %} Check if this article is already accounted above or not {% endcomment %}
+                    {% unless related_articles contains recent_post.id %}
+                        {% if this_article != recent_post.title and max_related_articles > current_related_articles_num %}
+                            <li class="css-grid__item">
+                                {% include 'card--post', article: recent_post %}
+                            </li>
+
+                            {% liquid
+                                assign current_related_articles_num = current_related_articles_num | plus: 1
+                                assign related_articles = related_articles | append: recent_post.id | append: ","
+                            %}
+                        {% endif %}
+                    {% endunless %}
+                {% endfor %}
+            {% endif %}
+        </ul>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Related Articles",
+        "tag": "section",
+        "settings": [
+            {
+                "type": "text",
+                "id": "section_heading",
+                "label": "Section Heading"
+            }
+        ]
+    }
+{% endschema %}

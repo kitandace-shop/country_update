@@ -1,0 +1,282 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!--> <html class="no-js cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_accent }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+
+      <!-- Favicon -->
+  {%- render 'favicon' -%}
+
+    {%- capture seo_title -%}
+        {{ page_title }}
+        {%- if current_tags -%}
+            {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+        {%- endif -%}
+        {%- if current_page != 1 -%}
+            &ndash; {{ 'general.meta.page' | t: page: current_page }}
+        {%- endif -%}
+        {%- assign escaped_page_title = page_title | escape -%}
+        {%- unless escaped_page_title contains shop.name -%}
+            &ndash; {{ shop.name }}
+        {%- endunless -%}
+    {%- endcapture -%}
+    <title>{{ seo_title | strip }}</title>
+
+    {%- if page_description -%}
+        <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://www.youtube.com">
+    <link rel="preconnect" href="https://productreviews.shopifycdn.com">
+    <link rel="preconnect" href="https://ajax.googleapis.com">
+
+    {% render 'social-meta-tags' %}
+
+    {% if template contains 'customers' %}
+        <script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+        <script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+    {% endif %}
+
+    {% render 'style-tags', layout: 'theme' %}
+
+    {% if settings.enable_predictive_search %}
+        <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {% endif %}
+
+    {% comment %} Initialize appropriate money format base on theme settings to use in Javascripts {% endcomment %}
+    {% if settings.show_currency %}
+        {% assign settingCurrencyFormat = shop.money_with_currency_format %}
+    {% else %}
+        {% assign settingCurrencyFormat = shop.money_format %}
+    {% endif %}
+
+    <script>
+        document.documentElement.className = document.documentElement.className.replace('no-js', '');
+
+        window.theme = {
+            strings: {
+                addToCart: {{ 'products.product.add_to_cart' | t | json }},
+                soldOut: {{ 'products.product.sold_out' | t | json }},
+                unavailable: {{ 'products.product.unavailable' | t | json }}
+            },
+            moneyWithoutCurrency: {{ shop.money_format | json }},
+            settingCurrencyFormat: {{ settingCurrencyFormat | json }}
+        };
+
+        {% if template.directory == 'customers' %}
+            theme.allCountryOptionTags = {{ all_country_option_tags | json }};
+        {% endif %}
+    </script>
+
+    {% comment %} Scripts needed for Video media on Product Carousel on PDP {% endcomment %}
+    {% if template contains 'product' %}
+        <script src="https://www.youtube.com/iframe_api" id="youtube-sdk"></script>
+        <script type="module" defer="" src="https://cdn.shopify.com/shopifycloud/shopify-plyr/v1.0/shopify-plyr.en.js"></script>
+        <link href="https://cdn.shopify.com/shopifycloud/shopify-plyr/v1.0/shopify-plyr.css" rel="stylesheet" type="text/css" id="plyr-shopify-styles">
+    {% endif %}
+
+    <script>
+        window.translations = {
+            modalSuccessMessage       : {{ 'custom.modal.success_message' | t | json }},
+            addToCart                 : {{ 'custom.product.add_to_cart' | t | json }},
+            addedToCart               : {{ 'custom.product.added_to_cart' | t | json }},
+            addingToCart              : {{ 'custom.product.adding_to_cart' | t | json }},
+            soldOut                   : {{ 'custom.product.sold_out' | t | json }},
+            notFreeShippingMessage    : {{ 'custom.free_shipping_message.not_enough' | t | json }},
+            freeShippingMessage       : {{ 'custom.free_shipping_message.enough' | t | json }},
+            shortQuantity             : {{ 'custom.quantity.short' | t | json }},
+            finalSaleLabel            : {{ 'custom.sale.final.label' | t | json }},
+            finalSaleMessage          : {{ 'custom.sale.final.message' | t | json }},
+            itemCountOne              : {{ 'custom.items_count.one' | t | json }},
+            itemCountOther            : {{ 'custom.items_count.other' | t | json }},
+            itemScreenReader          : {{ 'custom.items_count.item_in_cart' | t | json }},
+            itemsScreenReader         : {{ 'custom.items_count.items_in_cart' | t | json }},
+            subTotalLabel             : {{ 'custom.cart.subtotal_label' | t | json }},
+            cartProductRemovedMessage : {{ 'custom.cart.product_removed_message' | t | json }},
+            cartUndoLabel             : {{ 'custom.cart.undo_label' | t | json }},
+            cartMaxQtyMessage         : {{ 'custom.cart.max_qty_message' | t | json }},
+            cartEmpty                 : {{ 'cart.general.empty' | t | json }},
+            formValidationErrors      : {
+                'required'            : {{ 'custom.forms.errors.required' | t | json }},
+                'email'               : {{ 'custom.forms.errors.email' | t | json }},
+                'maxLength'           : {{ 'custom.forms.errors.maxLength' | t | json }},
+                'minLength'           : {{ 'custom.forms.errors.minLength' | t | json }},
+                'password'            : {{ 'custom.forms.errors.password' | t | json }},
+                'strongPassword'      : {{ 'custom.forms.errors.strongPassword' | t | json }},
+                'number'              : {{ 'custom.forms.errors.number' | t | json }},
+                'maxNumber'           : {{ 'custom.forms.errors.maxNumber' | t | json }},
+                'minNumber'           : {{ 'custom.forms.errors.minNumber' | t | json }},
+                'minFilesCount'       : {{ 'custom.forms.errors.minFilesCount' | t | json }},
+                'maxFilesCount'       : {{ 'custom.forms.errors.maxFilesCount' | t | json }},
+                'customRegexp'        : {{ 'custom.forms.errors.customRegexp' | t | json }},
+                'files'               : {{ 'custom.forms.errors.files' | t | json }},
+                'date'                : {{ 'custom.forms.errors.date' | t | json }},
+                'phone_international' : {{ 'custom.forms.errors.phone_international' | t | json }},
+                'phone_10digit'       : {{ 'custom.forms.errors.phone_10digit' | t | json }},
+            }
+        };
+
+        if ( {{ shop.locale | json }} == 'fr') {
+            window.localeUrl = '/fr';
+        } else {
+            window.localeUrl = '';
+        }
+    </script>
+
+    {% comment %} Color Swatches {% endcomment %}
+    {% render 'variant-picker-swatches' %}
+
+    {% render 'script-tags', layout: 'theme' %}
+    {% render 'ga-gtm-tags.min', tag_placement: 'head' %}
+
+    {{ content_for_header }}
+<!-- 06-10-2024 -->    
+<script type="text/javascript">
+        //DO NOT REMOVE - DRIVES REVENUE
+        analytics.subscribe('all_events', (event) => {
+        var intervalWidgetLoad = setInterval(function () {
+        if (typeof asShopifyCPTag === 'function') {
+        clearInterval(intervalWidgetLoad);
+        asShopifyCPTag(event,init.data.cart,init.data.customer);}}, 300)});
+        var AddShoppersWidgetOptions = { 'loadCss': false, 'pushResponse': false };
+        (!function () {
+            var t = document.createElement("script");
+            t.type = "text/javascript",
+            t.async = !0,
+            t.id = "AddShoppers",
+            t.src = "https://shop.pe/widget/widget_async.js#651fdf3fbb4125f93a7cb965",
+            document.getElementsByTagName("head")[0].appendChild(t)
+        }());
+
+</script>
+</head>
+
+<body id="{{ page_title | handle }}" class="template-{{ template.name | handle }}">
+    <a class="in-page-link visually-hidden skip-link" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+    {% render 'ga-gtm-tags.min', tag_placement: 'body' %}
+    {% section 'announcement-bar' %}
+    {% section 'header' %}
+
+    <main role="main" id="MainContent" class="main container layout--one-column">
+        {{ content_for_layout }}
+
+        {% comment %} Add Section Everywhere to the Cart page only when the cart is empty. {% endcomment %}
+        {% if template == 'cart' and cart.item_count == 0 %}
+            {% sections 'section-groups--empty-cart' %}
+        {% endif %}
+
+        {% if template == 'product' %}
+            {% render 'recharge-template' %}
+        {% endif %}
+    </main>
+
+    {% section 'footer' %}
+
+    <!-- Widget : Gift with Purchase Test -->
+    {% comment %} <div data-rebuy-id="137564"></div> {% endcomment %}
+    <!-- End Widget : Gift with Purchase Test -->
+
+    {%- render 'swymSnippet' -%}
+    {%- render 'swym-login-require' -%}
+
+    <!--Gorgias Chat Widget Start-->
+    <script id="gorgias-chat-widget-install-v2" src="https://config.gorgias.chat/gorgias-chat-bundle-loader.js?applicationId=15954"></script>
+    <!--Gorgias Chat Widget End-->
+
+
+    <script src="https://a.klaviyo.com/media/js/onsite/onsite.js"></script>
+    <script>
+        var klaviyo = klaviyo || [];
+        klaviyo.init({
+            account: "NkEbv7",
+            platform: "shopify"
+        });
+        klaviyo.enable("backinstock",{
+        trigger: {
+            product_page_text: "Notify Me When Available",
+            product_page_class: "button__add-to-cart",
+            product_page_text_align: "center",
+            product_page_margin: "0px",
+            replace_anchor: false,
+            include_on_tags: 'notify-back-in-stock'
+        },
+        modal: {
+            headline: "{product_name}",
+            body_content: "Register to receive a notification when this item comes back in stock.",
+            email_field_label: "Email",
+            button_label: "Notify me when available",
+            subscription_success_label: "You're in! We'll let you know when it's back.",
+            footer_content: '',
+            drop_background_color: "#000",
+            background_color: "#F1F2EF",
+            text_color: "#000",
+            font_family: "'RiformaLLWeb', Helvetica, Arial, sans-serif",
+            headers_font_family: "'RiformaLLWeb', Helvetica, Arial, sans-serif",
+            button_text_color: "#fff",
+            button_background_color: "#1C2646",
+            close_button_color: "#000",
+            error_background_color: "#fcd6d7",
+            error_text_color: "#C72E2F",
+            success_background_color: "#d3efcd",
+            success_text_color: "#1B9500"
+        }
+    });
+    </script>
+
+    {% if product %}
+        <script>
+            window.addEventListener('load', function() {
+            var _learnq = window._learnq || [];
+            function addedToCart() {
+                fetch(`${window.location.origin}/cart.js`)
+                .then(res => res.clone().json().then(data => {
+                var cart = {
+                    total_price: data.total_price/100,
+                    $value: data.total_price/100,
+                    total_discount: data.total_discount,
+                    original_total_price: data.original_total_price/100,
+                    items: data.items
+                }
+                if (item !== 'undefined') {
+                    cart = Object.assign(cart, item)
+                }
+                if (klAjax) {
+                    _learnq.push(['track', 'Added to Cart', cart]);
+                    klAjax = false;
+                    }
+                }))
+            };
+            (function (ns, fetch) {
+                ns.fetch = function() {
+                const response = fetch.apply(this, arguments);
+                response.then(res => {
+                    if (`${window.location.origin}/cart/add.js`
+                        .includes(res.url)) {
+                        addedToCart()
+                    }
+                });
+                return response
+                }
+            }(window, window.fetch));
+                var klAjax = true;
+                var atcButtons = document.querySelectorAll("form[action*='/cart/add'] button[type='submit']");
+                for (var i = 0; i < atcButtons.length; i++) {
+                    atcButtons[i].addEventListener("click", function() {
+                        if (klAjax) {
+                        _learnq.push(['track', 'Added to Cart', item]);
+                        klAjax = false;
+                        }
+                    })
+                }
+            });
+        </script>
+    {% endif %}
+</body>
+</html>

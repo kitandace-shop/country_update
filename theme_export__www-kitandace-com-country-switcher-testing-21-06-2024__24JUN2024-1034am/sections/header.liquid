@@ -1,0 +1,281 @@
+<div data-section-id="{{ section.id }}" data-section-type="header">
+    <header role="banner" class="header header--default header--{{ section.settings.header_text_color }}">
+        <div class="header__container">
+            <a href="{{ routes.root_url }}" class="header__link header__link--logo" {% if request.path == "/" %}aria-current="page"{% endif %}>
+                {% if section.settings.logo != blank -%}
+                    {%- assign logo_max_width_retina = section.settings.logo_max_width -%}
+
+                    <img
+                        class="header__logo"
+                        src="{{ section.settings.logo | image_url: width: section.settings.logo_max_width }}"
+                        srcset="{{ section.settings.logo | image_url: width: section.settings.logo_max_width }} 1x, {{ section.settings.logo | image_url: width: logo_max_width_retina }} 2x"
+                        alt="{{ section.settings.logo.alt | default: shop.name }}"
+                    >
+                    <span class="sr-only">{{ section.settings.logo.alt | default: shop.name }}</span>
+
+                    {% if section.settings.logo_white != blank %}
+                        <img
+                            class="header__logo--white"
+                            src="{{ section.settings.logo_white | image_url: width: section.settings.logo_max_width }}"
+                            srcset="{{ section.settings.logo_white | image_url: width: section.settings.logo_max_width }} 1x, {{ section.settings.logo_white | image_url: width: logo_max_width_retina }} 2x"
+                            alt="{{ section.settings.logo_white.alt | default: shop.name }}"
+                        >
+                    {% endif %}
+                {%- else -%}
+                    {{ shop.name }}
+                {%- endif %}
+            </a>
+
+            <div class="header__mobile-links">
+                {% render 'search-form', variant: 'header', predictive_search: settings.enable_predictive_search, list_item_el: false, mobile: settings.disable_mobile_predictive_search %}
+
+                <a href="{{ routes.cart_url }}" class="header__link header__link--cart">
+                    <span class="menu__title">
+                        {% render 'icon', name: 'cart' %}
+                        <span class="sr-only">{{ 'layout.cart.title' | t }}</span>
+                        <span class='cart__item-count' aria-hidden="true">{{ cart.item_count }}</span><span class="sr-only cart__item--count-sr"></span>
+                    </span>
+                </a>
+
+                <button type="button" class="header__link header__link--menu" aria-expanded="false">
+                    <span class="header__icon"></span>
+                    <span class="sr-only">{{ 'accessibility.main_menu' | t }}</span>
+                </button>
+            </div>
+
+            {% liquid
+                assign slide_active = false
+                assign mobile_layout_class = 'mobile-accordion'
+
+                if section.settings.mobile_menu_layout == 'slide'
+                    assign slide_active = true
+                    assign mobile_layout_class = 'mobile-slide'
+                endif
+            -%}
+
+            <div class="header__nav-wrapper {{ mobile_layout_class }}">
+                <nav class="header-menu" aria-label={{ 'accessibility.main_nav' | t }}>
+                    {% render 'header-menu--mobile' slide_active: slide_active %}
+                    {% render 'header-menu--desktop' %}
+                </nav>
+
+                <div class="menu menu--secondary">
+                    <ul class="menu__list">
+                        {% render 'search-form', variant: 'header', predictive_search: settings.enable_predictive_search, list_item_el: true %}
+
+                        {%- if section.settings.wishlist_url -%}
+                            <li class="menu__item menu__item--wishlist">
+                                <a href="{{ section.settings.wishlist_url }}" class="menu__link swym-wishlist">
+                                    {% render 'icon', name: 'heart' %}
+                                    <span class="menu__title">
+                                        {{ 'custom.header.wishlist_link' | t }}
+                                    </span>
+                                </a>
+                            </li>
+                        {%- endif -%}
+
+                        {% render 'country-switcher' %}
+
+                        {% if shop.customer_accounts_enabled -%}
+                            {% if customer -%}
+                                <li class="menu__item menu__item--customer">
+                                    <a href="{{ routes.account_url }}" class="menu__link">
+                                        {% render 'icon', name: 'account' %}
+                                        <span class="menu__title">{{ 'layout.customer.account' | t }}</span>
+                                    </a>
+                                </li>
+                            {%- else -%}
+                                <li class="menu__item menu__item--customer">
+                                    <a href="{{ routes.account_url }}" class="menu__link">
+                                        {% render 'icon', name: 'account' %}
+                                        <span class="menu__title">{{ 'layout.customer.log_in' | t }}</span>
+                                    </a>
+                                </li>
+                            {%- endif %}
+                        {%- endif %}
+
+                        <li class="menu__item menu__item--cart">
+                            <a href="{{ routes.cart_url }}" class="menu__link header__link header__link--cart">
+                                <span class="menu__title">
+                                    {% render 'icon', name: 'cart' %}
+                                    <span class="sr-only">{{ 'layout.cart.title' | t }}</span>
+                                    <span class='cart__item-count' aria-hidden="true">{{ cart.item_count }}</span><span class="sr-only cart__item--count-sr"></span>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div id="search-overlay" class="search-overlay" style="display: none"></div>
+</div>
+
+{% schema %}
+{
+    "name": "Header",
+    "tag": "section",
+    "class": "shopify-section--header",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Logo"
+        },
+        {
+            "type": "image_picker",
+            "id": "logo",
+            "label": "Logo image"
+        },
+        {
+            "type": "image_picker",
+            "id": "logo_white",
+            "label": "Logo image - white"
+        },
+        {
+            "type": "header",
+            "content": "Header Font Colour (Homepage)"
+        },
+        {
+            "type": "select",
+            "id": "header_text_color",
+            "label": "Header Font Colour",
+            "options": [
+                {
+                    "value": "white",
+                    "label": "White"
+                },
+                {
+                    "value": "black",
+                    "label": "Black"
+                }
+            ],
+            "default": "black"
+        },
+        {
+            "type": "header",
+            "content": "Navigation"
+        },
+        {
+            "type": "link_list",
+            "id": "main_menu",
+            "label": "Main menu",
+            "default": "main-menu"
+        },
+        {
+            "type": "url",
+            "id": "wishlist_url",
+            "label": "Wishlist URL"
+        },
+        {
+            "type": "select",
+            "id": "mobile_menu_layout",
+            "label": "Mobile layout",
+            "options": [
+                {
+                    "value": "slide",
+                    "label": "Side scroll"
+                },
+                {
+                    "value": "accordion",
+                    "label": "Accordion"
+                }
+            ]
+        }
+    ],
+    "blocks": [
+        {
+            "type": "promo-content",
+            "name": "Promo content",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "promo_content_menu_title",
+                    "label": "Main menu link title",
+                    "info": "The title of the main menu link that the promo content should be associated with. This is case-insensitive."
+                },
+                {
+                    "type": "image_picker",
+                    "id": "promo_content_image",
+                    "label": "Promo image"
+                },
+                {
+                    "type": "url",
+                    "id": "promo_content_link",
+                    "label": "Promo link"
+                },
+                {
+                    "type": "text",
+                    "id": "promo_content_title",
+                    "label": "Promo title"
+                },
+                {
+                    "type": "text",
+                    "id": "promo_content_cta",
+                    "label": "Promo CTA"
+                }
+            ]
+        },
+        {
+            "type": "featured-menu",
+            "name": "Featured menu",
+            "settings": [
+                {
+                    "type": "text",
+                    "id": "featured_main_menu_title",
+                    "label": "Main menu link title",
+                    "info": "The title of the main menu link that the feature content should be associated with. This is case-insensitive."
+                },
+                {
+                    "type": "link_list",
+                    "id": "featured_menu",
+                    "label": "Featured menu"
+                },
+                {
+                    "type": "image_picker",
+                    "id": "featured_image",
+                    "label": "Featured image"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}
+
+<script type="application/ld+json">
+{
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": {{ shop.name | json }},
+    {% if section.settings.logo %}
+        "logo": "https:{{ section.settings.logo.src | image_url: width: section.settings.logo.width }}",
+    {% endif %}
+    "sameAs": [
+        {{ settings.social_twitter_link | json }},
+        {{ settings.social_facebook_link | json }},
+        {{ settings.social_pinterest_link | json }},
+        {{ settings.social_instagram_link | json }},
+        {{ settings.social_linkedin_link | json }},
+        {{ settings.social_tumblr_link | json }},
+        {{ settings.social_snapchat_link | json }},
+        {{ settings.social_youtube_link | json }},
+        {{ settings.social_vimeo_link | json }}
+    ],
+    "url": "{{ shop.url }}{{ page.url }}"
+}
+</script>
+
+{% if template.name == 'index' %}
+    <script type="application/ld+json">
+        {
+            "@context": "http://schema.org",
+            "@type": "WebSite",
+            "name": {{ shop.name | json }},
+            "potentialAction": {
+                "@type": "SearchAction",
+                "target": "{{ shop.url }}/search?q={search_term_string}",
+                "query-input": "required name=search_term_string"
+            },
+            "url": "{{ shop.url }}{{ page.url }}"
+        }
+    </script>
+{% endif %}

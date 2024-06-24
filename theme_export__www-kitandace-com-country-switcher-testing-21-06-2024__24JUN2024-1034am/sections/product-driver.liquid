@@ -1,0 +1,54 @@
+{% comment %} {% if section.settings.press-block-title != blank %}
+    <h2 class="press-block__title">{{ section.settings.press-block-title }}</h2>
+{% endif %} {% endcomment %}
+
+<!-- Logo Block HTML  -->
+<div class="product-driver">
+    <!-- Logo Item Loop  -->
+    {% if section.blocks.size > 0 %}
+        <div class=" product-driver__grid product-driver__grid--{{ section.blocks.size }}">
+            {% for block in section.blocks %}
+                <div class="product-driver__grid-item product-driver__grid-item--{{ forloop.index }}">
+                    {%  assign product = all_products[block.settings.product]  %}
+
+                    {% render 'card--product' product: product %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Product Driver",
+    "tag": "section",
+    "class": "page-section page-section--product-driver",
+    "settings": [
+        {
+            "type": "text",
+            "id": "product-driver-title",
+            "label": "Heading"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "product",
+            "name": "Product",
+            "limit": 5,
+            "settings": [
+                {
+                    "type": "product",
+                    "id": "product",
+                    "label": "Product"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Product Driver",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

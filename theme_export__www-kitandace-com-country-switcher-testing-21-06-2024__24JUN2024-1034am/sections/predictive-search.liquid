@@ -1,0 +1,144 @@
+{% comment %}
+    The number of products, pages and articles returned from Search is edited in Theme Settings.
+{% endcomment %}
+
+{% liquid
+    if settings.search_pages_limit > 0 or settings.search_articles_limit > 0
+        assign hasSideBar = true
+    endif
+%}
+
+{%- if predictive_search.performed -%}
+    <div id="predictive-search-results">
+        <div class='predictive-search__results-list-container {% if hasSideBar %}predictive-search__results-list-container--sidebar{% endif %}'>
+            {% comment %} Mobile Sidebar {% endcomment %}
+            {% if hasSideBar %}
+                <div class='predictive-search__sidebar desktop-only'>
+                    {% if settings.search_pages_limit > 0 %}
+                        <p id="predictive-search-pages" class='predictive-search__heading'>
+                            {{ "custom.predictive_search.pages.heading" | t }}
+                        </p>
+                        {%- if predictive_search.resources.pages.size > 0 -%}
+                            <ul class='predictive-search__results-list predictive-search__results-list--pages'>
+                                {%- for page in predictive_search.resources.pages limit: settings.search_pages_limit -%}
+                                    <li class='search-results__item search-results__item--pages'>
+                                        <a href='{{ page.url }}' class='search-results__item__title'>
+                                            {{ page.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {%- elsif predictive_search.resources.pages.size == 0 -%}
+                            <p class='predictive-search__no-results-message'>
+                                {{ "custom.predictive_search.pages.no_results_message" | t }}
+                            </p>
+                        {%- endif -%}
+                    {% endif %}
+
+                    {% if settings.search_articles_limit > 0 %}
+                        <p id="predictive-search-articles" class='predictive-search__heading'>
+                            {{ "custom.predictive_search.articles.heading" | t }}
+                        </p>
+                        {%- if predictive_search.resources.articles.size > 0 -%}
+                            <ul class='predictive-search__results-list predictive-search__results-list--articles'>
+                                {%- for article in predictive_search.resources.articles limit: settings.search_articles_limit -%}
+                                    <li class='search-results__item search-results__item--articles'>
+                                        <a href='{{ article.url }}' class='search-results__item__title'>
+                                            {{ article.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {%- elsif predictive_search.resources.articles.size == 0 -%}
+                            <p class='predictive-search__no-results-message'>
+                                {{ "custom.predictive_search.articles.no_results_message" | t }}
+                            </p>
+                        {%- endif -%}
+                    {% endif%}
+                </div>
+            {% endif %}
+
+            {% if settings.search_products_limit > 0 %}
+                <div class='predictive-search__main'>
+                    <p id="predictive-search-products" class="predictive-search__heading">
+                        {{ "custom.predictive_search.products.heading" | t }}
+                    </p>
+                    {%- if predictive_search.resources.products.size > 0 -%}
+                        <ul id="predictive-search-results-list"
+                            class="predictive-search__results-list predictive-search__results-list--products css-grid css-grid--small-2 css-grid--medium-4 css-grid--large-4"
+                            role="listbox"
+                            aria-labelledby="predictive-search-products"
+                        >
+                            {%- for product in predictive_search.resources.products limit: settings.search_products_limit -%}
+                            <li class="predictive-search__list-item css-grid__item" role="option">
+                                {% render "card--product", product: product %}
+                            </li>
+                            {%- endfor -%}
+                        </ul>
+                    {%- elsif predictive_search.resources.products.size == 0 -%}
+                        <p class='predictive-search__no-results-message'>
+                            {{ "custom.predictive_search.products.no_results_message" | t }}
+                        </p>
+                    {%- endif -%}
+                    <button class="button button--primary button--text search-results__link">
+                        {{ "custom.predictive_search.search_for_html" | t: search_terms: predictive_search.terms }}
+                        {% render 'icon', name: 'arrow--cta', class: 'button__icon' %}
+                    </button>
+                </div>
+            {% endif %}
+            {% comment %} Desktop Sidebar {% endcomment %}
+            {% if hasSideBar %}
+                <div class='predictive-search__sidebar mobile-only'>
+                    {% if settings.search_pages_limit > 0 %}
+                        <p id="predictive-search-pages" class='predictive-search__heading'>
+                            {{ "custom.predictive_search.pages.heading" | t }}
+                        </p>
+                        {%- if predictive_search.resources.pages.size > 0 -%}
+                            <ul class='predictive-search__results-list predictive-search__results-list--pages'>
+                                {%- for page in predictive_search.resources.pages limit: settings.search_pages_limit -%}
+                                    <li class='search-results__item search-results__item--pages'>
+                                        <a href='{{ page.url }}' class='search-results__item__title'>
+                                            {{ page.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {%- elsif predictive_search.resources.pages.size == 0 -%}
+                            <p class='predictive-search__no-results-message'>
+                                {{ "custom.predictive_search.pages.no_results_message" | t }}
+                            </p>
+                        {%- endif -%}
+                    {% endif %}
+
+                    {% if settings.search_articles_limit > 0 %}
+                        <p id="predictive-search-articles" class='predictive-search__heading'>
+                            {{ "custom.predictive_search.articles.heading" | t }}
+                        </p>
+                        {%- if predictive_search.resources.articles.size > 0 -%}
+                            <ul class='predictive-search__results-list predictive-search__results-list--articles'>
+                                {%- for article in predictive_search.resources.articles limit: settings.search_articles_limit -%}
+                                    <li class='search-results__item search-results__item--articles'>
+                                        <a href='{{ article.url }}' class='search-results__item__title'>
+                                            {{ article.title }}
+                                        </a>
+                                    </li>
+                                {% endfor %}
+                            </ul>
+                        {%- elsif predictive_search.resources.articles.size == 0 -%}
+                            <p class='predictive-search__no-results-message'>
+                                {{ "custom.predictive_search.articles.no_results_message" | t }}
+                            </p>
+                        {%- endif -%}
+                    {% endif%}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{%- endif -%}
+
+{% schema %}
+    {
+      "name": "Predictive Search",
+      "tag": "section"
+    }
+{% endschema %}

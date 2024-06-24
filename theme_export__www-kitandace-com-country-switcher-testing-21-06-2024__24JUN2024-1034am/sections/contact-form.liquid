@@ -1,0 +1,122 @@
+{% comment %}
+    This is the basic shopify contact form
+    with the addition of fields for custom success message and footer details.
+{% endcomment %}
+
+<div class="container">
+    {% form 'contact', class: 'form form--contact' %}
+        <div class="form__wrapper">
+            {% if form.posted_successfully? %}
+                <div class="contact-form__success">
+                    {% if section.settings.success-title != blank %}
+                        <h3 class="contact-form__success-title">{{ section.settings.success-title }}</h3>
+                    {% endif %}
+                    {% if section.settings.success-message != blank %}
+                        {{ section.settings.success-message }}
+                    {% endif %}
+                </div>
+            {% else %}
+
+                {% if form.errors != blank %}
+                    <div class="form__error-message">
+                        {% for field in form.errors %}
+                            <div class="form__error">
+                                {{ field | capitalize }} {{ form.errors.messages[field] }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="form__field form__field--input {% if form.errors != blank %} form__field--invalid{% endif %}">
+                    <label for="ContactFormName" class="form__label">{{ 'contact.form.name' | t }}</label>
+
+                    <input class="form__control form__input" type="text"
+                        name="contact[name]"
+                        id="ContactFormName"
+                        autocomplete="name"
+                        placeholder="{{ 'contact.form.name' | t }}"
+                        value="{% if form.first_name or form.last_name %}{{ form.first_name | append: ' ' | append: form.last_name | strip }}{% elsif customer %}{{ customer.name }}{% endif %}" required>
+                </div>
+
+                <div class="form__field form__field--input {% if form.errors != blank %} form__field--invalid{% endif %}">
+                    <label for="ContactFormEmail" class="form__label">{{ 'contact.form.email' | t }}</label>
+                    <div class="form__element">
+                        <input class="form__control form__input" type="email"
+                            name="contact[email]"
+                            id="ContactFormEmail"
+                            placeholder="{{ 'contact.form.email' | t }}"
+                            value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+                            spellcheck="false"
+                            autocomplete="email"
+                            autocapitalize="off" required>
+                    </div>
+                </div>
+
+                <div class="form__field form__field--input {% if form.errors != blank %} form__field--invalid{% endif %}">
+                    <div class="form__element">
+                        <label for="ContactFormPhone" class="form__label">{{ 'contact.form.phone' | t }}</label>
+                        <input class="form__control form__input" type="tel"
+                            name="contact[phone]"
+                            id="ContactFormPhone"
+                            autocomplete="tel"
+                            placeholder="{{ 'contact.form.phone' | t }}"
+                            value="{% if form.phone %}{{ form.phone }}{% elsif customer %}{{ customer.phone }}{% endif %}"
+                            pattern="[0-9\-]*" >
+                    </div>
+                </div>
+
+                <div class="form__field form__field--textarea {% if form.errors != blank %} form__field--invalid{% endif %}">
+                    <label for="ContactFormMessage" class="form__label">{{ 'contact.form.message' | t }}</label>
+                    <div class="form__element">
+                        <textarea class="form__control form__textarea" rows="10"
+                            name="contact[body]"
+                            id="ContactFormMessage"
+                            placeholder="{{ 'contact.form.message' | t }}" required>
+                        {%- if form.body -%}
+                            {{- form.body -}}
+                        {%- endif -%}
+                    </textarea>
+                    </div>
+                </div>
+
+                <p class="contact__policy">{{ 'custom.forms.contact.policy_html' | t: root_url: routes.root_url }}</p>
+
+                <div class="button-collection">
+                    <input type="submit" class="button button--primary button--contact-form form__submit--ajax" value="{{ 'contact.form.send' | t }}">
+                </div>
+            {% endif %}
+
+            <div class="contact-form__footer">
+                {% if section.settings.form-footer != blank %}
+                    {{ section.settings.form-footer }}
+                {% endif %}
+            </div>
+        </div>
+    {% endform %}
+</div>
+
+{% schema %}
+{
+    "name": "Contact Form",
+    "tag": "section",
+    "class": "page-section page-section--page",
+    "settings": [
+        {
+            "type": "text",
+            "id": "success-title",
+            "label": "Success Title",
+            "default": "Thanks, your message has been sent!"
+        },
+        {
+            "type": "richtext",
+            "id": "success-message",
+            "label": "Success Message"
+        },
+        {
+            "type": "text",
+            "id": "form-footer",
+            "label": "Form Footer Content"
+        }
+    ]
+}
+{% endschema %}

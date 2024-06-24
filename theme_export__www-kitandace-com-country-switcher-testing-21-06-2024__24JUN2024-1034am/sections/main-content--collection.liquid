@@ -1,0 +1,157 @@
+{% liquid
+    assign products_per_page = 50
+    assign promos_per_page = 3
+    assign products_per_promo = 8
+    assign page_promos_counter = 0
+    assign rows_per_promo = products_per_promo | divided_by: 4 | plus: 1
+%}
+
+
+{% paginate collection.products by 52 %}
+    {%- liquid
+          assign previous_page_total_products = paginate.current_page | minus: 1 | times: products_per_page
+          assign total_inserted_promos = 0
+        -%}
+    <div class="collection-grid-container">
+        {% render 'collection-filters-sort',
+            enable_sorting: section.settings.enable_sorting,
+            enable_filtering: section.settings.enable_filtering
+        %}
+
+        <div id="ProductGridContainer">
+            <div class="collection">
+                <ul
+                    id="ProductGrid"
+                    data-id="{{ section.id }}"
+                    class="product-grid css-grid css-grid--default css-grid--small-2 css-grid--medium-3 css-grid--large-4"
+                >
+                    {% for product in collection.products %}
+                        {%- liquid
+                            assign current_product_index = forloop.index | plus: previous_page_total_products | plus: total_inserted_promos
+                            assign promo_card_html = ''
+                            assign previous_pages_promos = paginate.current_page | minus: 1 | times: promos_per_page
+                            assign product_index_modulo = forloop.index0 | modulo: products_per_promo
+                            assign products_left = paginate.items | minus: forloop.index0
+                            assign grid_row_number = 0
+
+                            assign render_promo = false
+                            assign promo_index = blank
+
+                            for promo_image in collection.metafields.accentuate.promo_image
+                            assign promo_position = collection.metafields.accentuate.promo_position[forloop.index0] | plus: 0
+                            if promo_position == current_product_index and promo_index == blank
+                                assign render_promo = true
+                                assign promo_index = forloop.index0
+                            endif
+                            endfor
+
+                            if product_index_modulo == 0 and products_left > 3
+                            if promo_index == blank
+                                assign promo_index = page_promos_counter | plus: previous_pages_promos
+                                assign render_promo = true
+                            endif
+                            endif
+
+                            assign promo_position = collection.metafields.accentuate.promo_position[promo_index]
+                            assign promo_position_number = promo_position | plus: 0
+                            if promo_position != blank and promo_position_number != current_product_index
+                            assign render_promo = false
+                            endif
+
+                            if render_promo == true
+                            if collection.metafields.accentuate.promo_image[promo_index] or collection.metafields.accentuate.promo_video[promo_index]
+                                assign promo_image = collection.metafields.accentuate.promo_image[promo_index][0]
+                                assign promo_video = collection.metafields.accentuate.promo_video[promo_index][0]
+                                assign promo_title = collection.metafields.accentuate.promo_title[promo_index]
+                                assign promo_link_text = collection.metafields.accentuate.promo_link_text[promo_index]
+                                assign promo_link_url = collection.metafields.accentuate.promo_link_url[promo_index]
+
+                                assign grid_row_number = page_promos_counter | times: rows_per_promo | plus: 1
+
+                                assign is_even = false
+                                assign promo_index_modulo = promo_index | modulo: 2
+
+                                capture promo_card_html
+                                    render 'card--promo', image: promo_image, video: promo_video, title: promo_title, link_text: promo_link_text, link_url: promo_link_url, is_even: is_even
+                                endcapture
+                            endif
+                            assign page_promos_counter = page_promos_counter | plus: 1
+                            endif
+                        -%}
+                        {% if promo_card_html != '' %}
+                            {%- assign total_inserted_promos = total_inserted_promos | plus: 1 -%}
+
+                            <div class="css-grid__item" data-collection-promo-card-grid-item>
+                                {{- promo_card_html -}}
+                            </div>
+                        {% endif %}
+
+                        <li class="css-grid__item">
+                            {% render "card--product" product: product %}
+                        </li>
+                    {% endfor %}
+                </ul>
+
+                {% if paginate.pages > 1 %}
+                    {% render 'pagination' paginate: paginate %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endpaginate %}
+
+{% schema %}
+{
+    "name": "Main Collection",
+    "tag": "section",
+    "class": "page-section page-section--gap-bottom page-section--main-collection",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Collection Driver"
+        },
+        {
+            "type": "image_picker",
+            "id": "collection-driver-image",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "collection-driver-title",
+            "label": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "collection-driver-text",
+            "label": "Text"
+        },
+        {
+            "type": "text",
+            "id": "collection-driver-button-text",
+            "label": "Button Label"
+        },
+        {
+           "type": "url",
+            "id": "collection-driver-link",
+            "label": "Button Link"
+        },
+        {
+            "type": "header",
+            "content": "Filtering and sorting"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_sorting",
+            "default": true,
+            "label": "Enable Sorting"
+        },
+        {
+            "type": "checkbox",
+            "id": "enable_filtering",
+            "default": true,
+            "label": "Enable Filtering",
+            "info": "Customize filters with the Search & Discovery app. [Learn more](https://help.shopify.com/manual/online-store/search-and-discovery/filters)"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,30 @@
+{% comment %}Renders the desktop header display.{% endcomment %}
+
+<ul class="header-menu__list header-menu__list--desktop header-menu__list--level-1">
+    {% liquid
+        for link in linklists[section.settings.main_menu].links
+            assign has_promo = false
+            assign has_featured = false
+
+            for block in section.blocks
+                assign setting_title = block.settings.promo_content_menu_title | downcase
+                assign setting_title_featured = block.settings.featured_main_menu_title | downcase
+                assign link_title = link.title | downcase
+
+                if setting_title_featured == link_title
+                    assign has_featured = true
+                    assign featured_block = block
+                    break
+                endif
+
+                if setting_title == link_title
+                    assign has_promo = true
+                    assign promo_block = block
+                    break
+                endif
+            endfor
+
+            render 'header-menu-item--desktop' link: link, level: 1, has_promo: has_promo, promo_block: promo_block, has_featured: has_featured, featured_block: featured_block
+        endfor
+    %}
+</ul>

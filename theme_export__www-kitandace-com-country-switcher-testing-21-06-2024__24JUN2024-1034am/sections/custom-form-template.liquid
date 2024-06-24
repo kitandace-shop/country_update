@@ -1,0 +1,203 @@
+{%- comment -%}
+  This is a demo section showcasing custom fields using the Just-Validate Library.
+  If you wish to edit any validation format, update assets/scrips/libs/just-validate.js.
+
+  You can create a new JS instance of just-validate and apply custom rules to different forms.
+  - Refer to https://just-validate.dev/docs/intro for more information.
+{%- endcomment -%}
+
+<form action="" method="post" class="form form--validate">
+
+    {% comment %} Basic Text Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="basic_name">Name</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                autocomplete="off"
+                type="text"
+                placeholder="Enter your name"
+                name="basic_name"
+                required
+            >
+        </div>
+    </div>
+
+    {% comment %} Text field with specific characters range {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="text_length5to10">Text (length 5-10 characters)</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                autocomplete="off"
+                type="text"
+                placeholder="Enter your name"
+                minLength="5"
+                maxLength="10"
+                name="text_length5to10"
+                required
+            >
+        </div>
+    </div>
+
+    {% comment %} Email Validation Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="basic_email">Email</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                autocomplete="off"
+                type="email"
+                placeholder="Enter your email"
+                name="basic_email"
+            >
+        </div>
+    </div>
+
+    {% comment %} Phone Validation Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="basic_phone">Phone</label> *required
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                autocomplete="off"
+                type="tel"
+                placeholder="Enter your Phone"
+                name="basic_phone"
+                required
+            >
+        </div>
+    </div>
+
+    {% comment %} HTML 5 Date Validation Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="html5date">HTML5 Date</label> *required
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                autocomplete="off"
+                type="date"
+                name="html5date"
+                required
+            >
+        </div>
+    </div>
+
+    {% comment %} Text Date Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="date">Text Date</label> *required
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                autocomplete="off"
+                type="text"
+                name="date"
+                required
+            >
+        </div>
+    </div>
+
+    {% comment %} Password Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="strong_password">Strong Password</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="password"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                name="strong_password"
+                required
+            >
+        </div>
+    </div>
+
+    {% comment %} Numeric Field with specific range {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="num10to100">Number between 10-100</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="number"
+                max="100"
+                min="10"
+                name="num10to100"
+            >
+        </div>
+    </div>
+
+    {% comment %} File upload Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="file_required">File (required)</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="file"
+                required
+                name="file_required"
+            >
+        </div>
+    </div>
+
+    {% comment %} Multi-upload File Field {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="file1to3">Files (min 2, max 3)</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="file"
+                multiple
+                data-min-files="2"
+                data-max-files="3"
+                name="file2to3"
+            >
+        </div>
+    </div>
+
+    {% comment %} Custom Regex Fields {% endcomment %}
+    <div class="form__field">
+        <label class="form__label" for="regex_input">Regex Input (alphanumeric)</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="text"
+                data-regex="^[a-zA-Z0-9]+$"
+                data-regex-error="Only alphanumeric characters are allowed."
+                name="regex_input"
+            >
+        </div>
+    </div>
+
+    <div class="form__field">
+        <label class="form__label" for="pattern_no_error">Pattern (alphanumeric, no custom error)</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="text"
+                pattern="^[a-zA-Z0-9]+$"
+                name="pattern_no_error"
+            >
+        </div>
+    </div>
+
+    <div class="form__field">
+        <label class="form__label" for="tel-pattern">Phone (Pattern)</label>
+        <div class="input-wrapper">
+            <input
+                class="form__control form__input"
+                type="tel"
+                pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+                data-pattern-error="Format: 123-456-7890"
+                name="tel-pattern"
+            >
+        </div>
+    </div>
+
+    <div class="button-collection">
+        <input
+            type="submit"
+            class="button button--primary button--contact-form form__submit--ajax"
+            value="{{ 'contact.form.send' | t }}"
+        >
+    </div>
+</form>

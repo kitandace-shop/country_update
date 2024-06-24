@@ -1,0 +1,115 @@
+{% liquid
+    comment
+        Get swatches from related products 
+    endcomment
+    assign group_collection = null
+    for tag in product.tags
+        if tag contains 'prodGroup::'
+            assign group_name = tag | split: '::' | last | strip
+            for coll in product.collections
+                if coll.title == group_name
+                assign group_collection = coll
+                break
+                endif
+            endfor
+        endif
+    endfor
+%}
+
+{%- liquid
+    assign variants_available_arr = product.variants | map: 'available'
+    assign variants_option1_arr   = product.variants | map: 'option1'
+    assign variants_option2_arr   = product.variants | map: 'option2'
+    assign variants_option3_arr   = product.variants | map: 'option3'
+
+    assign online_warehouse = '66113274052' 
+    assign pickup_warehouses_list = '66193850564|67365535940|66503246020|67365503172|66517369028|66113306820|98355151154' | split: '|'
+    assign pickup_warehouse_names = 'Gastown, Vancouver, BC|Market Mall, Calgary, AB|Mount Royal Village, Calgary, AB|Toronto Eaton Centre, Toronto, ON|Queen West, Toronto, ON|Lakeshore, Oakville, ON|DEV:Market Mall, Calgary, AB' | split: '|'
+
+-%}
+
+{% unless product.has_only_default_variant and group_collection == null %}
+    <div class="product__container">
+        <iam-variant-picker class="variant-picker">
+        {%- for option in product.options_with_values -%}
+            {%- liquid
+                assign downcase_option_name = option.name | downcase
+                assign swatch_type = false
+            -%}
+
+            {% if circle_swatches contains downcase_option_name or option.name contains "(Color)" -%}
+                {% assign swatch_type = "color" -%}
+            {% elsif  text_swatches contains downcase_option_name or option.name contains "(Size)" -%}
+                {% assign swatch_type = "text" -%}
+            {%- endif -%}
+
+            <div class="selector-wrapper js form__field form__field--swatches form__field--radio-{{ swatch_type }}">
+            <div class="form__element" id="option{{ option.position }}">
+
+                <p class="swatch__title" data-swatch-option="option{{ option.position }}">{{ option.name }}: <span class="swatch__subtitle">{{ option.selected_value }}</span></p>
+                {%- if option.name contains "Size" -%}
+                    <button type="button" class="button--primary button--text modal__trigger" data-modal-target="size-guide">Size Guide</button>
+                {%- endif -%}
+
+                {%- if swatch_type == 'color' -%}
+                    {%- liquid
+                        if current_variant
+                            assign current_variant_color = option.selected_value
+                        endif
+                    -%}
+                    {%- liquid
+                    if group_collection.products_count > 1 and forloop.first
+                        for group_product in group_collection.products
+                            if group_product == product
+                                render 'variant-picker-options', product: product, option: option, swatch_type: 'color'
+                            else
+                                for group_product_value in group_product.options_with_values[0].values
+                                    render 'variant-picker-options--color', value: group_product_value, url: group_product.url, target_product: group_product
+                                endfor
+                            endif
+                        endfor
+                    else
+                        render 'variant-picker-options', product: product, option: option, swatch_type: 'color'
+                    endif
+                    -%}
+                {%- else -%}
+                    {%- liquid
+                        if group_collection.products_count > 1 and forloop.first
+                            for group_product in group_collection.products
+                                if group_product == product
+                                        render 'variant-picker-options', product: product, option: option, swatch_type: 'text'
+                                else
+                                    for group_product_value in group_product.options_with_values[0].values
+                                        render 'variant-picker-options--text', value: group_product_value, url: group_product.url, target_product: group_product
+                                    endfor
+                                endif
+                            endfor
+                        else
+                            render 'variant-picker-options', product: product, option: option, swatch_type: 'text'
+                        endif
+                    -%}
+
+                {%- endif -%}
+            </div>
+            </div>
+        {%- endfor -%}
+
+
+        <script type="application/json">
+            {{ product.variants | json }}
+        </script>
+        </iam-variant-picker>
+    </div>
+{%- endunless -%}
+
+
+<select name="id" class="no-js" data-product-select>
+    {% for variant in product.variants %}
+        <option
+            {% if variant == current_variant %}selected="selected"{% endif %}
+            {% unless variant.available %}disabled="disabled"{% endunless %}
+            value="{{ variant.id }}" data-option-title="{{ variant.title }}">
+            {{ variant.title }}
+        </option>
+    {% endfor %}
+</select>

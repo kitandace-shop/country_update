@@ -1,0 +1,153 @@
+{% liquid
+    assign isSlider = false
+    if section.blocks.size > 1
+        assign isSlider = true
+    endif
+%}
+
+{% if section.blocks.size > 0 %}
+    <div id="{{ section.settings.section_id | handleize }}" class="scroll-margin container content-slider isSlider--{{ isSlider }}">
+        {% if section.settings.title != blank %}
+            <h2 class="section-title">{{ section.settings.title }}</h2>
+        {% endif %}
+
+        {% comment %} Swiper Slider or single slide based on isSlider {% endcomment %}
+        <div class="{% if isSlider %}swiper {% endif %}carousel--content-slider">
+            {% if isSlider %}<ul class="swiper-wrapper">{% endif %}
+                {% for block in section.blocks %}
+                    {% if isSlider %}<li class="swiper-slide">{% endif %}
+                        <div class="content-slider__slide {% if isSlider == false %}single-slide{% endif %}">
+                            <div class="content-slider__image {% if isSlider == false %}content-slider__image--single-slide{% endif %}">
+                                {% if block.settings.large_image != blank %}
+                                    <div class="background-media__background">
+                                        {% render 'responsive-image' with
+                                            image: block.settings.large_image,
+                                            image_class:   "background-image"
+                                        %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="content-slider__image--small">
+                                {% if block.settings.small_image != blank %}
+                                    <div class="background-media__background">
+                                        {% render 'responsive-image' with
+                                            image: block.settings.small_image,
+                                            image_class:   "background-image"
+                                        %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                            <div class="content-slider__content">
+                                    {% if block.settings.title != blank %}
+                                        <h3 class="content-slider__title">{{ block.settings.title }}</h3>
+                                    {% endif %}
+                                    {% if block.settings.description != blank %}
+                                        <div class="content-slider__description">{{ block.settings.description }}</div>
+                                    {% endif %}
+                                    {% if block.settings.button_link != blank and block.settings.button_text != blank %}
+                                        <a href="{{ block.settings.button_link }}" class="button button--primary button--text">{{ block.settings.button_text }}{% render 'icon', name: 'arrow--cta', class: 'button__icon' %}</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    {% if isSlider %}</li>{% endif %}
+                {% endfor %}
+            {% if isSlider %}</ul>{% endif %}
+        </div>
+        {% if isSlider %}
+            <div class="swiper-controllers">
+
+                <div class="swiper-counter">
+                    {% comment %} Custom counter based on active slide {% endcomment %}
+
+                    <span class="swiper-counter__current">0<span class="swiper-counter__current-number">1</span></span> - <span class="swiper-counter__total">0{{ section.blocks.size }}</span>
+                </div>
+                <!-- If we need navigation buttons -->
+
+                <div class="swiper-arrow__container">
+                    <div class="swiper-arrow swiper-button-prev">{% render 'icon', name: 'carousel--prev', class: 'button__icon' %}<span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span></div>
+                    <div class="swiper-arrow swiper-button-next">{% render 'icon', name: 'carousel--next', class: 'button__icon' %}<span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span></div>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+{% endif %}
+
+{% schema %}
+{
+    "name": "Content Slider",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--content-slider",
+    "max_blocks": 6,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section ID",
+            "info": "This is used to link to this section from another part of the page. Content added here will be [handleized](https://shopify.dev/docs/api/liquid/filters/handleize) and used as the ID. Example: 'Section Title' can be converted into an anchor link by using '#section-title' for a Button Link on this page."
+        },
+        {
+            "type": "text",
+            "label": "Section ID",
+            "id": "section_id"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type": "paragraph",
+            "content": "Create content sliders with 1-6 slides."
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Section Title"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "slide",
+            "name": "Slide",
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "label": "Large Image Upload",
+                    "id": "large_image"
+                },
+                {
+                    "type": "image_picker",
+                    "label": "Small Image Upload",
+                    "id": "small_image"
+                },
+                {
+                    "type": "text",
+                    "label": "Title",
+                    "id": "title"
+                },
+                {
+                    "type": "richtext",
+                    "label": "Description",
+                    "id": "description",
+                    "info": "Max word count: 50. Anything more and the slide will begin to look cluttered."
+                },
+                {
+                    "type": "text",
+                    "label": "Button Text",
+                    "id": "button_text"
+                },
+                {
+                    "type": "url",
+                    "label": "Button Link",
+                    "id": "button_link"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Content Slider",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

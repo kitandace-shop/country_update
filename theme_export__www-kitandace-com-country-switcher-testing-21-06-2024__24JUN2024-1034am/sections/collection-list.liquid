@@ -1,0 +1,103 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Collection list" section in the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the collection list section
+  - Collection
+{%- endcomment -%}
+ <div id="{{ section.settings.section_id | handleize }}" class="scroll-margin collection-list collection-list--animation">
+    <div class="collection-list__section-header">
+        {% if section.settings.title != blank %}
+            <h2 class="collection-list__title h3">{{ section.settings.title | escape }}</h2>
+        {% endif %}
+
+        <!-- If we need navigation buttons -->
+        <div class="swiper-navigation">
+            <div class="swiper-arrow swiper-button-prev" tabindex="-1">
+                <span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span>
+                {% render 'icon', name: 'carousel--prev', class: 'scroll__arrow' %}
+            </div>
+            <div class="swiper-arrow swiper-button-next" tabindex="-1">
+                <span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span>
+                {% render 'icon', name: 'carousel--next', class: 'scroll__arrow' %}
+            </div>
+        </div>
+    </div>
+
+    <div class="swiper carousel--collection-list">
+        <ul class="swiper-wrapper">
+            {% for block in section.blocks %}
+                {%- assign collection = collections[block.settings.collection] -%}
+                <li class="swiper-slide">
+                    {% render 'card--collection', collection: collection %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="swiper-controllers">
+        <div class="swiper-scrollbar" tabindex="-1"></div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Category Driver",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--category-driver",
+    "max_blocks": 12,
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section ID",
+            "info": "This is used to link to this section from another part of the page. Content added here will be [handleized](https://shopify.dev/docs/api/liquid/filters/handleize) and used as the ID. Example: 'Section Title' can be converted into an anchor link by using '#section-title' for a Button Link on this page."
+        },
+        {
+            "type": "text",
+            "label": "Section ID",
+            "id": "section_id"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Collection list"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "collection",
+            "name": "Collection",
+            "settings": [
+                {
+                    "label": "Collection",
+                    "id": "collection",
+                    "type": "collection"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Category Driver",
+            "category": "Collection",
+            "blocks": [
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                },
+                {
+                    "type": "collection"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

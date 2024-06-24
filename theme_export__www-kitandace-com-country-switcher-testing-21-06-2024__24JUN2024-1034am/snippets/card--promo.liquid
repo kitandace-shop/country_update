@@ -1,0 +1,44 @@
+{% comment %}
+  Renders collection promo card
+
+  Accepts:
+  - image: {Object} ACF image
+  - video: {Object} ACF video
+  - title: {String}
+  - link_text: {String}
+  - link_url: {String}
+  - is_even: {Boolean}
+
+  Usage:
+  {%- render 'collection-promo-card', image: promo_image, video: promo_video, title: promo_title, link_text: promo_link_text, link_url: promo_link_url, is_even: is_even -%}
+{% endcomment %}
+<div class="card card--promo">
+    {%- if link_url != blank -%}
+        <a class="promo__link" href="{{ link_url }}">
+    {%- endif -%}
+
+        <div class="card__image-wrapper" data-collection-promo-card-image>
+            <div class="card__image ">
+                {%- if video != blank -%}
+                    <video class="CollectionPromoCard_Video" autoplay muted loop playsinline>
+                    <source src="{{ video.src }}" type="video/mp4">
+                    </video>
+                {%- else -%}
+                    {% render 'responsive-image', image: image, imageClass: 'responsive-image__image card__product-image background-image image--primary', imageSizes: '50vw' %}
+                {%- endif -%}
+            </div>
+        </div>
+        <div class="card__content">
+            <div class="card__title">
+                {{ title | escape }}
+            </div>
+
+            {%- if link_text -%}
+                <div class="card__Link">{{ link_text | escape }}</div>
+            {%- endif -%}
+        </div>
+
+    {%- if link_url != blank -%}
+        </a>
+    {%- endif -%}
+</div>

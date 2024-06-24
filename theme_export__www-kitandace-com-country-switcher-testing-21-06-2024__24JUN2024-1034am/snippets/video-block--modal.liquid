@@ -1,0 +1,47 @@
+{% comment %}{% endcomment %}
+{% liquid
+    assign video_id = video_id | default: settings.video_url.id
+    assign video_type = video_type | default: settings.video_url.type
+%}
+
+{% comment %} Check video types. Must be Youtube or Vimeo {% endcomment %}
+{% liquid
+    if video_id
+        assign allowedVideoTypes = "youtube|vimeo" | split: "|"
+        unless allowedVideoTypes contains video_type
+            assign video_type = nil
+        endunless
+    else
+        assign video_type = nil
+    endif
+%}
+
+{% unless video_type == nil %} {% comment %} don't do anymore work if video_type is invalid {% endcomment %}
+
+    <div class="modal modal--video-modal modal--full-bleed" id="modal_{{ video_id }}">
+        <div class="modal__overlay"></div>
+        <div class="modal__popup">
+            <div class="modal__content">
+                <div class="video-block video-block--{{ video_type }}" style="background-position: 50% 50%;background-image: url({{ poster }})">
+
+                    {% comment %} Embed Youtube video {% endcomment %}
+                    <div class="video-block__video"
+                    data-video-settings='{
+                        "video_type": "{{ video_type }}",
+                        "video_id": "{{ video_id }}",
+                        "is_autoplay": false,
+                        "is_muted": false,
+                        "is_controls": true,
+                        "is_looped": false
+                    }'></div>
+                </div>
+                <button type="button" class=" button button--primary button--fill button--medium button--with-icon modal__close-button js-modal__close-button">
+                    {% render 'icon', name: 'close' %}
+                    <span class="sr-only">{{ 'accessibility.close' | t }}</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+{% endunless %}

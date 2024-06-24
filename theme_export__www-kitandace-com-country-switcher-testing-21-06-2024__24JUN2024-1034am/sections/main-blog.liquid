@@ -1,0 +1,75 @@
+{%- assign limit = section.settings.limit -%}
+{% paginate blog.articles by limit %}
+    <div class='blog__header blog__header--default'>
+        <div class="blog-count">
+            {% if section.settings.use_blog_count %}
+                {{ blog.articles_count }} Posts
+            {% endif %}
+        </div>
+
+        {% if section.blocks.size > 0 %}
+            <nav class="blog__filter--wrapper" aria-label="Blog Categories">
+                <ul class="blog__filter blog__filter--default">
+                    <li class='blog__tag {% if current_tags == blank %}blog__tag--current{% endif %}'>
+                        <a href="/blogs/{{ blog.handle }}"{% if current_tags == blank %} aria-current="true"{% endif %}>All</a>
+                    </li>
+
+                    {% for block in section.blocks %}
+                        {%- assign tag = block.settings.category-tag -%}
+                        <li class='blog__tag {% if current_tags contains tag %}blog__tag--current{% endif %}'>
+                            <a href="/blogs/{{ blog.handle }}/tagged/{{ tag | handle }}" title="Show articles matching tag {{ tag | capitalize }}"{% if current_tags contains tag %} aria-current="true"{% endif %}>{{ tag | capitalize }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endif %}
+    </div>
+
+    <div class="page-section blog__posts css-grid css-grid--default css-grid--small-1 css-grid--medium-3 css-grid--large-3">
+        {% for article in blog.articles %}
+            {% render "card--post" article: article %}
+        {% endfor %}
+    </div>
+
+    {% if paginate.pages > 1 %}
+        {% render 'pagination' paginate: paginate %}
+    {% endif %}
+{% endpaginate %}
+
+{% schema %}
+{
+    "name": "Main Blog",
+    "tag": "section",
+    "settings": [
+        {
+            "type"  : "checkbox",
+            "id"    : "use_blog_count",
+            "label" : "Show blog post count",
+            "default" : true
+        },
+        {
+            "type": "range",
+            "id": "limit",
+            "min": 3,
+            "max": 24,
+            "step": 3,
+            "label": "Post per page",
+            "default": 9
+        }
+    ],
+    "blocks": [
+        {
+            "type": "category-list-item",
+            "name": "Category Menu Item",
+            "settings": [
+                {
+                    "type"  : "text",
+                    "id"    : "category-tag",
+                    "label" : "Tag",
+                    "info"  : "This tag must be exact matches to the tag added to the blog posts"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

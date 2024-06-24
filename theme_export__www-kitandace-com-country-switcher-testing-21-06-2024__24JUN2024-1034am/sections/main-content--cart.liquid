@@ -1,0 +1,257 @@
+{% if cart.item_count > 0 %}
+    <div class="page-section page-section--cart">
+        <form action="/cart" method="post" novalidate class="cart__grid">
+            {% assign has_out_of_stock_product = false %}
+            {% for item in cart.items %}
+
+                {% comment %} Check available inventory {% endcomment %}
+                {% liquid
+                    assign available_inventory = item.variant.available
+                    if available_inventory != true
+                        assign has_out_of_stock_product = true
+                    endif
+                %}
+
+            {% endfor %}
+
+            <div class="cart__main">
+                <div class="cart__header">
+                    <h1 class="cart__title">{{ 'custom.cart.my_cart_label' | t }}</h1>
+
+                    <div class="cart-subtotal__container cart-summary__item">
+                        <span class="cart-info__item-count">{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {% if cart.item_count > 1 %}{{ 'custom.items_count.other' | t }}{% else %}{{ 'custom.items_count.one' | t }}{% endif %})</span>
+                        <span class="cart-info__subtotal">
+                            {% render 'price-format', price: cart.total_price %}
+                        </span>
+                    </div>
+
+                    <div class="button-collection button-collection--cart-page">
+                        <input {% if has_out_of_stock_product %}disabled{% endif %} type="submit" name="checkout" class="button button--primary button__cart-header" value="{{ 'cart.general.checkout' | t }}">
+                    </div>
+                </div>
+
+                <div class="cart__message-container" aria-live="polite">
+                    <div class="cart__undo-message">
+                        {% comment %} Placeholder for undo message {% endcomment %}
+                    </div>
+                </div>
+
+                {% for item in cart.items %}
+                    {% comment %} Check available inventory {% endcomment %}
+                    {% liquid
+                        assign is_out_of_stock          = false
+                        assign available_inventory      = item.variant.available
+                        assign inventory_policy = item.variant.inventory_policy
+                        assign inventory_management = item.variant.inventory_management
+                        if inventory_management == nil
+                            assign inventory_management = 'none'
+                        endif
+                        if available_inventory != true
+                            assign is_out_of_stock = true
+                        endif
+                    %}
+
+                    <div class="cart__row">
+                        <div class="cart__item--message">
+                            {% if is_out_of_stock %}
+                                <p>
+                                    {{ 'custom.cart.out_of_stock_message_html' | t: itemId: item.id }}
+                                </p>
+                            {% endif %}
+                        </div>
+                        <div class="cart__line-item">
+                            <div data-label="{{ 'customer.order.product' | t }}" class="cart__item cart__item--image">
+                                {% if item.image != blank %}
+                                    <a href="{{ item.url | within: collections.all }}" class="cart__item--image-link">
+                                      {{ item | image_url: width: 200, height: 200 | image_tag: alt: item.title }}
+                                    </a>
+                                {% endif %}
+                            </div>
+                            <div class="cart__item cart__item--title">
+                                <a href="{{ item.url }}" class="cart__product-title">{{ item.product.title }}</a>
+
+                                {% unless item.product.has_only_default_variant %}
+                                    <p class="cart__product-varient">{{ item.variant.title }}</p>
+                                {% endunless %}
+
+                                {%- assign property_size = item.properties | size -%}
+
+                                {% if property_size > 0 %}
+                                    {% for p in item.properties %}
+                                        {% assign first_character_in_key = p.first | slice: 0 %}
+                                        {% unless p.last == blank or first_character_in_key == '_' %}
+                                            {{ p.first }}:
+
+                                            {% if p.last contains '/uploads/' %}
+                                                <a href="{{ p.last }}">{{ p.last | split: '/' | last }}</a>
+                                            {% else %}
+                                                {{ p.last }}
+                                            {% endif %}
+                                        {% endunless %}
+                                    {% endfor %}
+                                {% endif %}
+
+                                {% for tag in item.product.tags %}
+                                    {% assign tag_downcase = tag | downcase %}
+                                    {% if tag_downcase == 'finalSale' %}
+                                        <div class="line-item__final-sale">
+                                            <span>{{ 'custom.sale.final.label' | t }}</span>
+
+                                            {% assign toggletip_text_translation = 'custom.sale.final.message' | t %}
+                                            {% render 'toggletip' with toggletip_text: toggletip_text_translation %}
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+
+                            <div class="cart__item cart__item--price" data-label="{{ 'cart.label.price' | t }}">
+                                <div class="cart__header-item ">{{ 'cart.label.price' | t }}</div>
+                                {% if item.original_line_price != item.line_price %}
+                                    <span class="visually-hidden">{{ 'cart.label.discounted_price' | t }}</span>
+                                    {{ item.price | money }}
+                                    <span class="visually-hidden">{{ 'cart.label.original_price' | t }}</span>
+                                    <s>
+                                        {{ item.original_price | money }}
+                                    </s>
+                                {% else %}
+                                    <div class="product__price">
+                                        {% if item.variant.compare_at_price > item.price %}
+                                            <s class="price__sale">
+                                                {{ item.variant.compare_at_price | money }}
+                                            </s>
+                                        {% endif %}
+                                        <span class="price__original {% if item.variant.compare_at_price > item.price %}price__original--sale{% endif %}">
+                                            {{ item.price | money }}
+                                        </span>
+                                    </div>
+                                {% endif %}
+                            </div>
+
+                            <div class="cart__item cart__item--quantity" data-label="{{ 'cart.label.quantity' | t }}">
+                                <div class="cart__header-item ">{{ 'cart.label.quantity' | t }}</div>
+                                <div class="form__input-container form__input-container--cart-page">
+                                    <input type="number"
+                                        class="cart__quantity form__control form__input"
+                                        name="updates[]"
+                                        id="updates_{{ item.key }}"
+                                        value="{{ item.quantity }}"
+                                        data-line-item-key = "{{ item.key }}"
+                                        data-line-item-id = "{{ item.id }}"
+                                        data-handle = "{{ item.product.handle }}"
+                                        data-price ="{{ item.price }}"
+                                        data-compare-at-price="{{ item.variant.compare_at_price }}"
+                                        data-inventory-policy="{{ inventory_policy }}"
+                                        data-inventory-management="{{ inventory_management }}"
+                                        min="1"
+                                        aria-label="{{ 'cart.general.item_quantity' | t }}">
+                                    <div class="form__increment form__increment--up" tabindex="0"></div>
+                                    <div class="form__increment form__increment--down" tabindex="0"></div>
+                                </div>
+                            </div>
+
+                            <div class="cart__item cart__item--total" data-label="{{ 'cart.label.total' | t }}">
+                                <div class="cart__item--total-wrapper">
+                                    <div class="cart__header-item">{{ 'cart.label.total' | t }}</div>
+                                    <div class="product__price">
+                                        {% if item.variant.compare_at_price > item.price %}
+                                            {% assign item_compare_at_price = item.variant.compare_at_price | plus: 0 %}
+                                            {% assign total_sale_price = item_compare_at_price | times: item.quantity %}
+                                            <s class="price__sale product__price--total-sale">
+                                                {{ total_sale_price | money }}
+                                            </s>
+                                        {% endif %}
+                                        <span class="cart__item--total-price price__original {% if item.variant.compare_at_price > item.price %}price__original--sale{% endif %}">
+                                            {{ item.line_price | money }}
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <a href="{{ routes.cart_change_url }}?id={{ item.key }}&amp;quantity=0"
+                                   class="cart__remove cart__remove--ajax"
+                                   data-line-item-key="{{ item.key }}"
+                                   data-line-item-id="{{ item.id }}"
+                                   data-line-item-title="{{ item.title }}"
+                                   data-line-item-quantity="{{ item.quantity }}"
+                                   {% if is_out_of_stock %}data-undo="false"{% endif %}>
+                                    {{ 'cart.general.remove' | t }}
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+            </div>
+
+            <div class="cart__sidebar">
+                <div class="cart__summary-wrapper">
+                    <h2 class="cart__title">{{ 'custom.cart.order_summary_label' | t }}</h2>
+
+                    <div class="cart__summary">
+                        <div class="cart-subtotal__container cart-summary__item">
+                            <span class="cart-info__item-count">{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {% if cart.item_count > 1 %}{{ 'custom.items_count.other' | t }}{% else %}{{ 'custom.items_count.one' | t }}{% endif %})</span>
+                            <span class="cart-info__subtotal">
+                                {% render 'price-format', price: cart.total_price %}
+                            </span>
+                        </div>
+
+                        <div class="free-shipping-progress__container" data-cart-page='true' data-minimum-subtotal='{{ settings.free_shipping_threshold | default: "" }} '>
+
+                        </div>
+
+                        <div class="cart-taxes--container cart-summary__item">
+                            <div class="cart-label cart-label--taxes">
+                                {{ 'custom.cart.taxes_label' | t }}
+                            </div>
+                            <div class='cart-price cart-price--taxes'>{{ 'custom.cart.calculated_message' | t }}</div>
+                        </div>
+
+                        <div class="cart__subtotal cart-summary__item" aria-live="polite" aria-atomic="true">
+                            <p class="cart__subtotal-label">{{ 'custom.cart.estimated_total_label' | t }}</p>
+                            <p class="cart__subtotal-price">
+                                {% render 'price-format', price: cart.total_price %}
+                            </p>
+                        </div>
+
+                        <div class="button-collection button-collection--cart-page">
+                            <input {% if has_out_of_stock_product %}disabled{% endif %} type="submit" name="checkout" class="button button--primary button__cart" value="{{ 'cart.general.checkout' | t }}">
+                        </div>
+
+                        {% if additional_checkout_buttons %}
+                            <div class="additional-checkout-buttons">
+                                {{ content_for_additional_checkout_buttons }}
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% else %}
+
+    {% comment %}
+      Cart empty state
+    {% endcomment %}
+    <div class="page-section page-section--cart">
+        <div class="supports-cookies">
+            <p>{{ 'cart.general.empty' | t }}</p>
+            <p>{{ 'cart.general.continue_browsing_html' | t }}</p>
+        </div>
+
+        {% comment %}
+        Cart no cookies state
+        ---------------------
+        Browser cookies are required to use the cart. If cookies aren't enabled in the
+        browser a message is displayed prompting the user to enable them.
+        {% endcomment %}
+        <div class="supports-no-cookies">
+            <p>{{ 'cart.general.cookies_required' | t }}</p>
+        </div>
+    </div>
+{% endif %}
+
+{% schema %}
+    {
+      "name": "Main Content - Cart",
+      "tag": "section"
+    }
+{% endschema %}

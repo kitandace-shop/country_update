@@ -1,0 +1,98 @@
+{% liquid
+    assign has_guarantee_modal = false
+    if section.settings.modal-title != blank or section.settings.modal-content != blank
+        assign has_guarantee_modal = true
+    endif
+%}
+
+{% if has_guarantee_modal %}
+    <button type="button" class="guarantees guarantees--cart modal__trigger" data-modal-target="guarantee-modal-{{ section.id }}">
+{% else %}
+    <div class="guarantees">
+{% endif %}
+    <!-- Icon Item Loop  -->
+    {% if section.blocks.size > 0 %}
+        <span class="guarantee__list">
+            {% for block in section.blocks %}
+                <span class="guarantee__item">
+                    <span class="guarantee__icon">
+                        {% if block.settings.guarantee-image != blank %}
+                            {% render 'responsive-image' with
+                                image: block.settings.guarantee-image
+                            %}
+                        {% endif %}
+                    </span>
+                    {% if block.settings.title != blank %}
+                        <span class="guarantee__title">{{ block.settings.title }}</span>
+                    {% endif %}
+                </span>
+            {% endfor %}
+        </span>
+    {% endif %}
+{% if has_guarantee_modal %}
+    </button>
+{% else %}
+    </div>
+{% endif %}
+
+{% if has_guarantee_modal %}
+    <div id="modal_guarantee-modal-{{ section.id }}" class="modal modal--guarantees">
+        <div class="modal__overlay"></div>
+        <div class="modal__popup">
+            <div class="modal__content">
+                <button type="button" class=" button button__icon button--with-icon modal__close-button js-modal-close-button" tabindex="-1">
+                    {% render 'icon', name: 'close' %}
+                    <span class="sr-only">{{ 'accessibility.close' | t }}</span>
+                </button>
+
+                {% if section.settings.modal-title != blank %}
+                    <p class="guarantees-modal__header h4">{{ section.settings.modal-title }}</p>
+                {% endif %}
+
+                {% if section.settings.modal-content != blank %}
+                    {% assign fixedContent = section.settings.modal-content | replace: "<a href", "<a tabindex='-1' href" %}
+                    <div class="guarantees-modal__content">{{ fixedContent }}</div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Guarantee Bar",
+    "tag": "section",
+    "class": "page-section--guarantee",
+    "settings": [
+        {
+            "type": "text",
+            "id": "modal-title",
+            "label": "Modal Heading"
+        },
+        {
+            "type": "richtext",
+            "id": "modal-content",
+            "label": "Modal Content"
+        }
+    ],
+    "blocks": [
+        {
+        "type": "guarantee-item",
+        "name": "Guarantee Item",
+        "limit": 3,
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "guarantee-image",
+                "label": "Icon"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title"
+            }
+        ]
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,40 @@
+{%- assign collection-menu = collections['all'] -%}
+
+<a href="{{ collection-menu.url | default: '#' }}" class="collection-list__item collection-list__item--{{ collection-menu.handle }}" title="{{ 'collections.general.link_title' | t: title: title }}">
+    {% if collection-menu.image != blank or collection-menu.products.first != blank %}
+        {%- assign image_object = collection-menu.image | default: collection-menu.products.first.featured_image -%}
+        <div class="collection-list__image">
+            {% render 'responsive-image' with
+                image: image_object,
+                max_width: 200,
+                max_height: 150
+            %}
+        </div>
+    {% endif %}
+
+    <p class="collection-list__name">
+        {{ collection-menu.title }}
+    </p>
+</a>
+
+{% for link in linklists.all-collections-menu.links %}
+    {% if link.type == "collection_link" %}
+        {% assign collection-menu = link.object %}
+
+        <a href="{{ collection-menu.url | default: '#' }}" class="collection-list__item collection-list__item--{{ collection-menu.handle }}" title="{{ 'collections.general.link_title' | t: title: title }}">
+            {% if collection-menu.image != blank or collection-menu.products.first != blank %}
+                {%- assign image_object = collection-menu.image | default: collection-menu.products.first.featured_image -%}
+                <div class="collection-list__image">
+                    {% render 'responsive-image' with
+                        image: image_object,
+                        max_width: 150,
+                        max_height: 150
+                    %}
+                </div>
+            {% endif %}
+            <p class="collection-list__name">
+                {{ link.object.title }}
+            </p>
+        </a>
+    {% endif %}
+{% endfor %}

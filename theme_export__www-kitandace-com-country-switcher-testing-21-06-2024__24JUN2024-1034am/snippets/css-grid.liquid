@@ -1,0 +1,39 @@
+{%- comment -%}
+    This is the starting point for all sections that use a grid to display
+    content. It is not intended to be used without customization. Components
+    that use this component as a starting point include:
+
+    - Collection List (Grid of Collection Cards)
+    - Featured Collection (Grid of Product Cards)
+    - Related Products (Grid of Product Cards)
+    - Blog List (Grid of Article Cards)
+
+{%- endcomment -%}
+<section class="css-grid css-grid--default css-grid--small-{{ section.settings.grid-small }} css-grid--medium-{{ section.settings.grid-medium }} css-grid--large-{{ section.settings.grid-large }}">
+    {% if section.settings.title != blank %}
+        <h2 class="section-header__title">{{ section.settings.title | escape }}</h2>
+    {% endif %}
+
+    {% for block in section.blocks %}
+        {%- assign collection = collections[block.settings.collection] -%}
+
+        <a href="{{ collection.url | default: "#" }}" class="collection-list-item" {{ block.shopify_attributes }}>
+            {% if collection.image != blank or collection.products.first != blank %}
+                {%- assign image_object = collection.image | default: collection.products.first.featured_image -%}
+                <div class="collection-list__image">
+                    {% render 'responsive-image' with
+                        image: image_object,
+                        max_width: 480,
+                        max_height: 480
+                    %}
+                </div>
+            {% elsif collection == empty %}
+                {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                {{ 'collection-' | append: current | placeholder_svg_tag: 'placeholder-svg placeholder-svg--small' }}
+            {% endif %}
+
+            {%- assign default_label = 'homepage.onboarding.collection_title' | t -%}
+            <p>{{ collection.title | default: default_label }}</p>
+        </a>
+    {% endfor %}
+</section>

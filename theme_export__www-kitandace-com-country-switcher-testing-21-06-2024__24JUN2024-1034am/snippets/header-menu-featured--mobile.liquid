@@ -1,0 +1,63 @@
+
+<div class="header__featured-menu">
+    {% for link in linklists[featured_block.settings.featured_menu].links %}
+        {%- liquid
+            if link.active or link.child_active
+                assign menu_button_class = menu_button_class | append: ' header-menu__button--active'
+                assign menu_link_class = menu_link_class | append: ' header-menu__link--active'
+            endif
+        -%}
+
+        <li class="header-menu__item header-menu__item--level-2">
+            <a
+                href="{{ link.url }}"
+                class="header-menu__link"
+                tabindex="0"
+                aria-labelledby="{{ link.title | downcase | handleize }}-label"
+                {% if link.active %}aria-current="page"{% endif %}
+            >
+                <span id="{{ link.title | downcase | handleize }}-label" class="header-menu__title">
+                    {{ link.title }}
+                </span>
+            </a>
+
+            {% if link.levels > 0 -%}
+                <ul
+                    id="{{ link.title | handleize }}-menu"
+                    class="header-menu__list"
+                    {% if level == 1 %}
+                    role="region"
+                    aria-labelledby="{{ link.title | downcase | handleize }}-label"
+                    {% endif %}
+                >
+                    {% for child_link in link.links %}
+                        <li class="header-menu__item header-menu__item--level-3">
+                            <a href="{{ child_link.url }}"
+                            class="header-menu__link"
+                            tabindex="0"
+                            aria-labelledby="{{ child_link.title | downcase | handleize }}-label"
+                            {% if child_link.active %}aria-current="page"{% endif %}>
+                                {% if child_link.type == 'collection_link' %}
+                                    {% assign linkCollection = child_link.object %}
+                                    {% assign collectionImage = collections[linkCollection.handle].metafields.iamota.collection_card_image_mobile %}
+
+                                    {% if collectionImage %}
+                                        <div class="header-item__image">
+                                            {% render 'responsive-image' with
+                                                image: collectionImage
+                                            %}
+                                        </div>
+                                    {% endif %}
+                                {% endif %}
+
+                                {{ child_link.title }}
+                            </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            {%- else -%}
+                {{ menu_items }}
+            {%- endif %}
+        </li>
+    {% endfor %}
+</div>

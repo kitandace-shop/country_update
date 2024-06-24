@@ -1,0 +1,59 @@
+{% assign modal_id = modal_id | default: "cart_confirmation" %}
+
+{% if modal_id %}
+
+    {% capture modalAttributes %}
+        class -*-
+            modal -#-
+                {{ variant | default: "default" }} -&-
+        id -*-
+            modal_{{ modal_id }}
+    {% endcapture %}
+
+    {% comment %}Modal HTML{% endcomment %}
+    <div {% render 'attribute', attribute: modalAttributes %}>
+
+        {% comment %}Modal Overlay {% endcomment %}
+        <div class="modal__overlay"></div>
+
+        {% comment %}Modal Popup {% endcomment %}
+        <div class="modal__popup">
+
+           {% comment %} Modal Content {% endcomment %}
+            <div class="modal__content">
+                <button type="button" class="button__icon modal__close-button js-modal__close-button" aria-label="Close Modal">
+                    {% render 'icon', name: 'close' %}
+                </button>
+
+                <span class="cart-confirmation__message">
+                    <!-- This span is intentially left empty for populating confirmation message when a product is added to cart -->
+                </span>
+
+                <div class="cart-confirmation__item">
+                    {% comment %} Placeholder for added item {% endcomment %}
+                </div>
+
+                <div class="cart-confirmation__content">
+                    <div class="cart-subtotal__container cart-summary__item">
+                        <span class="cart-info__item-count"></span>
+                        <span class="cart-info__subtotal"></span>
+                    </div>
+                    <div class="free-shipping-progress__container" data-minimum-subtotal='{{ settings.free_shipping_threshold | default: "" }} '>
+                        {% comment %} Placeholder for Free Shipping progress {% endcomment %}
+                    </div>
+
+                    <div class="button-collection">
+                        <a class="button button--primary button__edit-cart" href="{{ routes.cart_url }}" tabindex="-1">{{ 'custom.modal.view_cart' | t  }}</a>
+                        {% if routes.root_url == '/' %}
+                            {% assign checkout_url = '/checkout' %}
+                        {% else %}
+                            {% assign checkout_url = routes.root_url | append: "/checkout" %}
+                        {% endif %}
+                        <a class="button button--primary button--transparent button__checkout" href="{{ checkout_url }}" tabindex="-1">{{ 'cart.general.checkout' | t }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endif %}

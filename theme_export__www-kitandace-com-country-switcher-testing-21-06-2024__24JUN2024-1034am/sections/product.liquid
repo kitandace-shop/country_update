@@ -1,0 +1,260 @@
+{% liquid
+  assign online_warehouse = '66113274052' 
+  assign pickup_warehouses_list = '66193850564|67365535940|66503246020|67365503172|66517369028|66113306820' | split: '|'
+  assign current_variantA = product.selected_or_first_available_variant 
+
+    if collection.url
+        if collection.title contains 'Women |'
+            assign collectionTitle = collection.title | remove: "Women |"
+        elsif collection.title contains 'Men |'
+            assign collectionTitle = collection.title | remove: "Men |"
+        else
+            assign collectionTitle = collection.title
+        endif
+    endif
+%}
+
+{%- if collection.url -%}
+    <a href="{{ collection.url }}" class="product__breadcrumb product__breadcrumb--mobile">
+        {% render 'icon', name: 'breadcrumb' %}
+        {{ collectionTitle }}
+    </a>
+{%- endif -%}
+
+<div class="product" data-section-id="{{ section.id }}" data-section-type="product" data-enable-history-state="true">
+    {%- assign current_variant = product.selected_or_first_available_variant -%}
+    {%- assign featured_image = current_variant.featured_image | default: product.featured_image -%}
+    {%- assign featured_media = product.selected_or_first_available_variant.featured_media | default: product.featured_media -%}
+
+    <div class="product__images">
+        <a class="in-page-link visually-hidden skip-link" href="#ProductContent">{{ 'custom.product.accessibility.skip_to_content' | t }}</a>
+
+        {% render 'product-images', current_variant: current_variant %}
+    </div>
+
+    <div id="ProductContent" class="product__content">
+        {%- if collection.url -%}
+            <a href="{{ collection.url }}" class="product__breadcrumb product__breadcrumb--desktop">
+                {% render 'icon', name: 'breadcrumb' %}
+                {{ collectionTitle }}
+            </a>
+        {%- endif -%}
+
+        <h1 class="product__title h3">{{ product.title }}</h1>
+
+        {% render 'product-form--ajax',
+            product: product,
+            current_variant: current_variant,
+            isAjax: true,
+            circle_swatches: settings.circle_swatches,
+            text_swatches: settings.text_swatches %}
+
+        <div class="product__button-footer">
+            {% if product_tags contains 'notify-back-in-stock' %}
+                <a class="button--klaviyo klaviyo-bis-trigger {% if current_variant.available %}hide{% endif %}" href="#">Notify Me When Available</a>
+            {% endif %}
+
+            {% if section.settings.free_shipping_notice != blank %}
+                <span class="product__shipping-notice">{{ section.settings.free_shipping_notice }}</span>
+            {% endif %}
+        </div>
+
+        {%- assign split_payments = section.blocks | where: 'type', 'split_payment'  -%}
+        {%- render 'product-split-payment-message', split_payments: split_payments -%}
+
+        <div class="product__description">
+            {{ product.description }}
+        </div>
+
+        <a href="#shopify-product-reviews" class="shopify-product-reviews-badge__link">
+            {% render 'okendo-reviews-product-rating-summary', product: product %}
+        </a>
+
+        {% if current_variant.sku != blank %}
+            <div class="product__sku">Sku: <span class="product__sku-number">{{ current_variant.sku }}</span></div>
+        {% endif %}
+
+        {% render 'product-accordion', product: product, settings: section.settings %}
+
+        {% render 'model-product-grid', product: product, settings: section.settings %}
+    </div>
+
+    {% unless product == empty %}
+        <script type="application/json" data-product-json data-product-page>
+            {{ product | json }}
+        </script>
+    {% endunless %}
+</div>
+
+{% render "size-guide", modal_id: 'size-guide', variant: 'size-guide', product: product, size_guide_footer: section.settings.size_guide_footer %}
+
+{% render 'product-schema' %}
+{% schema %}
+    {
+        "name": "Product",
+        "tag": "section",
+        "class": "page-section page-section--product page-section--gap-bottom",
+        "settings": [
+            {
+                "type": "richtext",
+                "id": "size_guide_footer",
+                "label": "Size guide footer"
+            },
+            {
+                "type": "text",
+                "id": "free_shipping_notice",
+                "label": "Free Shipping Notice"
+            },
+            {
+                "type": "header",
+                "content": "Accordion Block"
+            },
+            {
+                "type": "text",
+                "id": "accordion_title",
+                "label": "Accordion Title 1",
+                "default": "Key Features"
+            },
+            {
+                "type": "text",
+                "id": "accordion_title_2",
+                "label": "Accordion Title 2",
+                "default": "Fabric & Care"
+            },
+            {
+                "type": "text",
+                "id": "accordion_title_3",
+                "label": "Accordion Title 3",
+                "default": "Fit & Sizing"
+            },
+            {
+                "type": "header",
+                "content": "Model is Also Wearing Block"
+            },
+            {
+                "type": "text",
+                "id": "model_also_wearing_title",
+                "label": "Model is Also Wearing Title",
+                "default": "Model is Also Wearing"
+            }
+        ],
+        "blocks" : [
+            {
+                "type": "split_payment",
+                "name": "Split payment",
+                "settings": [
+                    {
+                    "type": "select",
+                    "id": "markets",
+                    "label": "Market",
+                    "options": [
+                        {
+                        "value": "CA",
+                        "label": "Canada"
+                        },
+                        {
+                        "value": "US",
+                        "label": "USA"
+                        },
+                        {
+                        "value": "AU",
+                        "label": "Australia"
+                        },
+                        {
+                        "value": "HK",
+                        "label": "Hong Kong SAR"
+                        },
+                        {
+                        "value": "JP",
+                        "label": "Japan"
+                        },
+                        {
+                        "value": "NL",
+                        "label": "Netherlands"
+                        },
+                        {
+                        "value": "NZ",
+                        "label": "New Zealand"
+                        },
+                        {
+                        "value": "GB",
+                        "label": "United Kingdom"
+                        }
+                    ]
+                    },
+                    {
+                        "type": "html",
+                        "id": "message",
+                        "label": "Message"
+                    },
+                    {
+                        "type": "url",
+                        "id": "url",
+                        "label": "Global Url",
+                        "info": "Fallback url for all payments, if individual url not filled."
+                    },
+                    {
+                        "type": "header",
+                        "content": "[1] Payment"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "logo1",
+                        "label": "Logo"
+                    },
+                    {
+                        "type": "number",
+                        "id": "logo1_width",
+                        "label": "Logo width",
+                        "default": 45
+                    },
+                    {
+                        "type": "header",
+                        "content": "[2] Payment"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "logo2",
+                        "label": "Logo"
+                    },
+                    {
+                        "type": "number",
+                        "id": "logo2_width",
+                        "label": "Logo width",
+                        "default": 45
+                    },
+                    {
+                        "type": "header",
+                        "content": "[3] Payment"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "logo3",
+                        "label": "Logo"
+                    },
+                    {
+                        "type": "number",
+                        "id": "logo3_width",
+                        "label": "Logo width",
+                        "default": 45
+                    },
+                    {
+                        "type": "header",
+                        "content": "[4] Payment"
+                    },
+                    {
+                        "type": "image_picker",
+                        "id": "logo4",
+                        "label": "Logo"
+                    },
+                    {
+                        "type": "number",
+                        "id": "logo4_width",
+                        "label": "Logo width",
+                        "default": 45
+                    }
+                ]
+            }
+        ]
+    }
+{% endschema %}

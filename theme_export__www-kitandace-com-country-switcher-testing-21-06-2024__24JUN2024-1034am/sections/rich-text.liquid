@@ -1,0 +1,58 @@
+{% assign text_alignment = section.settings.rich-text-block-alignment %}
+<div class="container container--wysiwyg container--wysiwyg--{{ text_alignment }}">
+    <div class='rich-text__wrapper'>
+        {%- if section.settings.title != blank -%}
+            <h2 class="page-section__title h3">{{ section.settings.title | escape }}</h2>
+        {%- endif -%}
+
+        {%- if section.settings.text != blank -%}
+            <div class="page-section__content rte">
+                {{ section.settings.text }}
+            </div>
+        {%- endif -%}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Rich text",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--wysiwyg page-section--rich-text",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+        },
+        {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+        },
+        {
+            "type": "select",
+            "id": "rich-text-block-alignment",
+            "label": "Text Alignment",
+            "options": [
+                {
+                  "value": "left",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                }
+              ],
+              "default": "left"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Rich text",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

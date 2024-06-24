@@ -1,0 +1,34 @@
+{%- if split_payments and split_payments.size > 0 -%}
+    {%- liquid
+        assign countryISO = localization.country.iso_code
+        assign split_payment = split_payments | where: 'type', 'split_payment' | map: 'settings' | where: 'markets', countryISO | first
+        assign payment1 = split_payment.logo1 | image_url: width: split_payment.logo1_width | image_tag: class: 'product__payment-logo', loading: 'lazy'
+        assign payment2 = split_payment.logo2 | image_url: width: split_payment.logo2_width | image_tag: class: 'product__payment-logo', loading: 'lazy'
+        assign payment3 = split_payment.logo3 | image_url: width: split_payment.logo3_width | image_tag: class: 'product__payment-logo', loading: 'lazy'
+        assign payment4 = split_payment.logo4 | image_url: width: split_payment.logo4_width | image_tag: class: 'product__payment-logo', loading: 'lazy'
+    -%}
+
+    {%- if split_payment != blank -%}
+        <div class="product__payment-notice">
+            {%- capture split_price -%}
+                <span data-split-payment>
+                    {{- product.selected_or_first_available_variant.price | divided_by: 4 | money_with_currency -}}
+                </span>
+            {%- endcapture -%}
+
+            {%- assign split_payment_message = split_payment.message
+            | replace: '[[price]]', split_price
+            | replace: '[[payment1]]', payment1
+            | replace: '[[payment2]]', payment2
+            | replace: '[[payment3]]', payment3
+            | replace: '[[payment4]]', payment4
+            -%}
+
+            {{- split_payment_message -}}
+
+            {%- if split_payment.url != blank -%}
+                <a target="__blank" href="{{ split_payment.url }}" class="product__payment-info">{% render 'icon', name: 'tooltip', class: 'button__icon' %}<span class="sr-only">Pricing Info</span></a>
+            {%- endif -%}
+        </div>
+    {%- endif -%}
+{%- endif -%}

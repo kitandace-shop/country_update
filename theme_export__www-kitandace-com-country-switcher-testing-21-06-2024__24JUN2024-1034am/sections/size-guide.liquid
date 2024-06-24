@@ -1,0 +1,61 @@
+{% liquid assign handleized_title = section.settings.table_title | handleize
+    assign id =  handleized_title
+
+%}
+
+<div class="size-guide">
+    {% render "size-guide-table", id: id, title: section.settings.table_title, gender: section.settings.gender, type: section.settings.clothing_type, css_loading: "defer", switcher_position: "Right" %}
+</div>
+
+{% schema %}
+    {
+        "name": "Size Guide Table",
+        "tag": "section",
+        "class": "page-section page-section--size-guide",
+        "settings": [
+            {
+                "type": "text",
+                "id": "table_title",
+                "label": "Size Guide Title"
+            },
+            {
+                "type": "radio",
+                "label": "Gender",
+                "options": [
+                    {
+                    "value": "Men",
+                    "label": "Men"
+                    },
+                    {
+                    "value": "Women",
+                    "label": "Women"
+                    }
+                ],
+                "default": "Men",
+                "id": "gender"
+            },
+            {
+                "type": "radio",
+                "label": "Clothing Type",
+                "options": [
+                    {
+                        "value": "Tops",
+                        "label":"Tops"
+                    },
+                    {
+                        "value": "Bottoms",
+                        "label": "Bottoms"
+                    }
+                ],
+                "default": "Tops",
+                "id": "clothing_type"
+            }
+        ],
+        "presets": [
+            {
+                "name": "Size Guide Table",
+                "category": "Components"
+            }
+        ]
+    }
+    {% endschema %}

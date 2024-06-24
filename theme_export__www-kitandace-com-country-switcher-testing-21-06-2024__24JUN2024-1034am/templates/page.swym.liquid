@@ -1,0 +1,147 @@
+<div class="page-header page-header--text">
+    <div class="page-header__content">
+        <h1 class="page-header__title">{{ page.title }}</h1>
+    </div>
+</div>
+
+<div class="page-section page-section--gap-bottom wishlist-content">
+    {{ page.content }}
+</div>
+
+
+<script type="text/javascript">
+  (() => {
+    const notificationObserver = new MutationObserver(function () {
+      if (
+        document.querySelector(
+          ".swym-wishlist-notifications-container .swym-details"
+        )
+      ) {
+        notificationObserver.disconnect();
+        window.liquidAjaxCart?.cartRequestUpdate &&
+        window.liquidAjaxCart?.cartRequestUpdate(
+          {},
+          {
+            lastComplete: () => {
+              observeNotifications();
+            },
+          }
+        );
+      }
+    });
+
+    const wishlistImagesObserver = new MutationObserver(function () {
+      if (
+        document.querySelector(".swym-wishlist-list-card") &&
+        window.innerWidth > 768
+      ) {
+        wishlistImagesObserver.disconnect()
+        updateWishlistImages();
+      }
+    });
+
+    const pdpObserver = new MutationObserver(function () {
+      const elMoreBtn = document.querySelector("[aria-hidden='false'] .swym-more-details-btn");
+      if (elMoreBtn) {
+        pdpObserver.disconnect()
+        const link = elMoreBtn.href;
+        document.querySelector('.swym-back-btn')?.click();
+        window.location.href = link;
+      }
+    });
+
+    const productMetaObserver = new MutationObserver(function () {
+      if (document.querySelector(".swym-variant-title")) {
+        productMetaObserver.disconnect()
+        updateProductMeta();
+      }
+    });
+
+    observeWishlistImages();
+    observeNotifications();
+    observerPdp();
+    observeProductMeta();
+
+    function observeNotifications() {
+      notificationObserver.observe(document, { subtree: true, childList: true });
+    }
+
+    function observeWishlistImages() {
+      wishlistImagesObserver.observe(document, { subtree: true, childList: true });
+    }
+
+    function observerPdp() {
+      pdpObserver.observe(document, {subtree: true, childList: true})
+    }
+
+    function observeProductMeta() {
+      productMetaObserver.observe(document, {subtree: true, childList: true})
+    }
+
+    function generateWishlistImages(products) {
+      let html = "";
+
+      products.forEach((product) => {
+        if(product.iu) {
+          html += `<image-loader class="swym-wishlist-image-wrapper"><img src="${product.iu}" class="swym-wishlist-image" alt="${product.dt}"></image-loader>`;
+        } else {
+          html += `<div class="swym-wishlist-image-wrapper"></div>`;
+        }
+      });
+
+      return html;
+    }
+
+    function updateWishlistImages() {
+      const elsWishlistCard = document.querySelectorAll(".swym-wishlist-list-card");
+      const lists = _swat?.ui?.Store?.getState()?.wishlists?.lists?.content;
+      elsWishlistCard?.forEach((card) => {
+        const cardName = card.getAttribute("aria-label");
+        const wishlist = lists.find((x) => x.lname === cardName);
+        const elImagesWrapper = card.querySelector(".swym-wishlist-images");
+
+        if (
+          wishlist &&
+          wishlist.listcontents.length >= 4 &&
+          elImagesWrapper.childElementCount < 4
+        ) {
+          elImagesWrapper.innerHTML = generateWishlistImages(
+            wishlist?.listcontents.slice(0, 4)
+          );
+        }
+      });
+      observeWishlistImages()
+    }
+
+    function updateProductMeta() {
+      document.querySelectorAll(".swym-variant-title").forEach(element => {
+        let transformedElement = element.parentNode.querySelector('.swym-variant-transformed-title');
+        if (!transformedElement) {
+          transformedElement = document.createElement('DIV');
+          transformedElement.classList.add('swym-variant-transformed-title');
+          element.insertAdjacentElement('afterend', transformedElement);
+        }
+        transformedElement.textContent = element.textContent.replaceAll(" / ", " | ");
+      });
+      document.querySelectorAll(".swym-product-final-price").forEach(element => {
+        let transformedElement = element.parentNode.querySelector('.swym-product-final-price-transformed');
+        if (!transformedElement) {
+          transformedElement = document.createElement('DIV');
+          transformedElement.classList.add('swym-product-final-price-transformed');
+          element.insertAdjacentElement('afterend', transformedElement);
+        }
+        transformedElement.textContent = element.textContent.replaceAll('CAD', '') + ' ' + window.Shopify?.currency?.active;
+      });
+      document.querySelectorAll(".swym-product-original-price").forEach(element => {
+        let transformedElement = element.parentNode.querySelector('.swym-product-original-price-transformed');
+        if (!transformedElement) {
+          transformedElement = document.createElement('DIV');
+          transformedElement.classList.add('swym-product-original-price-transformed');
+          element.insertAdjacentElement('afterend', transformedElement);
+        }
+        transformedElement.textContent = element.textContent.replaceAll('CAD', '') + ' ' + window.Shopify?.currency?.active;
+      });
+      observeProductMeta();
+    }
+  })()
+</script>

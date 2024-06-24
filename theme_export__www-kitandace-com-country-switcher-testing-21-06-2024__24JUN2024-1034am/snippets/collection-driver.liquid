@@ -1,0 +1,36 @@
+{% assign section = section %}
+<article class="page-section--collection-driver">
+    <div class="collection-driver collection-driver--default collection-driver--with-overlay">
+        {% if section.settings.collection-driver-link != blank %}
+            <a href="{{ section.settings.collection-driver-link }}" class="collection-driver__link">
+        {% endif %}
+
+            <div class="background-media">
+                <div class="background-media__overlay"></div>
+
+                {% if section.settings.collection-driver-image != blank %}
+                    <div class="background-media__background">
+                        {% render 'responsive-image' with image: section.settings.collection-driver-image, image_class: "background-image" %}
+                    </div>
+                {% endif %}
+
+                <div class="background-media__content background-media__content--left">
+                    {% if section.settings.collection-driver-title != blank %}
+                        <h3 class="collection-driver__title">{{ section.settings.collection-driver-title }}</h3>
+                    {% endif %}
+
+                    {% if section.settings.collection-driver-text != blank %}
+                        <div class="collection-driver__content">{{ section.settings.collection-driver-text }}</div>
+                    {% endif %}
+
+                    {% if section.settings.collection-driver-button-text != blank and section.settings.collection-driver-link != blank %}
+                        <div class="button button--primary">{{ section.settings.collection-driver-button-text }}</div>
+                    {% endif %}
+                </div>
+            </div>
+
+        {% if section.settings.collection-driver-link != blank %}
+            </a>
+        {% endif %}
+    </div>
+</article>

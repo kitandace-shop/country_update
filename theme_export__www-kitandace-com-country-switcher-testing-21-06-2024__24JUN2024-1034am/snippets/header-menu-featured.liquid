@@ -1,0 +1,22 @@
+
+
+<div class="header__featured-menu">
+    {% liquid
+        for link in linklists[featured_block.settings.featured_menu].links
+            render 'header-menu-item--collection' link: link
+        endfor
+    %}
+
+    <div class="featured-menu__image">
+        <div class="featured-menu__image-wrapper">
+        {% render 'responsive-image'
+            image: featured_block.settings.featured_image,
+            image_class: "background-image"
+        %}
+        </div>
+        <div  class="featured-menu__collection-image">
+            <img src="" alt="" class="responsive-image__image background-image"/>
+        </div>
+    </div>
+</div>
+

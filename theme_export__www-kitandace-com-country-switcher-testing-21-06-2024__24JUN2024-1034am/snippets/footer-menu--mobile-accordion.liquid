@@ -1,0 +1,16 @@
+<div class="accordion accordion--footer accordion--mobile js-accordion">
+    <div class="accordion__item js-accordion__item">
+        <div class="accordion__title">
+            <button type="button" class="accordion__button js-accordion__button" id="accordion-footer--button" aria-controls="footer--menu-content" aria-expanded="false">
+                {{ menu_heading }}
+                <span class="accordion__icon">
+                    {% render 'icon', name: 'arrow--up', class: 'accordion__icon--close svg--baseline' %}
+                    {% render 'icon', name: 'arrow--down', class: 'accordion__icon--open svg--baseline' %}
+                </span>
+            </button>
+        </div>
+         <div id="footer--menu-content" class="accordion__content  js-accordion__content js-accordion__content--mobile-only" role="region" aria-labelledby="accordion-footer--button" hidden>
+            {{ menu }}
+        </div>
+    </div>
+</div>

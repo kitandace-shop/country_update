@@ -1,0 +1,131 @@
+{% liquid
+    assign is_video = false
+    if section.settings.video_url != blank
+        assign is_video = true
+    endif
+%}
+
+<div id="{{ section.settings.section_id | handleize }}" class="scroll-margin content-panel align-{{ section.settings.panel_orientation }}">
+    <div class="content-panel__container">
+        {% if is_video %}
+            <button class="content-panel__meta content-panel__meta--video modal__trigger video-block--is-postered video-block--is-paused modal__trigger--content-panel" type="button" data-modal-target="{{ section.settings.video_url.id }}">
+                {% render 'responsive-image' with image: section.settings.content_panel_image, image_class: "background-image" %}
+                <div class="video-block__control">
+                    {% render 'icon', name: 'play', class: 'content-panel__video-icon' %}
+                </div>
+                <span class="sr-only">{{ 'accessibility.play_video' | t }}</span>
+            </button>
+        {% else %}
+            <div class="content-panel__meta">
+                {% render 'responsive-image' with image: section.settings.content_panel_image, image_class: "background-image" %}
+            </div>
+        {% endif %}
+
+        <div class="content-panel__content">
+
+            {% if section.settings.copy_block_title != blank %}
+                <h2 class="copy-block__title h3">{{ section.settings.copy_block_title }}</h2>
+            {% endif %}
+
+            {% if section.settings.copy_block_text != blank %}
+                <div class="copy-block__text">{{ section.settings.copy_block_text }}</div>
+            {% endif %}
+
+        {% if is_video and section.settings.use_play_button == true %}
+            <button type="button" data-modal-target="{{ section.settings.video_url.id }}" class="button button--secondary content-panel__button modal__trigger">
+                {% if section.settings.copy_block_button_text != blank %}
+                    {{ section.settings.copy_block_button_text }}
+                {% else %}
+                    Play Video
+                {% endif %}
+            </button>
+        {% elsif section.settings.copy_block_button_text != blank and section.settings.copy_block_button_link != blank %}
+            <a href="{{ section.settings.copy_block_button_link }}" class="button button--secondary content-panel__button">{{ section.settings.copy_block_button_text }}</a>
+        {% endif %}
+
+        {% if is_video %}
+            {% render 'video-block--modal', settings: section.settings %}
+        {% endif %}
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Content Panel",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--content-panel",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section ID",
+            "info": "This is used to link to this section from another part of the page. Content added here will be [handleized](https://shopify.dev/docs/api/liquid/filters/handleize) and used as the ID. Example: 'Section Title' can be converted into an anchor link by using '#section-title' for a Button Link on this page."
+        },
+        {
+            "type": "text",
+            "label": "Section ID",
+            "id": "section_id"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type"  : "radio",
+            "id"    : "panel_orientation",
+            "options": [
+                { "value": "right", "label": "Image on the Left. Content on the Right"},
+                { "value": "left", "label": "Image on the Right. Content on the Left"}
+            ],
+            "label": "Panel Orientation"
+        },
+        {
+            "type": "image_picker",
+            "id": "content_panel_image",
+            "label": "Image"
+        },
+        {
+            "type": "text",
+            "id": "copy_block_title",
+            "label": "Title"
+        },
+        {
+            "type": "richtext",
+            "id": "copy_block_text",
+            "label": "Text"
+        },
+        {
+            "type": "text",
+            "id": "copy_block_button_text",
+            "label": "Button Label"
+        },
+        {
+            "type": "url",
+            "id": "copy_block_button_link",
+            "label": "Button Link"
+        },
+        {
+            "type": "header",
+            "content": "Video Settings",
+            "info": "[Optional] Include a link to a video. This video will open in a modal upon clicking on the image."
+        },
+        {
+            "type": "video_url",
+            "id": "video_url",
+            "label": "Video URL",
+            "accept": ["youtube", "vimeo"]
+        },
+        {
+            "type": "checkbox",
+            "id": "use_play_button",
+            "label": "Turn the Button into a play video button.",
+            "default": false
+        }
+    ],
+    "presets": [
+        {
+            "name": "Content Panel",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,21 @@
+{% comment %}
+    It creates a style tag containing "background-image" properties to load the correct image depending on the resolution
+
+    Accepts:
+    - image: {Object} Image object
+
+    Usage:
+    In your liquid template file, copy the following line
+
+    <div data-bgset="{% render 'responsive-bg-image', image: article.image %}"></div>
+{% endcomment %}
+
+
+{% render 'responsive-image' with
+  image:          image,
+  image_mobile:   image_mobile,
+  image_desktop:  image_desktop,
+  widths_mobile:  widths_mobile,
+  widths_desktop: widths_desktop,
+  is_background:  true
+%}

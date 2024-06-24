@@ -1,0 +1,40 @@
+{%- comment -%}
+  Renders group product text swatch for value
+
+  Accepts:
+  - value: {String} Option value that needs to be rendered
+  - url: {String} Renders a link instead of a radio input
+  - target_product: {Object} Shopify product object
+
+  Usage:
+  {%- render 'variant-picker-options--text', value: group_product_value, url: group_product.url, target_product: group_product -%}
+{%- endcomment -%}
+
+{%- if url -%}
+    {%- assign variant = null -%}
+
+    {%- for product_variant in target_product.variants -%}
+      {%- for product_variant_option in product_variant.options -%}
+        {%- if product_variant_option == value -%}
+          {%- assign variant = product_variant -%}
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endfor -%}
+
+    <a href="{{ url }}?variant={{ variant.id }}" class="ProductSection_OptionButton" data-variant-url>{{ value }}</a>
+  {%- else -%}
+  <div class="swatch__option" data-swatch="{{ value }}">
+    <input type="radio"
+        data-single-option-selector
+        id="Option{{ option.position }}-{{ value }}"
+        value="{{ value | escape }}"
+        name="options[{{ option.name }}]"
+        data-index="option{{ option.position }}"
+        class="sr-only {% if option_disabled %}swatch--disabled disabled{% endif %}"
+        {% if option.selected_value == value %}checked{% endif %}>
+    <label for="Option{{ option.position }}-{{ value }}" class="form__option-label {% if option_disabled %}swatch--disabled disabled{% endif %}">
+        <span class="form__option-label-inner form__option-label-inner-{{ value | handle }}"></span>
+        <span class="form__option-label-visually-hidden">{{ value }}</span>
+    </label>
+</div>
+  {%- endif -%}

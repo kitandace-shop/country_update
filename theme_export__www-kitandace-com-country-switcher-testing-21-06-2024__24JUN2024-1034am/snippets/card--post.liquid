@@ -1,0 +1,36 @@
+<article class="css-grid__item card card--default card--post {{ class }}">
+    <a href="{{ article.url }}">
+        {% if article.image %}
+            <div class="card__image-wrapper">
+                {% render 'responsive-image' with image: article.image, image_class: 'background-image' %}
+            </div>
+        {% endif %}
+
+        <div class="card__content">
+            <h3 class="card__title">{{ article.title }}</h3>
+            {%- comment -%}
+                {% if article.tags.size > 0 %}
+                      The Tag link list functions as a list of content items.
+                      Non-visual users will expect lists of content to appear
+                      in a list structure, allowing for easier understanding and navigation of list items.
+
+                    <ul class="card__tags-list" aria-label="{{ 'blogs.article.tags' | t }}">
+                      {% for tag in article.tags %}
+                        <li><a href="{{ blog.url }}/tagged/{{ tag | handle }}">{{ tag }}</a></li>
+                      {% endfor %}
+                    </ul>
+                {% endif %}
+            {%- endcomment -%}
+
+            <div class="card__copy">
+                {% if article.excerpt.size > 0 %}
+                    {{ article.excerpt }}
+                {% else %}
+                    {{ article.content | strip_html | truncate: 150 }}
+                {% endif %}
+            </div>
+
+            <span class="card__link button--primary button">{{ 'blogs.article.read_more' | t }}</span>
+        </div>
+    </a>
+</article>

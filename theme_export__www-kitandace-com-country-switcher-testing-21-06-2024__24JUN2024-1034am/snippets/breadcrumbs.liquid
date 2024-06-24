@@ -1,0 +1,150 @@
+{% assign default_home_label = 'custom.breadcrumbs.home' | t %}
+{% unless template == 'index' or template == 'cart' or template == 'list-collections' %}
+    <nav class="breadcrumbs menu menu--breadcrumbs" role="navigation" aria-label={{ 'accessibility.breadcrumbs_nav' | t }}>
+        <ul class="menu__list">
+            {% if template contains 'page' %}
+                <li class="menu__item">
+                    <a href="{{ shop.url }}" class="menu__link">
+                        {{ home_label | default: default_home_label }}
+                    </a>
+                </li>
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--right' %}
+                </li>
+                <li class="menu__item menu__item--current">
+                    <a href="{{ shop.url }}" class="menu__link">
+                        {{ home_label | default: default_home_label }}
+                    </a>
+                </li>
+            {% elsif template contains 'product' %}
+                {% assign product_type = product.type | handleize %}
+                {% assign product_type_collection_url = routes.collections_url | append: "/" | append: product_type %}
+                {% assign product_type_collection = false %}
+
+                {% if product.collections != blank %}
+                    {% comment %} if it exists, use that collection {% endcomment %}
+                    {% if collections[product_type].url != blank %}
+                        {% assign collection_breadcrumb_url = collections[product_type].url %}
+                        {% assign collection_breadcrumb_title = collections[product_type].title %}
+                        {% assign product_type_collection = true %}
+                    {% endif %}
+
+                    {% comment %} if the collection with the product type's handle does NOT exist, use the first available collection {% endcomment %}
+                    {% unless product_type_collection %}
+                        {% assign collection_breadcrumb_url = product.collections.first.url %}
+                        {% assign collection_breadcrumb_title = product.collections.first.title %}
+                    {% endunless %}
+                {% else %}
+                    {% comment %} Fall back to all products collection {% endcomment %}
+                    {% assign collection_breadcrumb_url = routes.all_products_collection_url %}
+                    {% assign collection_breadcrumb_title = custom.breadcrumbs.all_collections | t %}
+                {% endif %}
+
+                <li class="menu__item">
+                    <a href="{{ collection_breadcrumb_url }}" class="menu__link">
+                        {{ collection_breadcrumb_title }}
+                    </a>
+                </li>
+
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--right' %}
+                </li>
+                <li class="menu__item menu__item--current">
+                    {{ product.title }}
+                </li>
+            {% elsif template contains 'collection' and collection.handle %}
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--breadcrumbs' %}
+                </li>
+
+                {% if collection.handle == 'all' %}
+                    <li class="menu__item">
+                        <a href="{{ shop.url }}" class="menu__link">
+                            {{ home_label | default: default_home_label }}
+                        </a>
+                    </li>
+                {% else %}
+                    <li class="menu__item">
+                        <a href="{{ routes.all_products_collection_url }}" class="menu__link">
+                            {{ 'custom.breadcrumbs.all_collections' | t }}
+                        </a>
+                    </li>
+                {% endif %}
+
+                {% comment %} {% if current_tags %}
+                    {% capture url %}{{ routes.collections_url }}/{{ collection.handle }}{% endcapture %}
+
+                    <li class="menu__item">
+                        <a href="{{ url }}" class="menu__link">
+                            {{ collection.title }}
+                        </a>
+                    </li>
+                    <li class="menu__item menu__item--separator" aria-hidden="true">
+                        {% render 'icon', name: 'arrow--right' %}
+                    </li>
+                    <li class="menu__item menu__item--current">
+                        {{ current_tags | join: " + " }}
+                    </li>
+                {% else %}
+                    <li class="menu__item menu__item--current">
+                        {{ collection.title }}
+                    </li>
+                {% endif %} {% endcomment %}
+
+            {% elsif template == 'blog' %}
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--right' %}
+                </li>
+
+                {% if current_tags %}
+                    <li class="menu__item">
+                        <a href="{{ blog.url }}" class="menu__link">
+                            {{ blog.title }}
+                        </a>
+                    </li>
+                    <li class="menu__item menu__item--separator" aria-hidden="true">
+                        {% render 'icon', name: 'arrow--right' %}
+                    </li>
+                    <li class="menu__item menu__item--current">
+                        {{ current_tags | join: " + " }}
+                    </li>
+                {% else %}
+                    <li class="menu__item menu__item--current">
+                        {{ blog.title }}
+                    </li>
+                {% endif %}
+            {% elsif template == 'article' %}
+                <li class="menu__item">
+                    <a href="{{ blog.url }}" class="menu__link">
+                        {{ blog.title }}
+                    </a>
+                </li>
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--right' %}
+                </li>
+                <li class="menu__item menu__item--current">
+                    {{ article.title }}
+                </li>
+            {% elsif template contains 'addresses' or template contains 'order' %}
+                <li class="menu__item">
+                    <a href="{{ routes.account_url }}" class="menu__link">
+                        {{ 'customer.account.title' | t }}
+                    </a>
+                </li>
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--right' %}
+                </li>
+                <li class="menu__item menu__item--current">
+                    {{ page_title }}
+                </li>
+            {% else %}
+                <li class="menu__item menu__item--separator" aria-hidden="true">
+                    {% render 'icon', name: 'arrow--right' %}
+                </li>
+                <li class="menu__item menu__item--current">
+                    {{ page_title }}
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+{% endunless %}

@@ -1,0 +1,36 @@
+{% if collection %}
+    {% liquid
+        assign collection_description_text = collection.metafields.iamota.collection_card_description
+        assign collectionImage = collection.metafields.iamota.collection_card_image
+    %}
+
+    <article class="css-grid__item card card--default card--collection">
+        <a href="{{ collection.url }}">
+            {% if collection.tags contains 'New' %}
+                <div class="card__tag">
+                    {{ 'custom.tags.new_products' | t }}
+                </div>
+            {% endif %}
+
+             <div class="card__image-wrapper">
+                {% if collectionImage %}
+                    {% render 'responsive-image' with image: collectionImage, image_class: 'card__collection-image background-image' %}
+                {% elsif collection.image != blank %}
+                    {% render 'responsive-image' with image: collection.image, image_class: 'card__collection-image background-image' %}
+                {% else %}
+                    {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                {% endif %}
+
+            </div>
+
+            <div class="card__content">
+                {% if collection.title != blank %}
+                    <h3 class="card__title h5">{{ collection.title }}</h3>
+                {% endif %}
+                {% if collection_description_text != blank %}
+                    <p class="card__description">{{ collection_description_text }}</p>
+                {% endif %}
+            </div>
+        </a>
+    </article>
+{% endif %}

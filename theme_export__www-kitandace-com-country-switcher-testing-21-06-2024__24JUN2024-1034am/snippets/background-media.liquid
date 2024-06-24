@@ -1,0 +1,22 @@
+{% comment %}{% endcomment %}
+
+{% assign video_controls = video_controls | default: 'native' %}
+{% assign image          = image | default: settings.content_panel_image %}
+
+{% comment %} Prepare Attributes {% endcomment %}
+{% capture backgroundImageAttributes %}
+ 	class -*-
+ 		background-image -#-
+ 			{% if repeat %}repeat,{% endif %}
+ 			{% if flex_height %}flex-height,{% endif %}
+ 			{{ variant | default: 'default' }} -|-
+{% endcapture %}
+
+{% comment %} "render" attributes need to be declared outside of attributes variable above {% endcomment %}
+<div {% render 'attribute', attribute: backgroundImageAttributes %} data-bgset="{% render 'responsive-bg-image', image: image %}">
+
+	{% if settings.content_panel_type == 'video' and settings.video_url != nil %}
+		{% render 'video-block', settings: settings, controls: video_controls %}
+	{% endif %}
+
+</div>

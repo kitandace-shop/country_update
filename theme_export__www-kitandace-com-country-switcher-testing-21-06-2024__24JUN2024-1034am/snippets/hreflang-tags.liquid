@@ -1,0 +1,11 @@
+{% comment %}
+    This is an example of how to setup hreflang tags for non multilingual sites.
+    These should be updated with project sites url.
+{% endcomment %}
+
+<link rel="alternate" hreflang="x-default" href="https://this-site.com{{ request.path }}">
+<link rel="alternate" hreflang="en-us" href="https://this-site.com{{ request.path }}">
+<link rel="alternate" hreflang="en-gb" href="https://uk.this-site.com{{ request.path }}">
+<link rel="alternate" hreflang="en-ca" href="https://ca.this-site.com{{ request.path }}">
+<link rel="alternate" hreflang="en-150" href="https://eu.this-site.com{{ request.path }}">
+

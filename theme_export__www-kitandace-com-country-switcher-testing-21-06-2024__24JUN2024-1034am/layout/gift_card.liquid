@@ -1,0 +1,84 @@
+<!doctype html>
+<!--[if IE 9]> <html class="ie9 no-js cookies" lang="{{ shop.locale }}"> <![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+  <html class="no-js cookies" lang="{{ shop.locale }}"> <!--<![endif]-->
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_accent }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link href="https://fonts.googleapis.com/css2?family=Mulish:wght@400;600;700;800&family=Noto+Serif:wght@400;700&display=swap" rel="stylesheet" media="print" onload="this.media='all'">
+
+    {% if settings.favicon != blank %}
+      <link
+        rel="shortcut icon"
+        href="{{ settings.favicon | img_url: '32x32' }}"
+        type="image/png">
+    {% endif %}
+
+    {%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+    {%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+    <title>{{ 'gift_cards.issued.title' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+
+    <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+    {% render 'script-tags', layout: 'theme' %}
+    {% render 'style-tags', layout: 'theme' %}
+
+    <script>
+        document.documentElement.className = document.documentElement.className.replace('no-js', '');
+
+        window.theme = {
+            strings: {
+                addToCart: {{ 'products.product.add_to_cart' | t | json }},
+                soldOut: {{ 'products.product.sold_out' | t | json }},
+                unavailable: {{ 'products.product.unavailable' | t | json }}
+            },
+            moneyFormat: {{ shop.money_format | json }}
+        };
+
+        {% if template.directory == 'customers' %}
+            theme.allCountryOptionTags = {{ all_country_option_tags | json }};
+        {% endif %}
+    </script>
+    <script>
+        window.translations = {
+            modalSuccessMessage       : {{ 'custom.modal.success_message' | t | json }},
+            addToCart                 : {{ 'custom.product.add_to_cart' | t | json }},
+            addedToCart               : {{ 'custom.product.added_to_cart' | t | json }},
+            addingToCart              : {{ 'custom.product.adding_to_cart' | t | json }},
+            soldOut                   : {{ 'custom.product.sold_out' | t | json }},
+            notFreeShippingMessage    : {{ 'custom.free_shipping_message.not_enough' | t | json }},
+            freeShippingMessage       : {{ 'custom.free_shipping_message.enough' | t | json }},
+            shortQuantity             : {{ 'custom.quantity.short' | t | json }},
+            finalSaleLabel            : {{ 'custom.sale.final.label' | t | json }},
+            finalSaleMessage          : {{ 'custom.sale.final.message' | t | json }},
+            itemCountOne              : {{ 'custom.items_count.one' | t | json }},
+            itemCountOther            : {{ 'custom.items_count.other' | t | json }},
+            subTotalLabel             : {{ 'custom.cart.subtotal_label' | t | json }},
+            cartProductRemovedMessage : {{ 'custom.cart.product_removed_message' | t | json }},
+            cartUndoLabel             : {{ 'custom.cart.undo_label' | t | json }},
+            cartEmpty                 : {{ 'cart.general.empty' | t | json }}
+        };
+
+        if ( {{ shop.locale | json }} == 'fr') {
+            window.localeUrl = '/fr';
+        } else {
+            window.localeUrl = '';
+        }
+    </script>
+
+
+    {{ content_for_header }}
+  </head>
+
+  {% section 'header' %}
+
+  <body class="template-giftcard">
+    <main role="main" id="MainContent">
+      {{ content_for_layout }}
+    </main>
+  </body>
+
+  {% section 'footer' %}
+</html>

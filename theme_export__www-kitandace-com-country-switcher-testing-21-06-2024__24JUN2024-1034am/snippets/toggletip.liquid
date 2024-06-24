@@ -1,0 +1,14 @@
+{% comment %}
+    {% render 'toggletip' with toggletip_text: toggletip_text %}
+
+    // If you need to send in translated message, translate it in a variable and then pass the variable into the snippet.
+    {% assign toggletip_text_translation = 'custom.sale.final.message' | t %}
+    {% render 'toggletip' with toggletip_text: toggletip_text_translation %}
+{% endcomment %}
+
+<button class="button--tooltip js-tooltip" data-tooltip-text="{{ toggletip_text }}" data-tooltip-prefix-class="toggle" {% if settings.close_icon %}data-tooltip-close-img="{{ settings.close_icon | image_url }}"{% endif %} type="button">
+
+    {% render 'icon', name: 'tooltip' %}
+    {% comment %} Move this to translations {% endcomment %}
+    <span class="visually-hidden">More information</span>
+</button>

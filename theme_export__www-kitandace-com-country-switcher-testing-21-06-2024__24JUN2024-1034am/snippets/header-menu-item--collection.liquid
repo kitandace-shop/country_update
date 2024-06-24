@@ -1,0 +1,89 @@
+{% comment %}
+    Renders a menu item for the mobile header display.
+
+    Accepts:
+        (required)
+        - link: {Object} The link associated with the menu item
+        - level: {Number} The current level in the menu
+        - has_promo: {Boolean} Whether there's a promo block associated with the menu item
+
+        (optional)
+        - promo_block: {Object} The block object for the associated promo block
+{% endcomment %}
+
+{%- liquid
+    if link.active or link.child_active
+        assign menu_button_class = menu_button_class | append: ' header-menu__button--active'
+        assign menu_link_class = menu_link_class | append: ' header-menu__link--active'
+    endif
+-%}
+
+<li class="header-menu__item header-menu__item--level-2">
+    <a
+        href="{{ link.url }}"
+        class="header-menu__link"
+        tabindex="0"
+        aria-labelledby="{{ link.title | downcase | handleize }}-label"
+        {% if link.active %}aria-current="page"{% endif %}
+    >
+        <span id="{{ link.title | downcase | handleize }}-label" class="header-menu__title">
+            {{ link.title }}
+        </span>
+    </a>
+
+    {% if link.levels > 0 -%}
+        <ul
+            id="{{ link.title | handleize }}-menu"
+            class="header-menu__list"
+            {% if level == 1 %}
+            role="region"
+            aria-labelledby="{{ link.title | downcase | handleize }}-label"
+            {% endif %}
+        >
+            {% liquid
+                for child_link in link.links
+                    if child_link.url == link.url
+                        continue
+                    endif
+
+                    if child_link.levels > 0
+                        capture dropdown_items
+                            echo dropdown_items
+                            render 'header-menu-item--collection' link: child_link, level: next_level, has_promo: false, has_featured: false
+                        endcapture
+                    endif
+                endfor
+
+                capture menu_items
+                    if dropdown_items != blank
+                        echo dropdown_items
+                    endif
+                endcapture
+            %}
+
+            {% for child_link in link.links %}
+                {% liquid if child_link.type == 'collection_link'
+                    assign linkCollection = child_link.object
+                    assign collectionImage = collections[linkCollection.handle].metafields.iamota.collection_card_image
+                else
+                    assign linkCollection = null
+                    assign collectionImage = null
+                endif %}
+
+                <li class="header-menu__item header-menu__item--level-3">
+                    <a href="{{ child_link.url }}"
+                    class="header-menu__link"
+                    tabindex="0"
+                    aria-labelledby="{{ child_link.title | downcase | handleize }}-label"
+                    {% if child_link.active %}aria-current="page"{% endif %}
+                    data-collection="{% if collectionImage %}{{ collectionImage | img_url: '500x500' }}{% endif %}"
+                    data-collection-title="{% if linkCollection %}{{ linkCollection.title }}{% endif %}">
+                        {{ child_link.title }}
+                    </a>
+                </li>
+            {% endfor %}
+        </ul>
+    {%- else -%}
+        {{ menu_items }}
+    {%- endif %}
+</li>

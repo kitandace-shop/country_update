@@ -1,0 +1,37 @@
+{% liquid
+    assign specification_titles             = product.metafields.iamota.specification_title
+    assign specification_modal_informations = product.metafields.iamota.specification_modal_info
+    assign specification_descriptions       = product.metafields.iamota.specification_description
+    assign specification_row_limit          = product.metafields.iamota.specification_row_limit
+%}
+
+{% if specification_titles != blank
+    or specification_modal_informations != blank
+    or specification_descriptions != blank
+%}
+    <div class="page-section">
+        {% render 'specs-table',
+            specification_titles: specification_titles,
+            specification_modal_informations: specification_modal_informations,
+            specification_descriptions: specification_descriptions,
+            specification_row_limit: specification_row_limit
+        %}
+    </div>
+{% endif %}
+
+{% schema %}
+    {
+        "name": "Specs Table",
+        "tag": "section",
+        "class": "page-section page-section--no-gap page-section--specs-table",
+        "enabled_on": {
+            "templates": ["product"]
+        },
+        "presets": [
+            {
+                "name": "Specs Table",
+                "category": "Components"
+            }
+        ]
+    }
+{% endschema %}

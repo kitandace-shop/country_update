@@ -1,0 +1,78 @@
+{% comment %} Video Block Section {% endcomment %}
+<div class="video-block--section">
+    <div class="video-block--mobile">
+        {% if section.settings.mobile_cover_image %}
+            <button id="{{section.id}}--mobile-video" class="video-block__play-button" type="button" aria-label="Play Video">
+                <div class="video-block__cover">
+                    {% render 'responsive-image' with image: section.settings.mobile_cover_image, image_class: "background-image" %}
+                </div>
+                <div class="video-block__control">
+                    {% render 'icon', name: 'play' %}
+                </div>
+                <span class="sr-only">{{ 'accessibility.play_video' | t }}</span>
+            </button>
+
+        {% endif %}
+        {{ section.settings.mobile_video | video_tag: autoplay: false, controls: true, class: "video-block__video"}}
+    </div>
+    <div class="video-block--desktop">
+        {% if section.settings.desktop_cover_image %}
+            <button id="{{section.id}}--desktop-video" class="video-block__play-button" type="button" aria-label="Play Video">
+                <div class="video-block__cover">
+                    {% render 'responsive-image' with image: section.settings.desktop_cover_image, image_class: "background-image" %}
+                </div>
+                <div class="video-block__control">
+                    {% render 'icon', name: 'play' %}
+                </div>
+                <span class="sr-only">{{ 'accessibility.play_video' | t }}</span>
+            </button>
+        {% endif %}
+        {{ section.settings.desktop_video | video_tag: autoplay: false, controls: true, class: "video-block__video"}}
+    </div>
+</div>
+
+
+
+{% schema %}
+{
+    "name": "Video Block",
+    "tag": "section",
+    "class": "page-section page-section--no-gap page-section--full-bleed page-section--video-block",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Mobile Video"
+        },
+        {
+            "type": "video",
+            "id": "mobile_video",
+            "label": "Mobile Video"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile_cover_image",
+            "label": "Mobile Cover Image"
+        },
+        {
+            "type": "header",
+            "content": "Desktop Video"
+        },
+        {
+            "type": "video",
+            "id": "desktop_video",
+            "label": "Desktop Video"
+        },
+        {
+            "type": "image_picker",
+            "id": "desktop_cover_image",
+            "label": "Desktop Cover Image"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Video Block",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,28 @@
+{% if product.tags contains "FinalSale" %}
+    <div class="card__tag">{{ 'custom.sale.final.label' | t }}</div>
+{% elsif current_variant.compare_at_price > current_variant.price %}
+    <div class="card__tag">{{ 'custom.tags.sale' | t }}</div>
+{% elsif current_variant.inventory_quantity < 5 %}
+    <div class="card__tag">{{ 'custom.tags.low_stock' | t }}</div>
+{% else %}
+    {% liquid
+        assign custom_badge = ''
+
+        for tag in product.tags
+            if tag contains 'badge::'
+                assign tag_string_array = tag | split: '::'
+                assign custom_badge = tag_string_array | last | strip | escape
+            endif
+        endfor
+    %}
+
+
+
+    {% if custom_badge != '' %}
+        <div class="card__tags-wrapper">
+            <div class="card__tag">{{ custom_badge }}</div>
+        </div>
+    {% endif %}
+
+{% endif %}
+

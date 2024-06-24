@@ -1,0 +1,83 @@
+{%- liquid
+    assign predictive_search = predictive_search | default: false
+    assign list_item_el = list_item_el | default: false
+    assign search_box_class = 'search-box search-box--default'
+    assign button_control = 'search-input-' | append: section.id
+    assign mobile = mobile | default: false
+
+    if variant != blank
+        assign search_box_class = search_box_class | append: ' search-box--' | append: variant
+    endif
+
+    if predictive_search
+        assign search_box_class = search_box_class | append: ' search-box--predictive'
+        assign button_control = button_control | prepend: 'predictive-'
+    endif
+-%}
+
+{% if list_item_el %}
+    <li class="{{ search_box_class }}">
+{% else %}
+    <div class="{{ search_box_class }}">
+{% endif %}
+    <button type="button" class="search-box__toggle" aria-label="Open search form" aria-controls="{% if mobile %}mobile--{% endif %}{{ button_control }}">
+        {% render 'icon', name: 'search', class: 'search__icon svg--baseline' %}
+        <span class="search-box__toggle-title sr-only">{{ 'custom.search.search_toggle_title' | t }}</span>
+    </button>
+
+    {% if predictive_search -%}
+        {% render 'predictive-search', mobile: mobile %}
+    {%- else -%}
+        {% capture search_form -%}
+            <form action="{{ routes.search_url }}" method="get" role="search" class="form form--search">
+                <label for="search-input-{{ section.id }}" class="form__label">
+                    {{ 'general.search.submit' | t }}
+                </label>
+
+                <div class="form__field form__field--input form__field--search">
+                    <div class="form__element">
+                        <input type="search"
+                            name="q"
+                            id="search-input-{{ section.id }}"
+                            class="form__control form__input search__input"
+                            value="{{ search.terms | escape }}"
+                            placeholder="{{ 'general.search.placeholder' | t }}"
+                            autocorrect="off"
+                            autocapitalize="off"
+                            autocomplete="off"
+                        >
+
+                        <button type="button" class="search__close">
+                            {% render 'icon', name: 'close', class: 'close__icon svg--baseline' %}
+                            <span class="sr-only">{{ 'accessibility.close' | t }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="form__field form__field--button">
+                    <button type="submit" class="button search__submit">
+                        {% render 'icon', name: 'search', class: 'search__icon svg--baseline' %}
+
+                        <span class="sr-only">{{ 'general.search.submit' | t }}</span>
+                    </button>
+                </div>
+            </form>
+        {%- endcapture %}
+
+        {% if variant == 'header' -%}
+            <div class="search-container">
+                <div class="container">
+                    {{ search_form }}
+                </div>
+            </div>
+        {%- else -%}
+            {{ search_form }}
+        {%- endif %}
+    {%- endif %}
+
+
+{% if list_item_el %}
+    </li>
+{% else %}
+    </div>
+{% endif %}

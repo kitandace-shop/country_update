@@ -1,0 +1,60 @@
+{% comment %}{% endcomment %}
+{% liquid
+    assign video_id = video_id | default: settings.video_url.id
+    assign video_type = video_type | default: settings.video_url.type
+%}
+
+{% comment %} Check video types. Must be Youtube or Vimeo {% endcomment %}
+{% liquid
+    if video_id
+        assign allowedVideoTypes = "youtube|vimeo" | split: "|"
+        unless allowedVideoTypes contains video_type
+            assign video_type = nil
+        endunless
+    else
+        assign video_type = nil
+    endif
+%}
+
+{% unless video_type == nil %} {% comment %} don't do anymore work if video_type is invalid {% endcomment %}
+    {% assign poster                      = cover_image | default: settings.cover_image %}
+    {% assign lookup_poster               = false %}
+
+    {% comment %} Configure poster state {% endcomment %}
+    {% if poster == nil %}
+        {% if video_type == 'youtube' %}
+            {% assign poster = 'https://img.youtube.com/vi/' | append: video_id | append: '/0.jpg' %}
+        {% elsif video_type == 'vimeo' %}
+            {% comment %} Set a flag to lookup the poster for Vimeo if one isn't provided {% endcomment %}
+            {% assign lookup_poster = true %}
+        {% endif %}
+    {% else %}
+        {% assign poster = poster | image_url: width: 1024, format: 'jpg' %} {% comment %} Apply appropriate filters for image uploaded on Shopify {% endcomment %}
+    {% endif %}
+
+    <div class="video-block video-block--{{ video_type }} {% if poster %}is-postered{% endif %} video-block--is-paused" style="background-position: 50% 50%;background-image: url({{ poster }})">
+
+        {% comment %} Video Controls HTML {% endcomment %}
+        <div class="video-block__controls">
+            <div class="video-block__controls-poster">
+                <button class="video-block__control video-block__control--play">
+                    {% render 'icon', name: 'play' %}
+                    <span class="sr-only">{{ 'accessibility.play_video' | t }}</span>
+                </button>
+            </div>
+        </div>
+
+        {% comment %} Embed Youtube video {% endcomment %}
+        <div class="video-block__video"
+        data-video-settings='{
+            "video_type": "{{ video_type }}",
+            "video_id": "{{ video_id }}",
+            "lookup_poster": {{ lookup_poster }},
+            "is_autoplay": false,
+            "is_muted": false,
+            "is_controls": true,
+            "is_looped": false
+        }'></div>
+    </div>
+
+{% endunless %}

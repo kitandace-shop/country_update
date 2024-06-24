@@ -1,0 +1,19 @@
+{% comment %}
+    Useful for debugging data in Shopify. To console.log variables, include snippet like this:
+    {% render 'debug' with var_to_debug %}
+
+    VSCode shortcut for debug snippet:
+
+    "console.log Liquid Var": {
+        "scope": "liquid",
+        "prefix": "debug",
+        "body": [
+            "{% render 'debug' with $1 %}"
+        ],
+        "description": "Log Liquid var to console"
+    }
+{% endcomment %}
+
+<script type="text/javascript">
+    console.log({{ debug | json }});
+</script>

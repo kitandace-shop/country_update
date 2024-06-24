@@ -1,0 +1,62 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available when you add "Blog posts" section in the Theme Editor.
+
+  Theme Store required settings
+  - Heading: title of the blog posts section
+  - Blog (which blog category to show in your store)
+
+  Theme Store optional settings
+  - Number of posts to show
+  - Show author
+  - Show date
+{%- endcomment -%}
+
+{% if section.settings.title != blank %}
+    <h2 class="blog-post__title">{{ section.settings.title | escape }}</h2>
+{% endif %}
+
+{%- assign blog = blogs[section.settings.blog] -%}
+
+{%- comment -%}
+    Due to accessibility requirements, the Blog entries list functions
+    as a list of content items. Non-visual users will expect lists of content
+    to appear in a list structure, allowing for easier understanding and navigation of list items.
+{%- endcomment -%}
+
+<div class="css-grid css-grid--default css-grid--medium-3 css-grid--blog-post blog-post  animate-in">
+    {% for article in blog.articles limit: 3 %}
+        {% render 'card--post', class: 'css-grid__item animate-in--list-delay', article: article %}
+    {% endfor %}
+</div>
+
+
+{% schema %}
+{
+    "name": "Blog posts",
+    "tag": "section",
+    "class": "page-section page-section--blog-post",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Blog posts"
+        },
+        {
+            "id": "blog",
+            "type": "blog",
+            "label": "Blog"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Blog posts",
+            "category": "Blog",
+            "settings": {
+                "blog": "News"
+            }
+        }
+    ]
+}
+{% endschema %}

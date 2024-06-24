@@ -1,0 +1,68 @@
+{% assign attrs_array = attribute | split: "-&-" %}
+
+{% for attr in attrs_array %}
+
+    {% liquid
+        assign attr_info = attr | split: "-*-"
+        assign attr_type = attr_info[0] | strip
+    %}
+
+    {% if attr_type == 'class' %}
+
+        {% liquid
+            assign classes = attr_info[1] | split: "-|-"
+            assign class_string = ""
+
+            for class in classes
+                assign spaceless_class = class | strip
+                assign class_info = spaceless_class | split: "-#-"
+                assign class_name = class_info[0]
+                assign spaceless_class_name = class_name | strip
+
+                if class_name != ""
+                    assign class_string = class_string | append: spaceless_class_name | append: " "
+                endif
+
+                if class_info[1]
+                    assign class_array = class_info[1] | split: ","
+                    for class in class_array
+                        if class != "" 
+                            assign spaceless_class = class | strip
+                            assign class_string = class_string | append: spaceless_class_name | append: "--" | append: spaceless_class | append: " "
+                        endif
+                    endfor
+                endif
+            endfor
+        %}
+
+        {% capture class_string %}
+            class="{{ class_string | strip }}"
+        {% endcapture %}
+
+    {% elsif attr_type == 'style' %}
+
+        {% capture style_string %}
+              style="{{ attr_info[1] | strip_newlines | strip | split: ' ' | join: ' ' }}"
+          {% endcapture %}
+
+    {% else %}
+
+        {% capture regular_string %}
+            {{ attr_type | strip }}='{{ attr_info[1] | strip_newlines | strip | remove: " " }}'
+        {% endcapture %}
+
+        {% assign regular_strings = regular_strings | append: regular_string | append: " " %}
+
+    {% endif %}
+
+{% endfor %}
+
+{% liquid
+    capture attr_string
+        echo class_string
+        echo style_string
+        echo regular_strings | strip 
+    endcapture
+
+    echo attr_string
+%}

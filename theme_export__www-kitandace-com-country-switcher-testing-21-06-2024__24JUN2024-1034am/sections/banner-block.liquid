@@ -1,0 +1,90 @@
+<div id="{{ section.settings.section_id | handleize }}" class="scroll-margin banner-block banner-block--default animate-in">
+
+    <div class="background-media">
+
+        {% if section.settings.banner-block-image != blank %}
+            <div class="background-media__background">
+                {% render 'responsive-image' with
+                image_desktop: section.settings.banner-block-image,
+                image_mobile:  section.settings.mobile-banner-block-image,
+                image_class:   "background-image",
+                lazy:          false
+                %}
+            </div>
+        {% endif %}
+
+        <div class="background-media__content">
+            {% if section.settings.banner-block-title != blank %}
+                <h2 class="banner-block__title h3">{{ section.settings.banner-block-title }}</h2>
+            {% endif %}
+
+            {% if section.settings.banner-block-text != blank %}
+                <div class="banner-block__content">{{ section.settings.banner-block-text }}</div>
+            {% endif %}
+
+            {% if section.settings.banner-block-button-text != blank and section.settings.banner-block-link != blank %}
+                <a href="{{ section.settings.banner-block-link }}" class="button button--primary button--text">{{ section.settings.banner-block-button-text }}{% render 'icon', name: 'arrow--cta', class: 'button__icon' %}</a>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% schema %}
+{
+    "name": "Banner Block",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--banner-block",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Section ID",
+            "info": "This is used to link to this section from another part of the page. Content added here will be [handleized](https://shopify.dev/docs/api/liquid/filters/handleize) and used as the ID. Example: 'Section Title' can be converted into an anchor link by using '#section-title' for a Button Link on this page."
+        },
+        {
+            "type": "text",
+            "label": "Section ID",
+            "id": "section_id"
+        },
+        {
+            "type": "header",
+            "content": "Section Settings"
+        },
+        {
+            "type": "image_picker",
+            "id": "banner-block-image",
+            "label": "Desktop Image"
+        },
+        {
+            "type": "image_picker",
+            "id": "mobile-banner-block-image",
+            "label": "Mobile Image"
+        },
+        {
+            "type": "text",
+            "id": "banner-block-title",
+            "label": "Title"
+        },
+        {
+            "type": "textarea",
+            "id": "banner-block-text",
+            "label": "Text"
+        },
+        {
+            "type": "text",
+            "id": "banner-block-button-text",
+            "label": "Button Label"
+        },
+        {
+           "type": "url",
+            "id": "banner-block-link",
+            "label": "Button Link"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Banner Block",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,67 @@
+{%- liquid
+    assign search_resources = ''
+    assign mobile = mobile | default: false
+
+    if settings.search_products_limit > 0
+        assign search_resources = search_resources | append: 'product,'
+    endif
+
+    if settings.search_pages_limit > 0
+        assign search_resources = search_resources | append: 'page,'
+    endif
+
+    if settings.search_articles_limit > 0
+        assign search_resources = search_resources | append: 'article'
+    endif
+-%}
+
+
+<iam-predictive-search class='iam-predictive-search'>
+    <div class="container">
+        <form action="{{ routes.search_url }}" method="get" role="search" class="form form--search">
+            <label for="{% if mobile %}mobile--{% endif %}predictive-search-input-{{ section.id }}" class="form__label">
+                {{ 'general.search.submit' | t }}
+            </label>
+
+            <div class="form__field form__field--input form__field--search">
+                <div class="form__element">
+                    <input
+                        id="{% if mobile %}mobile--{% endif %}predictive-search-input-{{ section.id }}"
+                        class="form__control form__input search__input"
+                        type="search"
+                        name="q"
+                        placeholder="{{ 'general.search.placeholder' | t }}"
+                        value="{{ search.terms | escape }}"
+                        data-resources-type="{{ search_resources }}"
+                        data-mobile-disable="{{ mobile }}"
+                        role="combobox"
+                        aria-owns="{% if mobile %}mobile--{% endif %}predictive-search-results-list"
+                        aria-controls="{% if mobile %}mobile--{% endif %}predictive-search-results-list"
+                        aria-haspopup="listbox"
+                        aria-autocomplete="list"
+                        autocorrect="off"
+                        autocapitalize="off"
+                        autocomplete="off"
+                        spellcheck="false"
+                    >
+
+                    <button type="button" class="search__close">
+                        {% render 'icon', name: 'close', class: 'close__icon svg--baseline' %}
+                        <span class="sr-only">{{ 'accessibility.close' | t }}</span>
+                    </button>
+
+                    <input name="options[prefix]" type="hidden" value="last">
+                </div>
+            </div>
+
+            <div class="form__field form__field--button">
+                <button type="submit" class="button search__submit">
+                    {% render 'icon', name: 'search', class: 'search__icon svg--baseline' %}
+                    <span class="sr-only">{{ 'general.search.submit' | t }}</span>
+                </button>
+            </div>
+
+            <div id="{% if mobile %}mobile--{% endif %}predictive-search" class="predictive-search" tabindex="-1" style="display: none"></div>
+        </form>
+    </div>
+</iam-predictive-search>

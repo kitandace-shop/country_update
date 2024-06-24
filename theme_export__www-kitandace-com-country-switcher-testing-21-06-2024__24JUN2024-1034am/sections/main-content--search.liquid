@@ -1,0 +1,56 @@
+<div class="search-results container">
+    {% paginate search.results by 32 %}
+        {% if search.performed %}
+            {% if search.results_count == 0 %}
+                <p>{{ 'general.search.no_results_html' | t: terms: search.terms }}</p>
+            {% else %}
+                <div class="search-results__container">
+                    <ul class="search-results__list css-grid css-grid--default css-grid--small-2 css-grid--medium-3 css-grid--large-4">
+                        {% for item in search.results %}
+                            <li class="css-grid__item">
+                                {% if item.object_type == 'product' %}
+                                        {% render "card--product", product: item %}
+                                {% elsif item.object_type == 'article' %}
+                                    {% render "card--post", article: item %}
+                                {% else %}
+                                    {% render "card--page", page: item %}
+                                {% endif %}
+                            </li>
+                        {% endfor %}
+                    </ul>
+
+                    {% if paginate.pages > 1 %}
+                        {% render 'pagination' paginate: paginate %}
+                    {% endif %}
+                </div>
+            {% endif %}
+        {% endif %}
+    {% endpaginate %}
+</div>
+
+{% schema %}
+    {
+        "name": "Main Search",
+        "tag": "section",
+        "class": "page-section page-section--search-results page-section--gap-bottom",
+        "settings": [
+            {
+                "type": "header",
+                "content": "Filtering and sorting"
+            },
+            {
+                "type": "checkbox",
+                "id": "enable_sorting",
+                "default": true,
+                "label": "Enable Sorting"
+            },
+            {
+                "type": "checkbox",
+                "id": "enable_filtering",
+                "default": true,
+                "label": "Enable Filtering",
+                "info": "Customize filters with the Search & Discovery app. [Learn more](https://help.shopify.com/manual/online-store/search-and-discovery/filters)"
+            }
+        ]
+    }
+{% endschema %}

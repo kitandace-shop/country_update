@@ -1,0 +1,22 @@
+<div class="css-grid__item card card--default card--location">
+    <a href="{{ location.system.url }}">
+        {% if location.tags contains 'New' %}
+            <div class="card__tag">
+                {{ 'custom.tags.new_products' | t }}
+            </div>
+        {% endif %}
+
+            <div class="card__image-wrapper">
+            {% if location.featured_image != blank %}
+                {{ location.featured_image | image_url: width: 720 | image_tag: class: 'location__image', width: 720, alt: location.featured_image.alt }}
+            {% endif %}
+            <span class="card__button">View {% render 'icon', name: 'arrow--cta', class: 'button__icon' %}</span>
+        </div>
+
+        <div class="card__content">
+            {% if location.name != blank %}
+                <h3 class="card__title">{{ location.name }}</h3>
+            {% endif %}
+        </div>
+    </a>
+</div>

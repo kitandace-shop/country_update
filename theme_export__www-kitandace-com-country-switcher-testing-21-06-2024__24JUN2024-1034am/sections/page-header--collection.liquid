@@ -1,0 +1,33 @@
+<div class="page-header page-header--collection">
+
+    {% if collection.metafields.iamota.header-collection-image != blank %}
+        <div class="background-media__background">
+            {% render 'responsive-image' with
+            image_desktop: collection.metafields.iamota.header-collection-image,
+            image_mobile:  collection.metafields.iamota.header-collection-image-mobile,
+            image_class:   "background-image",
+            lazy:          false
+            %}
+        </div>
+    {% endif %}
+
+    <div class="page-header__content">
+        {% render 'breadcrumbs' %}
+        <h1 class="page-header__title">{{ collection.title }}<span class="collection_count">{{ collection.all_products_count }}</span></h1>
+
+        {% if collection.description != blank %}
+            <div class="page-header__text">
+                {{ collection.description }}
+            </div>
+        {% endif %}
+    </div>
+</div>
+
+
+{% schema %}
+{
+    "name": "Page Header - Collection",
+    "tag": "section",
+    "class": "page-section page-section--collection-header page-section--full-bleed page-section--no-gap"
+}
+{% endschema %}

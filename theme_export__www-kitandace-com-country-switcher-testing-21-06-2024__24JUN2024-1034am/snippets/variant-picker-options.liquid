@@ -1,0 +1,81 @@
+{%- comment -%}
+  Renders text or color swatches for product values. 
+  For a swatch created by collection, see `variant-picker-options--color.liquid` and `variant-picker-options--text.liquid`.
+
+  Usage:
+  {%- render 'variant-picker-options--color', value: group_product_value, url: group_product.url, target_product: group_product -%}
+{%- endcomment -%}
+
+{%- liquid
+    assign online_warehouse               = "66113274052"
+    assign variants_available_arr = product.variants | map: 'available'
+    assign variants_option1_arr   = product.variants | map: 'option1'
+    assign variants_option2_arr   = product.variants | map: 'option2'
+    assign variants_option3_arr   = product.variants | map: 'option3'
+    assign variants_id_arr        = product.variants | map: 'id'
+    assign swatches               = product.metafields.iamota.swatches.value
+    assign varID                  = ""
+    assign varQty                 = ""
+    for variant in product.variants
+        assign varID = varID | append: ',' | append: variant.id
+        assign varQty = varQty | append: ',' | append: variant.metafields.inventory_levels[online_warehouse]
+    endfor
+    assign varID = varID | remove_first: ',' | split: ','
+    assign varQty = varQty | remove_first: ',' | split: ','
+-%}
+
+{%- for value in option.values -%}
+
+    {%- liquid
+        assign option_disabled = true
+
+        for option1_name in variants_option1_arr
+            case option.position
+            when 1
+                if variants_option1_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                assign option_disabled = false
+                endif
+            when 2
+                if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                assign selectedIndex=forloop.index0                
+                for variant in product.variants
+                    if variant.id==variants_id_arr[selectedIndex]
+                        if variant.metafields.inventory_levels[online_warehouse]>0
+                            assign option_disabled = false
+                        endif
+                    endif
+                endfor 
+                endif
+            when 3
+                if option1_name == product.selected_or_first_available_variant.option1 and variants_option2_arr[forloop.index0] == product.selected_or_first_available_variant.option2 and variants_option3_arr[forloop.index0] == value and variants_available_arr[forloop.index0]
+                assign option_disabled = false
+                endif
+            endcase
+
+        endfor
+    -%}
+    {% if swatch_type == "text" or swatch_type == "color" %}
+
+        <div class="swatch__option" data-swatch="{{ value }}">
+            <input type="radio"
+                data-single-option-selector
+                id="Option{{ option.position }}-{{ value }}"
+                value="{{ value | escape }}"
+                name="options[{{ option.name }}]"
+                data-index="option{{ option.position }}"
+                class="sr-only {% if option_disabled %}swatch--disabled disabled{% endif %}"
+                {% if option.selected_value == value %}checked{% endif %}>
+            <label for="Option{{ option.position }}-{{ value }}" class="form__option-label {% if option_disabled %}swatch--disabled disabled{% endif %}">
+                <span class="form__option-label-inner form__option-label-inner-{{ value | handle }}"></span>
+                <span class="form__option-label-visually-hidden">{{ value }}</span>
+            </label>
+        </div>
+    {% else %}
+        <option
+            value="{{ value | escape }}"
+            {% if option.selected_value == value %}selected="selected"{% endif %}>
+            {{ value }}
+        </option>
+    {% endif %}
+
+{%- endfor -%}

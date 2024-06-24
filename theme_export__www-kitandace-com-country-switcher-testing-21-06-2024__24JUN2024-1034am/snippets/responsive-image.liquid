@@ -1,0 +1,163 @@
+{%- comment -%}
+    Create a <picture /> tag with a src-set for multiple screen resolutions
+
+    Accepts:
+    - image:            {Object}  Fallback image object (Shopify or Accentuate Custom Fields)
+    - image_mobile:     {Object}  Mobile image object (Shopify or Accentuate Custom Fields)
+    - image_desktop:    {Object}  Desktop image object (Shopify or Accentuate Custom Fields)
+    - image_class:      {String}  Class name of the <img />
+    - image_attributes: {String}  Additional HTML attributes of the <img />
+    - widths_mobile:    {String}  CSV of mobile breakpoints to generate src-set for
+    - widths_desktop:   {String}  CSV of desktop breakpoints to generate src-set for
+    - lazy:             {Boolean} Enable/disable lazyloading (default: true)
+
+    Usage Examples:
+    {% render 'responsive-image' with
+      image: featured_image,
+      image_class: "css-class"
+    %}
+
+    {% render 'responsive-image' with
+      image_mobile:  featured_image_mobile,
+      image_desktop: featured_image_desktop,
+      image_class:   "background-image",
+      lazy:          false
+    %}
+{%- endcomment -%}
+
+
+{%- liquid
+    assign image           = image | default: image_desktop | default: image_mobile
+    assign image_mobile    = image_mobile | default: image
+    assign image_desktop   = image_desktop | default: image
+
+    assign widths_mobile   = widths_mobile  | default: '180,360,540,680,767' | split: ','
+    assign widths_desktop  = widths_desktop | default: '768,900,1080,1296,1944,2592,3024' | split: ','
+
+    assign image_width     = image_width  | default: image.width
+    assign image_height    = image_height  | default: image.height
+
+    assign is_lazyloaded   = lazy | default: true, allow_false: true
+    assign is_background   = is_background | default: false, allow_false: true
+-%}
+
+
+{%- if image -%}
+
+    {%- liquid
+        comment
+            # Capture 1x1 Placeholder
+        endcomment
+        comment
+        # Not required?
+        if image_mobile.cloudinary_src
+            assign src_placeholder = image_mobile.cloudinary_src | append: 'w_1,h_1'
+        elsif image_mobile.src contains "accentuate.io"
+            assign src_placeholder = image_mobile.src | replace: '/cdn', '/cld' | append: '&options=w_1,h_1'
+        else
+            assign src_placeholder = image_mobile | image_url: width: 1, height: 1
+        endif
+        endcomment
+
+
+        comment
+            # Capture "Full Size Image"
+            # Default fallback to maxium allowed width which is 5760px. Shopify will always return the image maximum width if the image width < 5760px
+        endcomment
+        assign width_fullsize      = image_desktop.width | default: 5760
+        assign image_desktop_width = image_desktop.width | default: 5760
+        assign image_mobile_width  = image_mobile.width | default: 5760
+
+        comment
+            # If using Shopify metafield file reference image (String), fallback to the image url instead of getting src from the image object.
+        endcomment
+        assign src_fullsize   = image_desktop.src | default: image_desktop | image_url: width: width_fullsize
+
+        comment
+            # Build Mobile src_set
+        endcomment
+        capture src_set_mobile
+            for width in widths_mobile
+                assign width_num = width | plus: 0 | round
+                if image_mobile_width >= width_num or forloop.first
+                    if image_mobile.cloudinary_src
+                        echo image_mobile.cloudinary_src | append: 'w_' | append: width_num | append: ',q_auto,dpr_auto'
+                    elsif image_mobile.src contains "accentuate.io"
+                        echo image_mobile.src | replace: '/cdn', '/cld' | append: '&options=w_' | append: width_num
+                    else
+                        echo image_mobile | image_url: width: width_num
+                    endif
+					echo ' ' | append: width_num | append: 'w,'
+                endif
+            endfor
+        endcapture
+        assign src_set_mobile = src_set_mobile | strip
+
+        comment
+            # Build Desktop src_set
+        endcomment
+        capture src_set_desktop
+            for width in widths_desktop
+                assign width_num = width | plus: 0 | round
+                if image_desktop_width >= width_num or forloop.first
+                    if image_desktop.cloudinary_src
+                        echo image_desktop.cloudinary_src | append: 'w_' | append: width_num | append: ',q_auto,dpr_auto'
+                    elsif image_desktop.src contains "accentuate.io"
+                        echo image_desktop.src | replace: '/cdn', '/cld' | append: '&options=w_' | append: width_num
+                    else
+                        echo image_desktop | image_url: width: width_num
+                    endif
+                    echo ' ' | append: width_num | append: 'w,'
+                endif
+            endfor
+
+            comment
+                # Include "Full Size" if it is larger than the largest desktop size
+            endcomment
+            if width_fullsize > width_num
+                echo src_fullsize | append: ' ' | append: width_fullsize | append: 'w'
+            endif
+        endcapture
+        assign src_set_desktop = src_set_desktop | strip
+
+        comment
+            # Full src_set
+        endcomment
+        assign src_set = src_set_mobile | append: src_set_desktop
+    -%}
+
+
+    {%- if is_background -%}
+        {{ src_set }}
+    {%- else -%}
+        <picture>
+            <source
+                media="(min-width: {{ widths_mobile | last | plus: 0 | round | plus: 1 }}px)"
+                srcset="{{ src_set_desktop }}"
+            />
+            <source
+                srcset="{{ src_set_mobile }}"
+            />
+
+            <img
+              class="responsive-image__image {{ image_class }}"
+              src="{{ src_fullsize }}"
+              srcset="{{ src_set }}"
+              alt="{{ image.alt | escape }}"
+              width="{{ image_width }}"
+              height="{{ image_height }}"
+              decoding="async"
+              data-zoom="{{ src_fullsize }}"
+
+              {% if is_lazyloaded %}
+                loading="lazy"
+              {% endif %}
+
+              {{ image_attributes }}
+            >
+        </picture>
+    {%- endif -%}
+
+{%- else -%}
+    <!-- No image asset specified -->
+{%- endif -%}

@@ -1,0 +1,238 @@
+{%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Linkedin, Tiktok, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+
+<footer class="footer footer--default">
+    <div class="footer__container">
+        <div class="footer__content footer__content--newsletter">
+            <div class="footer__icon">
+                {% render 'icon', name: 'logo' %}
+            </div>
+            <div class="footer__newsletter-content">
+                <div class="footer__heading">
+                    {% if section.settings.footer_newsletter_heading != blank %}
+                        <h2 class="footer__title">{{ section.settings.footer_newsletter_heading }}</h2>
+                    {% endif %}
+                    {% if section.settings.footer_newsletter_description != blank %}
+                        <p class="footer__description">{{ section.settings.footer_newsletter_description }}</p>
+                    {% endif %}
+                </div>
+                {% render 'newsletter-form', id: 'footer' %}
+            </div>
+        </div>
+
+        <div class="footer__content footer__content--menu">
+            {% capture menu %}
+                <nav class="menu menu--default menu--footer" aria-label={{ 'accessibility.footer_nav' | t }}>
+                    {%- assign footer_linklist = section.settings.footer_linklist_1 -%}
+                    {% if linklists[footer_linklist].links.size > 0 %}
+                        <ul class="menu__list">
+                            {% for link in linklists[footer_linklist].links %}
+                                <li class="menu__item">
+                                    <a href="{{ link.url }}" class="menu__link">{{ link.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </nav>
+            {% endcapture %}
+
+            {% capture menu2 %}
+                <nav class="menu menu--default menu--footer" aria-label={{ 'accessibility.footer_nav' | t }}>
+                    {%- assign footer_linklist = section.settings.footer_linklist_2 -%}
+                    {% if linklists[footer_linklist].links.size > 0 %}
+                        <ul class="menu__list">
+                            {% for link in linklists[footer_linklist].links %}
+                                <li class="menu__item">
+                                    <a href="{{ link.url }}" class="menu__link">{{ link.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </nav>
+            {% endcapture %}
+
+            {% capture menu3 %}
+                <nav class="menu menu--default menu--footer" aria-label={{ 'accessibility.footer_nav' | t }}>
+                    {%- assign footer_linklist = section.settings.footer_linklist_3 -%}
+                    {% if linklists[footer_linklist].links.size > 0 %}
+                        <ul class="menu__list">
+                            {% for link in linklists[footer_linklist].links %}
+                                <li class="menu__item">
+                                    <a href="{{ link.url }}" class="menu__link">{{ link.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    {% endif %}
+                </nav>
+            {% endcapture %}
+
+            {% comment %} Use double dom for the Accordion Menu due to Accessibility concerns. {% endcomment %}
+            <div class='footer-menu footer-menu--desktop'>
+                {% if section.settings.menu_heading_1 %}
+                    <p class='menu__heading'>
+                        {{ section.settings.menu_heading_1 }}
+                    </p>
+                {% endif %}
+                {{ menu }}
+            </div>
+
+            <div class='footer-menu footer-menu--desktop'>
+                {% if section.settings.menu_heading_2 %}
+                    <p class='menu__heading'>
+                        {{ section.settings.menu_heading_2 }}
+                    </p>
+                {% endif %}
+                {{ menu2 }}
+            </div>
+
+            <div class='footer-menu footer-menu--desktop'>
+                {% if section.settings.menu_heading_3 %}
+                    <p class='menu__heading'>
+                        {{ section.settings.menu_heading_3 }}
+                    </p>
+                {% endif %}
+                {{ menu3 }}
+            </div>
+
+            <div class='footer-menu footer-menu--mobile'>
+                {% render "footer-menu--mobile-accordion", menu: menu, menu_heading: section.settings.menu_heading_1 %}
+            </div>
+
+            <div class='footer-menu footer-menu--mobile'>
+                {% render "footer-menu--mobile-accordion", menu: menu2, menu_heading: section.settings.menu_heading_2 %}
+            </div>
+
+            <div class='footer-menu footer-menu--mobile'>
+                {% render "footer-menu--mobile-accordion", menu: menu3, menu_heading: section.settings.menu_heading_3 %}
+            </div>
+
+        </div>
+    </div>
+    <div class="footer__bottom">
+        {% if section.settings.footer_logo != blank %}
+            <div class="footer__logo">
+                {{ section.settings.footer_logo }}
+            </div>
+        {% endif %}
+        <div class="footer__utility">
+
+            {% capture social_nav %}
+            <nav class="menu menu--default menu--social" aria-label={{ 'accessibility.social_nav' | t }}>
+                <ul class="menu__list">
+                    {% for social in social_accounts %}
+                        {%- assign social_handle = social | handleize -%}
+                        {% capture social_link %}social_{{ social_handle }}_link{% endcapture %}
+                        {% capture social_icon %}{{ social_handle }}{% endcapture %}
+
+                        {% if settings[social_link] != blank %}
+                            <li class="menu__item">
+                                <a href="{{ settings[social_link] }}" class="menu__link" title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}" target="_blank">
+                                    {% render 'icon', name: social_icon %}
+                                    <span class="sr-only">{{ social }}</span>
+                                </a>
+                            </li>
+                        {% endif %}
+                    {% endfor %}
+                </ul>
+            </nav>
+        {% endcapture %}
+        <div class="footer__social footer__social--mobile">
+            {{ social_nav }}
+        </div>
+        {% render 'country-switcher' %}
+        <div class="legal__container">
+            <div class="legal__content">
+                <p class="footer__copyright">
+                    &copy; {{ 'now' | date: "%Y" }} {{ section.settings.footer_legal_content }}
+                </p>
+                {%- assign footer_legal = section.settings.footer_linklist_legal -%}
+                {% render 'menu', menu_list: footer_legal, menu_classes: 'menu--footer menu--legal' %}
+                {%  if section.settings.footer_legal_content_2 != blank %}
+                    <p class="footer__copyright--secondary">
+                        {{ section.settings.footer_legal_content_2 }}
+                    </p>
+                {% endif %}
+            </div>
+
+
+        </div>
+        <div class="footer__social footer__social--desktop">
+            {{ social_nav }}
+        </div>
+        </div>
+    </div>
+</footer>
+
+{% schema %}
+{
+    "name": "Footer",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "html",
+            "id": "footer_logo",
+            "label": "Footer logo"
+        },
+        {
+            "type": "text",
+            "id": "menu_heading_1",
+            "label": "First menu heading",
+            "info": "Required for mobile accordion."
+        },
+        {
+            "type": "link_list",
+            "id": "footer_linklist_1",
+            "label": "First menu",
+            "default": "footer"
+        },
+        {
+            "type": "text",
+            "id": "menu_heading_2",
+            "label": "Second menu heading",
+            "info": "Required for mobile accordion."
+        },
+        {
+            "type": "link_list",
+            "id": "footer_linklist_2",
+            "label": "Second menu",
+            "default": "footer"
+        },
+        {
+            "type": "text",
+            "id": "menu_heading_3",
+            "label": "Third menu heading",
+            "info": "Required for mobile accordion."
+        },
+        {
+            "type": "link_list",
+            "id": "footer_linklist_3",
+            "label": "Third menu",
+            "default": "footer"
+        },
+        {
+            "type": "link_list",
+            "id": "footer_linklist_legal",
+            "label": "Legal menu"
+        },
+        {
+            "type": "text",
+            "id": "footer_newsletter_heading",
+            "label": "Footer Newsletter Heading"
+        },
+        {
+            "type": "text",
+            "id": "footer_newsletter_description",
+            "label": "Footer Newsletter Description"
+        },
+        {
+            "type": "text",
+            "id": "footer_legal_content",
+            "label": "Primary Footer Copyright"
+        },
+        {
+            "type": "text",
+            "id": "footer_legal_content_2",
+            "label": "Secondary Footer Copyright"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,121 @@
+{% if localization.available_countries.size > 1 or localization.available_languages.size > 1%}
+
+  <div class="localization-forms">
+    {% if localization.available_countries.size > 1 %}
+      <localization-form>
+        {% form 'localization' %}
+          <div class="disclosure">
+
+            <button type="button" class="disclosure__button menu__item menu__title country-switcher__toggle" aria-label="{{ 'accessibility.current_country' | t }} {{ localization.country.name }}"  aria-expanded="false" aria-controls="CountryList">
+              <div class="country-switcher__flag">
+                {{ localization.country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
+              </div>
+
+              <span class="country-switcher__name">{{ localization.country.name }}</span> <span class="country-switcher__bracket left-bracket">(</span>{{ localization.country.currency.symbol }}{{ localization.country.currency.iso_code }}<span class="country-switcher__bracket right-bracket">)</span>
+              {% render 'icon', name: 'arrow--down', class: 'country-toggle__icon svg--baseline' %}
+
+            </button>
+
+              <ul id="CountryList" role="list" class="disclosure__list country__list country-switcher__list country-switcher" hidden>
+                {% assign international_countries = "Australia,Hong Kong SAR,Japan,Netherlands,United Kingdom," | split: ',' %}
+                {% assign int_stand_in = "Hong Kong SAR" %}
+                {% for country in localization.available_countries %}
+                  {% if country.name == "Canada" or country.name == "United States" %}
+                    {% if  international_countries contains country.name %}
+                      <li class="disclosure__item"" tabindex="-1">
+                        <div class="country-switcher__flag">
+                            {{ country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
+                        </div>
+                        <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                            International ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
+                        </a>
+                      </li>
+                    {% else %}
+                      <li class="disclosure__item"" tabindex="-1">
+                        <div class="country-switcher__flag">
+                            {{ country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
+                        </div>
+                        <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                            {{ country.name }} ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                  
+                {% endfor %}
+                {% for country in localization.available_countries %}
+                  {% if country.name == int_stand_in %}
+                    {% if  international_countries contains country.name %}
+                      <li class="disclosure__item"" tabindex="-1">
+                        <div class="country-switcher__flag">
+                            {{ country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
+                        </div>
+                        <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                            International ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
+                        </a>
+                      </li>
+                    {% else %}
+                      <li class="disclosure__item"" tabindex="-1">
+                        <div class="country-switcher__flag">
+                            {{ country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
+                        </div>
+                        <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
+                            {{ country.name }} ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
+                        </a>
+                      </li>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </ul>
+            <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}">
+          </div>
+        {% endform %}
+      </localization-form>
+    {% endif %}
+
+    {% if localization.available_languages.size > 1 %}
+      <localization-form>
+        {% form 'localization' %}
+          <div class="disclosure">
+
+            <button type="button" class="disclosure__button menu__item menu__title language-switcher__toggle" aria-label="{{ 'accessibility.current_language' | t }} {{ localization.language.endonym_name | capitalize }}"  aria-expanded="false" aria-controls="LanguageList">
+              {{ localization.language.endonym_name | capitalize }}
+
+              {% render 'icon', name: 'arrow--down', class: 'country-toggle__icon svg--baseline' %}
+            </button>
+
+            <ul id="LanguageList" role="list" class="disclosure__list language__list language-switcher__list language-switcher" hidden>
+              {% for language in localization.available_languages %}
+
+                {% liquid
+                assign change_language = 'accessibility.change_language.en' | t
+
+                if language.iso_code == 'fr'
+                  assign change_language = 'accessibility.change_language.fr' | t
+                endif
+
+                if language.iso_code == 'de'
+                  assign change_language = 'accessibility.change_language.de' | t
+                endif
+
+                if language.iso_code == 'es'
+                  assign change_language = 'accessibility.change_language.es' | t
+                endif
+              %}
+
+                <li class="disclosure__item menu__link" tabindex="-1">
+                  <a href="#" aria-label="{{ change_language }} {{ language.endonym_name | capitalize }}" {% if language.iso_code == localization.language.iso_code %} aria-current="true"{% endif %} hreflang="{{ language.iso_code }}" lang="{{ language.iso_code }}" data-value="{{ language.iso_code }}">
+                    {{ language.endonym_name | capitalize }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+            <input type="hidden" name="language_code" value="{{ localization.language.iso_code }}">
+          </div>
+        {% endform %}
+      </localization-form>
+    {% endif %}
+    </div>
+
+{% endif %}
+

@@ -1,0 +1,129 @@
+{% comment %} This section works with both metafields and real block data. We check to see if the blocks should actually show up on the page based on the whether or not content has actually been filled in. {% endcomment %}
+
+{% liquid
+    assign blocksExist = false
+    for block in section.blocks
+        if block.settings.title != blank
+            assign blocksExist = true
+        endif
+    endfor
+%}
+
+{% if blocksExist %}
+    <div class="page-section page-section--content-cards">
+        <div class="content-cards">
+            {%  if section.settings.icon-block-title != blank or section.settings.icon-block-content != blank %}
+                <div class="content-cards__header-wrapper">
+                    {% if section.settings.icon-block-title != blank %}
+                        <h2 class="content-cards__header">{{ section.settings.icon-block-title }}</h2>
+                    {% endif %}
+
+                    {% if section.settings.icon-block-content != blank %}
+                        <p class="content-cards__content">{{ section.settings.icon-block-content }}</p>
+                    {% endif %}
+                </div>
+            {% endif %}
+
+            <!-- Icon Item Loop  -->
+                <div class="carousel carousel--content-cards swiper">
+                    <ul class="swiper-wrapper css-grid css-grid--default css-grid--medium-{{ section.blocks.size }} css-grid--content-cards">
+
+                        {% for block in section.blocks %}
+                            <li class="swiper-slide css-grid__item card card--default">
+                                {% if block.settings.card-image %}
+                                    <div class="card__image-wrapper">
+                                        {% render 'responsive-image' with image: block.settings.card-image, image_class: 'background-image' %}
+                                    </div>
+                                {% endif %}
+
+                                <div class="card__content">
+                                    {% if block.settings.title != blank %}
+                                        <h3 class="card__title h4">{{ block.settings.title }}</h3>
+                                    {% endif %}
+
+                                    {% if block.settings.text != blank %}
+                                        <p class="card__copy">{{ block.settings.text }}</p>
+                                    {% endif %}
+
+                                    {% if block.settings.card-button-label != blank and block.settings.card-button-link != blank %}
+                                        <a href="{{ block.settings.card-button-link }}" class="card__link button--primary button button--text">{{ block.settings.card-button-label }}{% render 'icon', name: 'arrow--cta', class: 'button__icon' %}</a>
+                                    {% endif %}
+                                </div>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {% comment %} Swiper Scrollbar and Swiper Arrows {% endcomment %}
+
+                <div class="swiper-controllers">
+                    <div class="swiper-scrollbar" tabindex="-1"></div>
+                </div>
+
+
+            {% if section.settings.icon-block-button-label != blank and section.settings.icon-block-button-link != blank %}
+                <a href="{{ section.settings.icon-block-button-link }}" class="button button--primary">{{ section.settings.icon-block-button-label }}</a>
+            {% endif %}
+        </div>
+    </div>
+{% endif %}
+
+{% schema %}
+{
+    "name": "Content Cards",
+    "class": "page-section--full-bleed page-section--content-card--wrapper",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "icon-block-title",
+            "label": "Heading"
+        },
+        {
+            "type": "textarea",
+            "id": "icon-block-content",
+            "label": "Subheading"
+        }
+    ],
+    "blocks": [
+        {
+        "type": "card",
+        "name": "Card",
+        "limit": 6,
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "card-image",
+                "label": "Image"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title"
+            },
+            {
+                "type": "textarea",
+                "id": "text",
+                "label": "Text"
+            },
+            {
+                "type": "text",
+                "id": "card-button-label",
+                "label": "Button Label"
+            },
+            {
+                "type": "url",
+                "id": "card-button-link",
+                "label": "Button Link"
+            }
+        ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Content Cards",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

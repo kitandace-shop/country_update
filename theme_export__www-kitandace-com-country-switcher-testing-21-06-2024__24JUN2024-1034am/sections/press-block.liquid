@@ -1,0 +1,78 @@
+{% if section.settings.press-block-title != blank %}
+    <h2 class="press-block__title">{{ section.settings.press-block-title }}</h2>
+{% endif %}
+
+<!-- Logo Block HTML  -->
+<div class="press-block press-block--default">
+    <!-- Logo Item Loop  -->
+    {% if section.blocks.size > 0 %}
+        <ul class="flex-grid flex-grid__press-block">
+            {% for block in section.blocks %}
+                <li class="flex-grid__item">
+                    {% if block.settings.logo-link != blank %}
+                        <a href="{{ block.settings.logo-link }}" target="_blank">
+                    {% endif %}
+                        <div class="logo-block__logo">
+                            {% if block.settings.logo-image != blank %}
+                                <div class="logo-block__image-wrapper">
+                                    {% render 'responsive-image', image: block.settings.logo-image, max_width: 300, max_height: 300 %}
+                                </div>
+                            {% endif %}
+
+                            {% if block.settings.text != blank %}
+                                <p class="press-block__quote">{{ block.settings.text }}</p>
+                            {% endif %}
+                        </div>
+                    {% if block.settings.logo-link != blank %}
+                        </a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Press Block",
+    "tag": "section",
+    "class": "page-section page-section--press-block",
+    "settings": [
+        {
+            "type": "text",
+            "id": "press-block-title",
+            "label": "Heading"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "press-item",
+            "name": "Logo Item",
+            "limit": 5,
+            "settings": [
+                {
+                    "type": "image_picker",
+                    "id": "logo-image",
+                    "label": "Logo"
+                },
+                {
+                    "type": "url",
+                    "id": "logo-link",
+                    "label": "Link"
+                },
+                {
+                    "type": "textarea",
+                    "id": "text",
+                    "label": "Quote"
+                }
+            ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Press Block",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

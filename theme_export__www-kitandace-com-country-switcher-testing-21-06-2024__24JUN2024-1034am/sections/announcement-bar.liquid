@@ -1,0 +1,54 @@
+{%- comment -%}
+    Announcement bar
+
+    This is a required section for the Shopify Theme Store. It's available in the "Header" section in the theme editor.
+
+    Theme Store required settings:
+        - Show announcement
+        - Text: message to announce
+        - Link: link of the announcement bar
+
+    Theme Store optional settings:
+        - Home page only: only shows on the home page
+{%- endcomment -%}
+
+<div class="announcement-bar">
+    <div class="container">
+        {% if section.settings.announcement_bar_link != blank -%}
+            <a href="{{ section.settings.announcement_bar_link }}" class="announcement-bar__content announcement-bar__link">
+                {{ section.settings.announcement_bar_text | escape }}
+            </a>
+        {%- else -%}
+            <p class="announcement-bar__content announcement-bar__text">
+                {{ section.settings.announcement_bar_text | escape }}
+            </p>
+        {%- endif %}
+
+        <button type="button" class="announcement-bar__close">
+            <span class="sr-only">Close</span>
+            {% render 'icon', name: 'close', class: 'menu__icon' %}
+        </button>
+    </div>
+</div>
+
+{% schema %}
+    {
+        "name": "Announcement Bar",
+        "tag": "section",
+        "settings": [
+            {
+            "type": "text",
+            "id": "announcement_bar_text",
+            "label": "Announcement text",
+            "default": "Announce something here"
+            },
+            {
+                "type": "url",
+                "id": "announcement_bar_link",
+                "label": "Announcement link",
+                "info": "Optional"
+            }
+        ]
+    }
+    {% endschema %}
+

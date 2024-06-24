@@ -1,0 +1,155 @@
+{% comment %}
+    Renders a menu item for the mobile header display.
+
+    Accepts:
+        (required)
+        - link: {Object} The link associated with the menu item
+        - level: {Number} The current level in the menu
+        - slide_active: {Boolean} Whether the mobile layout is 'slide'
+        - has_promo: {Boolean} Whether there's a promo block associated with the menu item
+
+        (optional)
+        - promo_block: {Object} The block object for the associated promo block
+{% endcomment %}
+
+{%- liquid
+    assign next_level = level | plus: 1
+    assign menu_item_class = 'header-menu__item header-menu__item--level-' | append: level
+    assign menu_button_class = 'header-menu__button'
+    assign menu_link_class = 'header-menu__link'
+
+    if link.levels > 0
+        assign menu_item_class = menu_item_class | append: ' header-menu__item--dropdown'
+        assign menu_list_class = 'header-menu__list header-menu__list--level-' | append: next_level
+    endif
+
+    if link.url == '#'
+        assign menu_link_class = menu_link_class | append: ' header-menu__link--empty'
+    endif
+
+    if link.active or link.child_active
+        assign menu_button_class = menu_button_class | append: ' header-menu__button--active'
+        assign menu_link_class = menu_link_class | append: ' header-menu__link--active'
+    endif
+-%}
+{% comment %} Start with level 2 menu items open - these are accordions {% endcomment %}
+<li class="{{ menu_item_class }} {% if level == 2 %}js--is-open{% endif %}">
+    {% if link.levels > 0 -%}
+        <button
+            class="{{ menu_button_class }}"
+            tabindex="0"
+            aria-labelledby="mobile-{{ link.title | downcase | handleize }}-label"
+            aria-controls="mobile-{{ link.title | handleize }}-menu"
+            aria-expanded="{% if level == 2 %}true{% else %}false{% endif %}"
+        >
+            <span id="mobile-{{ link.title | downcase | handleize }}-label" class="header-menu__title">
+                {{ link.title }}
+            </span>
+
+            <span class="button__icon">
+                {% render 'icon', name: 'arrow--down', class: '' %}
+                <span class="sr-only">{{ link.title }} {{ 'accessibility.submenu' | t }}</span>
+            </span>
+        </button>
+
+        <ul
+            id="mobile-{{ link.title | handleize }}-menu"
+            class="{{ menu_list_class }}"
+            {% if slide_active and level == 1 -%}
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="mobile-{{ link.title | handleize }}-menu-back"
+            {%- endif %}
+        >
+            {% if slide_active and level == 1 -%}
+                <div class="header-menu__back">
+                    <span
+                        class="back__button"
+                        role="button"
+                        tabindex="0"
+                        aria-controls="mobile-{{ link.title | handleize }}-menu"
+                        aria-expanded="false"
+                    >
+                        {% render 'icon', name: 'arrow--down', class: '' %}
+                        <span class="sr-only">{{ 'accessibility.back_to_main_menu' | t }}</span>
+                    </span>
+
+                    <span id="mobile-{{ link.title | handleize }}-menu-back" class="back__title">{{ link.title }}</span>
+                </div>
+            {%- endif %}
+
+            {% liquid
+                for child_link in link.links
+                    if child_link.url == link.url
+                        capture parent_copy
+                            render 'header-menu-item--mobile' link: child_link, level: next_level, has_promo: false
+                        endcapture
+
+                        continue
+                    endif
+
+                    if child_link.levels > 0
+                        capture dropdown_items
+                            echo dropdown_items
+                            render 'header-menu-item--mobile' link: child_link, level: next_level, has_promo: false
+                        endcapture
+                    else
+                        capture childless_items
+                            echo childless_items
+                            render 'header-menu-item--mobile' link: child_link, level: next_level, has_promo: false
+                        endcapture
+                    endif
+                endfor
+
+                if parent_copy != blank and level == 2
+                    echo parent_copy
+                endif
+
+                if dropdown_items != blank
+                    echo dropdown_items
+                endif
+
+                if childless_items != blank
+                    echo childless_items
+                endif
+
+                if parent_copy != blank and level == 1
+                    echo parent_copy
+                endif
+            %}
+
+
+            {% liquid
+                if has_featured
+                    for block in section.blocks
+                        assign setting_title = block.settings.featured_main_menu_title | downcase
+                        assign link_title = link.title | downcase
+
+                        if setting_title == link_title
+                            assign has_featured = true
+                            assign featured_block = block
+
+                            render 'header-menu-featured--mobile' featured_block: featured_block
+                        endif
+                    endfor
+                endif
+            %}
+
+            {% comment %} {% if has_promo -%}
+                {% render 'header-menu-promo' promo_block: promo_block, mobile: true %}
+            {%- endif %} {% endcomment %}
+        </ul>
+    {%- else -%}
+        <a
+            href="{{ link.url }}"
+            class="{{ menu_link_class }}"
+            tabindex="0"
+            aria-labelledby="mobile-{{ link.title | downcase | handleize }}-label"
+            {% if link.active %}aria-current="page"{% endif %}
+        >
+            <span id="mobile-{{ link.title | downcase | handleize }}-label" class="header-menu__title">
+                {{ link.title }}
+            </span>
+        </a>
+    {%- endif %}
+</li>

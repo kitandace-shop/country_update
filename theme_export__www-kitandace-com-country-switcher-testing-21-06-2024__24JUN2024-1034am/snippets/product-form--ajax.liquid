@@ -1,0 +1,151 @@
+{% liquid
+    assign product = product 
+    assign isAjax = false
+    assign circle_swatches = circle_swatches | downcase
+    assign text_swatches = text_swatches | downcase
+    assign product_tags = product.tags | join: ', ' | downcase
+    assign size_guide_footer = size_guide_footer
+    assign promo_message = ''
+    assign show_pickup_availability=true
+    assign online_warehouse = '66113274052'
+    for tag in product.tags
+        if tag contains 'Promo::'
+            assign tag_string_array = tag | split: '::'
+            assign promo_message = tag_string_array | last | strip | escape
+        endif
+    endfor
+%}
+
+{% if product %}
+    {% form 'product', product,
+     data-product-form: '',
+     data-product-handle: product.handle,
+     data-enable-history-state: 'true',
+     data-add-cart-type: "none",
+     data-is-ajax: isAjax %}
+        <div class="price__wrapper">
+            <div data-price-wrapper class="product__price">
+                {% if product.compare_at_price_max > product.price %}
+                    <span class="visually-hidden" data-compare-text>{{ 'products.product.regular_price' | t }}</span>
+                    <s data-compare-price class="price__sale">
+                        {% if current_variant.compare_at_price > current_variant.price %}
+                            {% render 'price-format', price: current_variant.compare_at_price %}
+                        {% endif %}
+                    </s>
+                {% endif %}
+
+                <span data-product-price class="price__original {% if current_variant.compare_at_price > current_variant.price %}price__original--sale{% endif %}">
+                    {% render 'price-format', price: current_variant.price %}
+                </span>
+            </div>
+
+            {% if product_tags contains 'FinalSale' %}
+                <div class="line-item__final-sale">
+                    <span>Final Sale</span>
+                    {% assign toggletip_text_translation = 'custom.sale.final.message' | t %}
+                    {% render 'toggletip' with toggletip_text: toggletip_text_translation %}
+                </div>
+            {% endif %}
+
+            {% unless product.type  == 'Gift Cards' %}
+                {% render 'card-label', product: product %}
+            {% endunless %}
+        </div>
+
+        {%- if promo_message != '' -%}
+            <div class="product__promo-message">
+                {{ promo_message }}
+            </div>
+        {%- endif -%}
+
+        <div class="variant-picker__wrapper">
+            {% render 'variant-picker', product: product, circle_swatches: circle_swatches, text_swatches: text_swatches %}
+        </div>
+
+
+        {% if product.metafields.iamota.model_size_content %}
+            <div class="product__model-size">
+                {{ product.metafields.iamota.model_size_content }}
+            </div>
+        {% endif %}
+
+
+        <div id="productStickyContainer">
+            <div class="product__sticky-container">
+                <div class="product__sticky">
+                    <h3 class="product__title h4">{{ product.title }}</h3>
+                    <div class="product__container">
+
+                        <input type="number" id="Quantity" name="quantity" value="1" min="1" max="1" hidden class="cart__quantity form__control form__input">
+
+                        <button
+                            type="submit"
+                            name="add"
+                            data-add-to-cart
+                            {% unless current_variant.metafields.inventory_levels[online_warehouse]>1 %}disabled="disabled" {% endunless %}
+                            class="button--primary button__add-to-cart">
+                            <span data-add-to-cart-text>
+                                {% if current_variant.available and current_variant.metafields.inventory_levels[online_warehouse]>1%}
+                                    {{ 'products.product.add_to_cart' | t }}
+                                {% else %}
+                                    {{ 'products.product.sold_out' | t }}
+                                {% endif %}
+                            </span>
+                            <span class="btn--add-to-cart__pricing">- <span id="addToCartPricing">
+                                {{ current_variant.price | money_with_currency }}
+                            </span></span>
+                        </button>
+                        <div class="swym-wishlist-button-bar"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="product-sticky--mobile">
+            <a id="addToCartSticky" class="button button--primary button--mobile-cart" href="#productStickyContainer">{{ 'products.product.scroll_to_purchase' | t }}</a>
+        </div>
+
+        <div class='cart__message'>
+            <p class='cart__message--error'>
+                <!-- Placeholder for error messages -->
+            </p>
+        </div>
+     {% endform %}
+        {%- if show_pickup_availability and current_variant.metafields.inventory_levels[online_warehouse]>1 and localization.country.iso_code=="CA" -%}
+            {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
+
+            {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities
+            | where: 'pick_up_enabled', true
+            -%}
+
+
+
+            <pickup-availability
+            class="product__pickup-availabilities quick-add-hidden"
+            {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %}
+                available
+            {% endif %}
+            data-root-url="{{ routes.root_url }}"
+            data-variant-id="{{ product.selected_or_first_available_variant.id }}"
+            data-has-only-default-variant="{{ product.has_only_default_variant }}"
+            data-product-page-color-scheme="gradient color-{{ section.settings.color_scheme }}"
+            >
+            <template>
+                <pickup-availability-preview class="pickup-availability-preview">
+                {% render 'icon-unavailable' %}
+                <div class="pickup-availability-info">
+                    <p class="caption-large">{{ 'pickup_availability.general.unavailable' | t }}</p>
+                    <button class="pickup-availability-button link link--text underlined-link">
+                    {{ 'pickup_availability.general.refresh' | t }}
+                    </button>
+                </div>
+                </pickup-availability-preview>
+            </template>
+            </pickup-availability>
+
+            <script src="{{ 'pickup-availability.js' | asset_url }}" defer="defer"></script>
+        {%- endif -%}
+
+{% endif %}
+
+

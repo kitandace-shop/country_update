@@ -1,0 +1,60 @@
+{% liquid
+    assign section_title = settings.model_also_wearing_title
+    assign model_products = product.metafields.iamota.model_also_wearing.value
+
+ %}
+
+<div class="model-product-grid">
+    {% if section_title != blank and model_products != blank %}
+        <h3 class="model-product-grid__title">{{ section_title }}</h3>
+    {% endif %}
+
+    <div class="model-product-grid__grid">
+        {% for product in model_products -%}
+
+            {% liquid
+                assign variants_count = product.variants.size
+                assign has_variants = false
+
+                if variants_count > 1
+                    assign has_variants = true
+                endif
+            %}
+            <a href="{{ product.url }}" class="css-grid__item card card--default card--model-product">
+                <div class="wishlist-button">
+                    <button data-with-epi="true" class="swym-button swym-add-to-wishlist-view-product product_{{product.id}}" data-swaction="addToWishlist" data-product-id="{{product.id | json}}" data-variant-id="{{product.variants[0].id}}" data-product-url="{{ shop.url }}{{ product.url }}"></button>
+                </div>
+                <div class="card__image">
+                    {% render 'responsive-image' with image: product.featured_image  %}
+                </div>
+                <div class="card__content">
+                    <h4 class="card__title">{{ product.title }}</h4>
+
+                    <span class="card__price">
+                        {% if has_variants %}
+                            {% capture lowest_price %}
+                                {% render 'price-format', price: product.price_min %}
+                            {% endcapture %}
+                            {{ 'products.product.from_text_html' | t: price: lowest_price }}
+                        {% else %}
+                            {% if product.compare_at_price_max > product.price %}
+                                <span class="visually-hidden" data-compare-text>
+                                    {{ 'products.product.regular_price' | t }}
+                                </span>
+                                <s data-compare-price class="card__price--sale">
+                                    {% if product.compare_at_price > product.price %}
+                                        {% render 'price-format', price: product.compare_at_price %}
+                                    {% endif %}
+                                </s>
+                            {% endif %}
+
+                            <span class="card__price--original">
+                                {% render 'price-format', price: product.price %}
+                            </span>
+                        {% endif %}
+                    </span>
+                </div>
+            </a>
+        {%- endfor %}
+    </div>
+</div>

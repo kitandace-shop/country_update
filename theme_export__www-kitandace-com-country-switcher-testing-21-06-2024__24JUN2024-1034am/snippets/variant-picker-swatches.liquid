@@ -1,0 +1,44 @@
+{% comment %} Makes use of ACF fields that already exist on Kit and Ace to bring in color swatches {% endcomment %}
+<style>
+    {%- for color_name in shop.metafields.globals.color_name -%}
+      {%- liquid
+        assign image = shop.metafields.globals.image[forloop.index0][0]
+
+        assign colors = ''
+        if shop.metafields.globals.color_hex[forloop.index0] != blank
+          unless colors == ''
+            assign colors = colors | append: '|'
+          endunless
+          assign colors = colors | append: shop.metafields.globals.color_hex[forloop.index0]
+        endif
+        if shop.metafields.globals.color_hex_2[forloop.index0] != blank
+          unless colors == ''
+            assign colors = colors | append: '|'
+          endunless
+          assign colors = colors | append: shop.metafields.globals.color_hex_2[forloop.index0]
+        endif
+        if shop.metafields.globals.color_hex_3[forloop.index0] != blank
+          unless colors == ''
+            assign colors = colors | append: '|'
+          endunless
+          assign colors = colors | append: shop.metafields.globals.color_hex_3[forloop.index0]
+        endif
+
+        assign colors_array = colors | split: '|'
+      -%}
+      .form__option-label-inner-{{color_name | handleize }}{
+        {%- if image != blank -%}
+          background-image: url("{{ image.cloudinary_src | append: 'c_crop,w_54,h_54' }}");
+        {%- endif -%}
+        {%- comment -%} color might be used as a fallback for images {%- endcomment -%}
+        {%- case colors_array.size -%}
+          {%- when 1 -%}
+            background-color: {{ colors_array[0] }};
+          {%- when 2 -%}
+            background: linear-gradient({{ colors_array[0] }} 50%, {{ colors_array[1] }} 50%);
+          {%- when 3 -%}
+            background: conic-gradient({{ colors_array[0] }} 0% 32%, {{ colors_array[1] }} 33% 66%, {{ colors_array[2] }} 67% 100%);
+        {%- endcase -%}
+      }
+    {%- endfor -%}
+</style>

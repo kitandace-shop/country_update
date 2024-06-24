@@ -1,0 +1,110 @@
+{% liquid
+    assign feature-icons = product.metafields.iamota.key_feature_icons.value
+    assign fabric-icons = product.metafields.iamota.fabric_and_care_icons.value
+    assign fit-icons = product.metafields.iamota.fit_and_sizing_icons.value
+    assign fit-content = product.metafields.tab.fit
+    assign fabric-content = product.metafields.tab.fabric_care
+%}
+
+<div class="accordion accordion--product js-accordion" data-collapse-all="">
+    {% if feature-icons %}
+        <div id="accordion-product" class="accordion__item js-accordion__item">
+            <h3 class="accordion__title h4">
+                <button type="button" class="accordion__button js-accordion__button" id="accordion-{{ settings.accordion_title |  handleize }}--button" aria-controls="accordion--{{ settings.accordion_title |  handleize  }}--content" aria-expanded="false">
+                    {% if settings.accordion_title != blank %}
+                        {{ settings.accordion_title }}
+                    {% endif %}
+
+                    <span class="accordion__icon">
+                        {% render 'icon', name: 'arrow--up', class: 'accordion__icon--close svg--baseline' %}
+                        {% render 'icon', name: 'arrow--down', class: 'accordion__icon--open svg--baseline' %}
+                    </span>
+                </button>
+            </h3>
+
+            <div id="accordion--{{ settings.accordion_title |  handleize }}--content" class="accordion__content js-accordion__content" role="region" aria-labelledby="accordion-{{ settings.accordion_title |  handleize }}--button" hidden>
+                <div class="accordion_icon-list">
+                    {% for icon in feature-icons -%}
+                        <div class="accordion_icon-item">
+                            {% render 'responsive-image' with image: icon.icon.value  %}
+                            <div class="accordion_icon-title">{{ icon.icon_title.value }}</div>
+                        </div>
+                    {%- endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if fabric-content or fabric-icons %}
+        <div id="accordion-product" class="accordion__item js-accordion__item">
+            <h3 class="accordion__title h4">
+                <button type="button" class="accordion__button js-accordion__button" id="accordion-{{ settings.accordion_title_2 |  handleize }}--button" aria-controls="accordion--{{ settings.accordion_title_2 |  handleize  }}--content" aria-expanded="false">
+                    {% if settings.accordion_title_2 != blank %}
+                        {{ settings.accordion_title_2 }}
+                    {% endif %}
+
+                    <span class="accordion__icon">
+                        {% render 'icon', name: 'arrow--up', class: 'accordion__icon--close svg--baseline' %}
+                        {% render 'icon', name: 'arrow--down', class: 'accordion__icon--open svg--baseline' %}
+                    </span>
+                </button>
+            </h3>
+
+            <div id="accordion--{{ settings.accordion_title_2 |  handleize }}--content" class="accordion__content js-accordion__content" role="region" aria-labelledby="accordion-{{ settings.accordion_title_2 |  handleize }}--button" hidden>
+                {% if fabric-icons %}
+                    <div class="accordion_icon-list">
+                        {% for icon in fabric-icons -%}
+                            <div class="accordion_icon-item">
+                                {% render 'responsive-image' with image: icon.icon.value  %}
+                                <div class="accordion_icon-title">{{ icon.icon_title.value }}</div>
+                            </div>
+                        {%- endfor %}
+                    </div>
+                {% endif %}
+
+                {% if fabric-content %}
+                    <div class="accordion_details">
+                        {{ fabric-content }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+
+    {% if fit-content or fit-icons %}
+        <div id="accordion-product" class="accordion__item js-accordion__item">
+            <h3 class="accordion__title h4">
+                <button type="button" class="accordion__button js-accordion__button" id="accordion-{{ settings.accordion_title_3 |  handleize }}--button" aria-controls="accordion--{{ settings.accordion_title_3 |  handleize  }}--content" aria-expanded="false">
+                    {% if settings.accordion_title_3 != blank %}
+                        {{ settings.accordion_title_3 }}
+                    {% endif %}
+
+                    <span class="accordion__icon">
+                        {% render 'icon', name: 'arrow--up', class: 'accordion__icon--close svg--baseline' %}
+                        {% render 'icon', name: 'arrow--down', class: 'accordion__icon--open svg--baseline' %}
+                    </span>
+                </button>
+            </h3>
+
+            <div id="accordion--{{ settings.accordion_title_3 |  handleize }}--content" class="accordion__content js-accordion__content" role="region" aria-labelledby="accordion-{{ settings.accordion_title_3 |  handleize }}--button" hidden>
+                {% if fit-icons %}
+                    <div class="accordion_icon-list">
+                        {% for icon in fit-icons -%}
+                            <div class="accordion_icon-item">
+                                {% render 'responsive-image' with image: icon.icon.value  %}
+
+                                <div class="accordion_icon-title">{{ icon.icon_title.value }}</div>
+                            </div>
+                        {%- endfor %}
+                    </div>
+                {% endif %}
+
+                {% if fit-content %}
+                    <div class="accordion_details">
+                        {{ fit-content }}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
+</div>

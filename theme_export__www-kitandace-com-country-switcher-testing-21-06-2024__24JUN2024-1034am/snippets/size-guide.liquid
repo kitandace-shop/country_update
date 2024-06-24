@@ -1,0 +1,75 @@
+{%- liquid
+    assign gender = ''
+    assign type = ''
+    assign size_guide_footer = size_guide_footer
+    assign size_guide_table = ''
+
+    for tag in product.tags
+        if tag contains "SizeGuide::"
+        assign gender_type_string = tag | split: "::" | last
+        unless gender_type_string.size > 1
+            break
+        endunless
+
+        assign gender_type = gender_type_string | split: "-"
+        unless gender_type.size > 1
+            break
+        endunless
+
+        assign gender = gender_type | first | strip
+        assign type = gender_type | last | strip
+        break
+        endif
+    endfor
+
+    if gender != '' and type != ''
+        capture size_guide_table
+            render "size-guide-table", gender: gender, type: type, hide_title: true, caption: caption, css_loading: "defer", inside_modal: true
+        endcapture
+    endif
+
+    assign size_guide_table = size_guide_table | strip
+-%}
+
+
+{% assign modal_id = modal_id | default: "size-guide" %}
+
+{% if modal_id %}
+
+    {% capture modalAttributes %}
+        class -*-
+            modal -#-
+                {{ variant | default: "default" }} -&-
+        id -*-
+            modal_{{ modal_id }}
+    {% endcapture %}
+
+    {% comment %}Modal HTML{% endcomment %}
+    <div {% render 'attribute', attribute: modalAttributes %}>
+
+        {% comment %}Modal Overlay {% endcomment %}
+        <div class="modal__overlay"></div>
+
+        {% comment %}Modal Popup {% endcomment %}
+        <div class="modal__popup">
+
+           {% comment %} Modal Content {% endcomment %}
+            <div class="modal__content modal__content--size-guide">
+                <button type="button" class="button__icon modal__close-button js-modal__close-button" aria-label="Close Modal">
+                    {% render 'icon', name: 'close' %}
+                </button>
+                {% if size_guide_table != blank %}
+                    <div class="size-guide">
+                        {{- size_guide_table -}}
+
+                        {%- if size_guide_footer != blank -%}
+                            <div class="size-guide__footer-content">
+                                {{ size_guide_footer }}
+                            </div>
+                        {%- endif -%}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endif %}

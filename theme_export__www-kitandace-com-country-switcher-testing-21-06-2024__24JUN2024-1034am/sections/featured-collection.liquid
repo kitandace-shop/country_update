@@ -1,0 +1,79 @@
+{%- comment -%}
+  This is a required section for the Shopify Theme Store.
+  It is available in the "Featured Collection" section in the theme editor.
+
+  Theme Store required settings
+  - Collection
+
+  Theme Store optional settings
+  - Heading: title of the featured collection section
+{%- endcomment -%}
+<div class="featured-collection container">
+
+    {%- assign collection = collections[section.settings.collection] -%}
+
+    <div class="carousel carousel--featured-collection swiper">
+        <div class="featured-collection__header">
+            {% if section.settings.title != blank %}
+                <h2 class="featured-collection__title">{{ section.settings.title | escape }}</h2>
+            {% endif %}
+            <div class="swiper-controllers">
+                <!-- If we need navigation buttons -->
+                <div class="swiper-arrow swiper-button-prev">{% render 'icon', name: 'carousel--prev', class: 'button__icon' %}<span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span></div>
+                <div class="swiper-arrow swiper-button-next">{% render 'icon', name: 'carousel--next', class: 'button__icon' %}<span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span></div>
+            </div>
+        </div>
+        <ul class="swiper-wrapper">
+            {% for product in collection.products limit: 6 %}
+                <li class="swiper-slide">
+                    {% render 'card--product' product: product %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="swiper-scrollbar" tabindex="-1"></div>
+
+    {% if section.settings.copy_block_button_text != blank and section.settings.copy_block_button_link != blank %}
+        <div class="featured-collection__buttons">
+            <a href="{{ section.settings.copy_block_button_link }}" class="button button--secondary button--feature-collection">{{ section.settings.copy_block_button_text }}</a>
+        </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Featured collection",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--feature-collection",
+    "settings": [
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Featured collection"
+        },
+        {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+        },
+        {
+           "type"  : "text",
+           "id"    : "copy_block_button_text",
+           "label" : "Button Label"
+        },
+        {
+           "type"  : "url",
+           "id"    : "copy_block_button_link",
+           "label" : "Button Link"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Featured collection",
+            "category": "Collection"
+        }
+    ]
+}
+{% endschema %}

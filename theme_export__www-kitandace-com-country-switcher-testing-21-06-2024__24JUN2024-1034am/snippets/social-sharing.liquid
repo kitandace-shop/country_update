@@ -1,0 +1,32 @@
+<!-- /snippets/social-sharing.liquid -->
+<div class="social-sharing">
+    Share:
+    {% if settings.share_facebook %}
+        <a target="_blank" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}">
+            {% render 'icon', name: 'facebook', class: 'share-icon' %}
+            <span class="sr-only">{{ 'accessibility.share_on_facebook' | t }}</span>
+        </a>
+    {% endif %}
+
+    {% if settings.share_twitter %}
+        <a target="_blank" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}">
+            {% render 'icon', name: 'twitter', class: 'share-icon' %}
+            <span class="sr-only">{{ 'accessibility.share_on_twitter' | t }}</span>
+        </a>
+    {% endif %}
+
+    {% if settings.share_pinterest %}
+        <a target="_blank" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | image_url: width: 1024, height: 1024 }}&amp;description={{ share_title | url_param_escape }}">
+            {% render 'icon', name: 'pinterest', class: 'share-icon' %}
+            <span class="sr-only">{{ 'accessibility.share_on_pinterest' | t }}</span>
+        </a>
+    {% endif %}
+
+    {% if settings.share_email %}
+        <a href="mailto:?subject=Thought you might like this article&amp;body=Hey, I was browsing {{ shop.name | escape }} and found this interesting blog post '{{ share_title | url_param_escape }}'. I wanted to share it with you.%0D%0A%0D%0A{{ shop.url | append: share_permalink }}" target="_blank" class="icon-mail" title="Email this to a friend">
+            {% render 'icon', name: 'email', class: 'share-icon' %}
+            <span class="sr-only">{{ 'accessibility.share_by_email' | t }}</span>
+        </a>
+    {% endif %}
+
+</div>

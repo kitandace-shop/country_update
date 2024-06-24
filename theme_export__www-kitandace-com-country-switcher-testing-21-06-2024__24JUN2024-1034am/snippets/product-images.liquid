@@ -1,0 +1,55 @@
+<!-- initial carousel position matches variant -->
+{% for media in product.media %}
+    {% if current_variant.featured_image %}
+        {% if media.src == current_variant.featured_image.src %}
+            {% assign initial_photo_index = media.position | minus: 1 %}
+        {% endif %}
+    {% else %}
+        {% assign initial_photo_index = 0 %}
+    {% endif %}
+{% endfor %}
+
+
+{% assign new_variant_images = '' %}
+{% for variant in product.variants %}
+    {% if variant.image %}
+        {% unless new_variant_images contains variant.image.src %}
+            {% assign new_variant_images = new_variant_images | append: ',' | append: variant.image.src %}
+        {% endunless %}
+    {% endif %}
+{% endfor %}
+
+
+{% assign image_unavailable =  'product-unavailable.png' | asset_img_url: 'master' %}
+{% assign one_image = false %}
+
+{% if product.media.size == 1 %}
+    {% assign one_image = true %}
+{% endif %}
+
+{% if product.has_only_default_variant != true and new_variant_images != blank and one_image == false %}
+    {% for media in product.media %}
+        {% if forloop.first == true %}
+            {% assign container_position = "first" %}
+        {% elsif forloop.last == true %}
+            {% assign container_position = "last" %}
+        {% else %}
+            {% assign container_position = "middle" %}
+        {% endif %}
+        {% render 'product-image-slide', unavailable_image: false, media: media, container_position: container_position, one_image: one_image, new_variant_images: new_variant_images, image_unavailable: image_unavailable, forloop: forloop.index0 %}
+    {% endfor %}
+    {% render 'product-image-slide', unavailable_image: true, image: image %}
+{% else %}
+    <div class="product__feature-image carousel--featured-product swiper current-variant carousel--one-image" data-product-featured-image>
+        <div class="swiper-wrapper">
+        {% for media in product.media %}
+            <div class="swiper-slide" tabindex="-1" data-index="{{ forloop}}">
+                {% render 'media' with media: media, featured_media: featured_media, height: 530, product_image_scale: 2 %}
+            </div>
+        {% endfor %}
+        </div>
+        <div class="pagination-wrapper">
+            <div class="swiper-scrollbar"></div>
+        </div>
+    </div>
+{% endif %}

@@ -1,0 +1,87 @@
+{% liquid
+    assign store_handle = metaobject.system.handle
+
+    assign name = metaobject.name
+    assign description = metaobject.description
+    assign featured_image = metaobject.featured_image
+    assign address_line_1 = metaobject.address_line_1
+    assign city = metaobject.city
+    assign postal_zip_code = metaobject.postal_zip_code
+    assign state_province = metaobject.state_province
+    assign country = metaobject.country
+    assign phone_number = metaobject.phone_number
+    assign email_address = metaobject.email_address
+    assign work_schedule_items = metaobject.work_schedule.value
+    assign coordinates = metaobject.coordinates
+
+    assign maps_api_key = section.settings.maps_api_key
+ %}
+
+<div class="store__map-wrapper">
+    <div class="store__map-info">
+      <div class="store__map-info-icon">{% render 'icon', name: 'pin' %}</div>
+
+      <p class="store__map-info-title">{{ name }}</p>
+
+      {%- if address_line_1 != blank -%}
+        <p class="store__map-info-address">{{ address_line_1 }}, {{ city }}, {{ state_province }}</p>
+      {%- endif -%}
+
+      {%- if coordinates != blank -%}
+        <a
+          class="store__map-info-directions"
+          href="https://www.google.com/maps/dir/?api=1&origin=My+Location&destination={{ coordinates | replace: ' ', '' }}"
+          target="_blank"
+        >
+          {{ 'sections.location.directions' | t }}
+        </a>
+      {%- endif -%}
+
+      {%- if work_schedule_items != blank -%}
+        <div class="store__map-info-schedule">
+          {%- for day_item in work_schedule_items -%}
+            <p class="store__map-info-schedule-item">
+              <b>{{ day_item.day }}</b>:
+              <span>{{ day_item.hours }}</span>
+            </p>
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+      {%- if phone_number != blank -%}
+        <a
+          class="store__map-info-phone"
+          href="tel:{{ phone_number | replace: ' ', '' | replace: '(', '' | replace: ')', '' | replace: '-', '' }}"
+        >{{ phone_number }}</a>
+      {%- endif -%}
+
+      {%- if email_address != blank -%}
+        <a class="store__map-info-email" href="mailto:{{ email_address }}">{{ email_address }}</a>
+      {%- endif -%}
+    </div>
+
+    {%- if coordinates != blank -%}
+      <div id="map" class="store__map" data-coordinates="{{ coordinates | replace: ' ', '' }}" data-maps-key={{ maps_api_key }}></div>
+    {%- endif -%}
+  </div>
+
+{% schema %}
+{
+    "name": "Location",
+    "tag": "section",
+    "class": "page-section page-section--location",
+    "settings": [
+        {
+            "type": "text",
+            "id": "maps_api_key",
+            "label": "Google Maps API Key"
+        }
+    ],
+    "presets": [
+        {
+            "name": "Location",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

@@ -1,0 +1,155 @@
+{% if section.blocks.size > 0 -%}
+    {% liquid
+        if section.settings.mobile_layout == 'accordion'
+            assign horizontal_class = ' mobile--hide'
+        else
+            assign swiper_class = ' swiper swiper--tabs'
+            assign swiper_wrapper_class = ' swiper-wrapper swiper-wrapper--tabs'
+        endif
+
+        assign block_count = 0
+
+        for block in section.blocks
+            if block.settings.title != blank and block.settings.tab_content != blank
+                assign block_count = block_count | plus: 1
+            endif
+        endfor
+
+        assign tab_list_class = 'grid-width-' | append: block_count
+    -%}
+
+    <div class="container">
+        <!-- Horizontal tabs -->
+        <div class="tabs--horizontal js-tabs--horizontal {{- horizontal_class }}">
+            <div class="tab__list-container--horizontal {{- swiper_class }}" data-block-count="{{ block_count }}">
+                <div
+                    class="tab__list--horizontal js-tab__list--horizontal {{ tab_list_class -}} {{- swiper_wrapper_class }}"
+                    role="tablist"
+                    aria-label="{{ section.settings.tab_label }}"
+                >
+                    {% for block in section.blocks -%}
+                        {% if block.settings.title != blank and block.settings.tab_content != blank -%}
+                            <button
+                                type="button" id="tab-{{ block.id }}--button"
+                                class="tab__button--horizontal js-tab__button--horizontal h3 swiper-slide"
+                                role="tab"
+                                aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+                                aria-controls="tab-{{ block.id }}--content"
+                                tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+                            >
+                                {{ block.settings.title }}
+                            </button>
+                        {%- endif %}
+                    {%- endfor %}
+                </div>
+
+                {% unless section.settings.mobile_layout == 'accordion' -%}
+                    <div class="swiper-button-prev swiper-button-prev--tabs swiper-arrow" tabindex="-1">
+                        <span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span>
+                    </div>
+
+                    <div class="swiper-button-next swiper-button-next--tabs swiper-arrow" tabindex="-1">
+                        <span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span>
+                    </div>
+                {%- endunless %}
+            </div>
+
+            {% for block in section.blocks -%}
+                {% if block.settings.title != blank and block.settings.tab_content != blank -%}
+                    <div
+                        id="tab-{{ block.id }}--content"
+                        class="tab__content--horizontal js-tab__content--horizontal"
+                        role="tabpanel"
+                        aria-labelledby="tab-{{ block.id}}--button"
+                        tabindex="0"
+                    >
+                        <div class='tab-content__wrapper'>
+                            {{ block.settings.tab_content }}
+                        </div>
+                    </div>
+                {%- endif %}
+            {%- endfor %}
+        </div>
+
+        {% if section.settings.mobile_layout == 'accordion' -%}
+            <!-- Accordion tabs -->
+            <div class="tabs--accordion js-tabs--accordion">
+                {% for block in section.blocks -%}
+                    {% if block.settings.title != blank and block.settings.tab_content != blank -%}
+                        <div id="accordion-tab-{{ block.id }}" class="tab__item--accordion js-tab__item--accordion">
+                            <p class="tab__title--accordion js-tab__title--accordion h4">
+                                <button type="button" class="tab__button--accordion js-tab__button--accordion" id="accordion-tab-{{ block.id }}__button" aria-controls="accordion-tab-{{ block.id }}--content" aria-expanded="false">
+                                    {{ block.settings.title }}
+
+                                    <span class="tab__icon--accordion">
+                                        {% render 'icon', name: 'minus', class: 'tab__icon--close svg--baseline' %}
+                                        {% render 'icon', name: 'plus', class: 'tab__icon--open svg--baseline' %}
+                                    </span>
+                                </button>
+                            </p>
+
+                            <div id="accordion-tab-{{ block.id }}--content" class="tab__content--accordion js-tab__content--accordion" role="region" aria-labelledby="accordion-tab-{{ block.id }}--button" hidden>
+                                {{ block.settings.tab_content }}
+                            </div>
+                        </div>
+                    {%- endif %}
+                {%- endfor %}
+            </div>
+        {%- endif %}
+    </div>
+{%- endif %}
+
+{% schema %}
+{
+    "name": "Tabs",
+    "class": "page-section page-section--gap page-section--full-bleed page-section--tabs",
+    "tag": "section",
+    "settings": [
+        {
+            "type": "text",
+            "id": "tab_label",
+            "label": "Tab list label",
+            "info": "A label that describes the purpose of the set of tabs. Used for accessibility."
+        },
+        {
+            "type": "select",
+            "id": "mobile_layout",
+            "label": "Mobile layout",
+            "options": [
+                {
+                    "value": "accordion",
+                    "label": "Accordion"
+                },
+                {
+                    "value": "horizontal",
+                    "label": "Horizontal"
+                }
+            ],
+            "default": "accordion",
+            "info": "The tab layout to use on mobile."
+        }
+    ],
+    "blocks": [
+        {
+            "type": "tab",
+            "name": "Tab",
+            "limit": 3,
+            "settings": [
+                {
+                    "type"   : "text",
+                    "id"     : "title",
+                    "label"  : "Title",
+                    "info"   : "Words in title shouldn't exceed 10 characters.",
+                    "default": "Tab title"
+                },
+                {
+                    "type"   : "richtext",
+                    "id"     : "tab_content",
+                    "label"  : "Content",
+                    "default": "<p>Enter your tab content.</p>"
+                }
+            ]
+        }
+    ]
+}
+{% endschema %}

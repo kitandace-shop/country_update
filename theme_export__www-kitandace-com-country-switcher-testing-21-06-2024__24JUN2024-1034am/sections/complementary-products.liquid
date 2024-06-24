@@ -1,0 +1,55 @@
+<section
+    class="product-recommendations"
+    data-section-id="{{ section.id }}"
+    data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.limit }}&intent=complementary"
+>
+    {% if recommendations.performed? and recommendations.products_count > 0 %}
+        <div class="product-recommendations__container">
+            {%- if section.settings.title != blank -%}
+                <h2 class="section-header__title">{{ section.settings.title | escape }}</h2>
+            {%- endif -%}
+
+            <div class="css-grid css-grid--product-driver css-grid--default css-grid--small-2 css-grid--medium-4 css-grid--large-4">
+                {% for product in recommendations.products %}
+                    {% render "card--product" product: product %}
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</section>
+
+{% schema %}
+{
+    "name": "Complementary Products",
+    "tag": "section",
+    "class": "page-section page-section--product-recommendations page-section--complementary-products",
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "This section will only be populated if associated products are set up in the Search & Discovery app."
+        },
+        {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Complementary Products"
+        },
+        {
+            "type": "range",
+            "id": "limit",
+            "min": 1,
+            "max": 10,
+            "step": 1,
+            "label": "Number of Products",
+            "default": 4
+        }
+    ],
+    "templates": ["product"],
+    "presets": [
+        {
+            "name": "Complementary Products",
+            "category": "PDP Sections"
+        }
+    ]
+}
+{% endschema %}

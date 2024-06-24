@@ -1,0 +1,18 @@
+{%- assign blog_title = blog.title -%}
+
+{% if current_tags %}
+    {% assign currentTags = current_tags | join: " + "  %}
+    {% capture blog_title %}{{ 'custom.blogs.latest_posts_html' | t: current_tags: currentTags }}{% endcapture %}
+{% endif %}
+
+<div class="page-header__content">
+    <h1 class="page-header__title">{{ blog_title }}</h1>
+</div>
+
+{% schema %}
+{
+  "name": "Page Header - Blog",
+  "class": "page-header page-header--left",
+  "tag": "section"
+}
+{% endschema %}

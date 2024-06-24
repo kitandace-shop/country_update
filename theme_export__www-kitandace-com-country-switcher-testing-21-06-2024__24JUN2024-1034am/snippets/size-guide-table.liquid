@@ -1,0 +1,114 @@
+{%- liquid
+    if title == blank
+        assign title = gender | append: " " | append: type
+    endif
+
+    if switcher_position == blank
+        assign switcher_position = "Center"
+    endif
+
+    if id == blank
+        assign id = id
+    endif
+
+    assign genders = shop.metafields.globals.size_guide_gender
+    assign types = shop.metafields.globals.size_guide_type
+    assign tables_inches = shop.metafields.globals.size_guide_table_inches
+    assign tables_cm = shop.metafields.globals.size_guide_table_cm
+    assign table_inches = ""
+    assign table_cm = ""
+
+    for sizeGuideGender in genders
+        if gender == sizeGuideGender and type == types[forloop.index0]
+            assign table_inches = tables_inches[forloop.index0]
+            assign table_cm = tables_cm[forloop.index0]
+        endif
+    endfor
+
+    if table_inches != '' and table_cm != ''
+        assign tab_number = 2
+    else
+        assign tab number = 1
+    endif
+-%}
+
+{% if title != '' %}
+    <h4 class="size-guide__title">{{ title }}</h4>
+{% endif %}
+
+{%- if table_inches != '' or table_cm != '' -%}
+    <div class="tabs--horizontal js-tabs--horizontal tabs--size-guide {{- horizontal_class }}">
+        <div class="tab__list-container--horizontal swiper swiper--tabs" data-block-count="{{ tab_number }}">
+                <div
+                    class="tab__list--horizontal js-tab__list--horizontal grid-width-{{ tab_number }} swiper-wrapper swiper-wrapper--tabs"
+                    role="tablist"
+                    aria-label="Size Guide"
+                >
+                    {%- if table_inches != '' -%}
+                        <button
+                            type="button" id="tab-inches--button-{{id}}"
+                            class="tab__button--horizontal js-tab__button--horizontal h3 swiper-slide"
+                            role="tab"
+                            aria-selected="true"
+                            aria-controls="tab-inches--content-{{id}}"
+                            tabindex="0"
+                        >
+                            Inches
+                        </button>
+                    {% endif %}
+
+                    {%- if table_cm != '' -%}
+                        <button
+                            type="button" id="tab-cm--button-{{id}}"
+                            class="tab__button--horizontal js-tab__button--horizontal h3 swiper-slide"
+                            role="tab"
+                            aria-selected="false"
+                            aria-controls="tab-cm--content-{{ id }}"
+                            tabindex="1"
+                        >
+                            CM
+                        </button>
+                    {% endif %}
+                </div>
+
+                {% unless section.settings.mobile_layout == 'accordion' -%}
+                    <div class="swiper-button-prev swiper-button-prev--tabs swiper-arrow" tabindex="-1">
+                        <span class="sr-only">{{ 'accessibility.prev_arrow' | t }}</span>
+                    </div>
+
+                    <div class="swiper-button-next swiper-button-next--tabs swiper-arrow" tabindex="-1">
+                        <span class="sr-only">{{ 'accessibility.next_arrow' | t }}</span>
+                    </div>
+                {%- endunless %}
+            </div>
+
+            {%- if table_inches != '' -%}
+                <div
+                    id="tab-inches--content-{{ id }}"
+                    class="tab__content--horizontal js-tab__content--horizontal is-open"
+                    role="tabpanel"
+                    aria-labelledby="tab-inches--button-{{ id }}"
+                    tabindex="0"
+                >
+                    <div class='tab-content__wrapper'>
+                        {{ table_inches }}
+                    </div>
+                </div>
+            {%- endif -%}
+
+            {%- if table_cm != '' -%}
+                <div
+                    id="tab-cm--content-{{ id }}"
+                    class="tab__content--horizontal js-tab__content--horizontal"
+                    role="tabpanel"
+                    aria-labelledby="tab-cm--button-{{ id }}"
+                    tabindex="0"
+                >
+                    <div class='tab-content__wrapper'>
+                        {{ table_cm }}
+                    </div>
+                </div>
+            {%- endif -%}
+        </div>
+    </div>
+{%- endif -%}

@@ -1,0 +1,116 @@
+<div class="container icon-block animate-in">
+    {% if section.settings.icon-block-title != blank %}
+        <h2 class="icon-block__header">{{ section.settings.icon-block-title }}</h2>
+    {% endif %}
+
+     {% if section.settings.icon-block-content != blank %}
+        <p class="icon-block__content">{{ section.settings.icon-block-content }}</p>
+    {% endif %}
+
+    <!-- Icon Block HTML  -->
+    <div class="icon-block icon-block--default">
+        <!-- Icon Item Loop  -->
+        {% if section.blocks.size > 0 %}
+            <ul class="icon-block__list ">
+                {% for block in section.blocks %}
+                    <li class="icon-block__item animate-in--list-delay">
+                        <div class="icon-block__icon">
+                            {% if block.settings.icon-image != blank %}
+                                {% render 'responsive-image' with
+                                    image: block.settings.icon-image
+                                %}
+                            {% endif %}
+                        </div>
+                        <div class="icon-block__content-wrapper">
+                            {% if block.settings.title != blank %}
+                                <h3 class="icon-block__title h4">{{ block.settings.title }}</h3>
+                            {% endif %}
+
+                            {% if block.settings.text != blank %}
+                                <p class="icon-block__copy">{{ block.settings.text }}</p>
+                            {% endif %}
+
+                            {% if block.settings.icon-button-label != blank and block.settings.icon-button-link != blank %}
+                                <a href="{{ block.settings.icon-button-link }}" class="button button--primary button--text">{{ block.settings.icon-button-label }}{% render 'icon', name: 'arrow--cta', class: 'button__icon' %}</a>
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </div>
+
+    {% if section.settings.icon-block-button-label != blank and section.settings.icon-block-button-link != blank %}
+        <a href="{{ section.settings.icon-block-button-link }}" class="button button--primary">{{ section.settings.icon-block-button-label }}</a>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Icon Block",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--icon-block",
+    "settings": [
+        {
+            "type": "text",
+            "id": "icon-block-title",
+            "label": "Heading"
+        },
+        {
+            "type": "textarea",
+            "id": "icon-block-content",
+            "label": "Subheading"
+        },
+        {
+            "type": "text",
+            "id": "icon-block-button-label",
+            "label": "Button Label"
+        },
+        {
+            "type": "url",
+            "id": "icon-block-button-link",
+            "label": "Button Link"
+        }
+    ],
+    "blocks": [
+        {
+        "type": "icon-item",
+        "name": "Icon Item",
+        "limit": 5,
+        "settings": [
+            {
+                "type": "image_picker",
+                "id": "icon-image",
+                "label": "Icon"
+            },
+            {
+                "type": "text",
+                "id": "title",
+                "label": "Title"
+            },
+            {
+                "type": "textarea",
+                "id": "text",
+                "label": "Text"
+            },
+            {
+                "type": "text",
+                "id": "icon-button-label",
+                "label": "Button Label"
+            },
+            {
+                "type": "url",
+                "id": "icon-button-link",
+                "label": "Button Link"
+            }
+        ]
+        }
+    ],
+    "presets": [
+        {
+            "name": "Icon Block",
+            "category": "Components"
+        }
+    ]
+}
+{% endschema %}

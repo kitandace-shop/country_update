@@ -1,0 +1,109 @@
+{% liquid
+    if section.settings.page-header-video != blank
+        assign page-header--type = 'page-header--video'
+        assign page-content = 'background-media__content background-media__content--center'
+
+    elsif section.settings.page-header-image != blank
+        assign page-header--type = 'page-header--image'
+        assign page-content = 'background-media__content background-media__content--center'
+    else
+        assign page-content = 'page-header__content'
+        assign page-header--type = 'page-header--text'
+    endif
+%}
+
+<div class="page-header {{ page-header--type }}">
+    {% if section.settings.page-header-video != blank %}
+        <div class="background-media background-media--video">
+            <div class="video-block video-block--html5 {% if section.settings.page-header-image %}is-postered{% endif %} video-block--is-paused">
+                <div class="video-block__controls">
+                    <div class="video-block__controls-static">
+                        <button class="video-block__control video-block__control--play">
+                            {% render 'icon', name: 'play' %}
+                            <span class="sr-only">{{ 'accessibility.play_video' | t }}</span>
+                        </button>
+
+                        <button class="video-block__control video-block__control--pause">
+                            {% render 'icon', name: 'pause' %}
+                            <span class="sr-only">{{ 'accessibility.pause_video' | t }}</span>
+                        </button>
+                    </div>
+                </div>
+
+                <video class="video-block__video" poster="{{ section.settings.page-header-image | image_url: width: 1200 }}" preload="preload" muted="muted" loop="loop" autoplay="autoplay" playsinline>
+                    {% for source in section.settings.page-header-video.sources -%}
+                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {%- endfor %}
+                </video>
+            </div>
+
+    {% elsif section.settings.page-header-image != blank %}
+        <div class="background-media background-media--image">
+            <div class="background-media__background">
+                {% render 'responsive-image' with
+                    image:         section.settings.page-header-image,
+                    image_class:   "background-image",
+                    lazy:          false
+                %}
+            </div>
+
+    {% endif %}
+
+        <div class="{{ page-content }}">
+            {% if section.settings.page-header-title != blank %}
+                <h1 class="page-header__title h2">{{ section.settings.page-header-title }}</h1>
+            {% endif %}
+
+            {% if section.settings.page-header-text != blank %}
+                <div class="page-header__text">{{ section.settings.page-header-text }}</div>
+            {% endif %}
+
+            {% if section.settings.page-header-button-text != blank and section.settings.page-header-link != blank %}
+                <a href="{{ section.settings.page-header-link }}" class="button button--primary page-header__button">{{ section.settings.page-header-button-text }}
+                </a>
+            {% endif %}
+        </div>
+    {% if section.settings.page-header-video != blank or section.settings.page-header-image != blank %}
+        </div>
+    {% endif %}
+</div>
+
+{% schema %}
+{
+    "name": "Page Hero - Video",
+    "tag": "section",
+    "class": "page-section page-section--full-bleed page-section--no-gap page-section--show-sticky",
+    "settings": [
+        {
+            "type": "image_picker",
+            "id": "page-header-image",
+            "label": "Image"
+        },
+        {
+            "type": "video",
+            "id": "page-header-video",
+            "label": "Video"
+        },
+        {
+            "type": "text",
+            "id": "page-header-title",
+            "label": "Heading"
+        },
+        {
+            "type": "textarea",
+            "id": "page-header-text",
+            "label": "Subheading"
+        },
+        {
+            "type": "text",
+            "id": "page-header-button-text",
+            "label": "Button Label"
+        },
+        {
+           "type": "url",
+            "id": "page-header-link",
+            "label": "Button Link"
+        }
+    ]
+}
+{% endschema %}

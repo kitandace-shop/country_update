@@ -1,0 +1,38 @@
+<div class="mini-cart__item--dropdown">
+    <a href="{{ routes.cart_url }}" class="mini-cart__header-link">
+        {% render 'icon', name: 'cart' %} Cart (<span class='cart__item-count' aria-hidden="true">{{ cart.item_count }}</span><span class="sr-only cart__item--count-sr"></span>)
+    </a>
+
+
+
+    <div class="dropdown--mini-cart">
+        <div class="mini-cart__items-container">
+            <ul class="mini-cart__items-list">
+                <li>
+                    <p>{{ 'custom.cart.no_item_message' | t }}</p>
+                </li>
+            </ul>
+        </div>
+        <div class="mini-cart__footer">
+            <div class="cart-subtotal__container cart-summary__item">
+                <span class="cart-info__item-count">{{ 'cart.general.subtotal' | t }} ({{ cart.item_count }} {% if cart.item_count > 1 %}{{ 'custom.items_count.other' | t }}{% else %}{{ 'custom.items_count.one' | t }}{% endif %})</span>
+                <span class="cart-info__subtotal">
+                    {% render 'price-format', price: cart.total_price %}
+                </span>
+            </div>
+            <div class="free-shipping-progress__container" data-minimum-subtotal='{{ settings.free_shipping_threshold | default: "" }} '>
+                {% comment %} Placeholder for Free Shipping progress {% endcomment %}
+            </div>
+
+            <div class="button-collection">
+                <a class="button button--primary button__edit-cart" href="{{ routes.cart_url }}">{{ 'custom.modal.edit_cart' | t }}</a>
+                {% if routes.root_url == '/' %}
+                    {% assign checkout_url = '/checkout' %}
+                {% else %}
+                    {% assign checkout_url = routes.root_url | append: "/checkout" %}
+                {% endif %}
+                <a class="button button--primary button--transparent button__checkout" href="{{ checkout_url }}">{{ 'cart.general.checkout' | t }}</a>
+            </div>
+        </div>
+    </div>
+</div>
