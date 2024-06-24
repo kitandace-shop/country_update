@@ -56,30 +56,6 @@
         {% assign settingCurrencyFormat = shop.money_format %}
     {% endif %}
 
-
-    <script>
-        console.log("big mode")
-        // Fetch the visitor's geolocation data using IPinfo API
-        fetch('https://ipinfo.io/json?token=3e5b63f313b6c1')
-          .then(response => response.json())
-          .then(data => {
-            // Store the location data in local storage or use it directly
-            localStorage.setItem('visitorLocation', JSON.stringify(data));
-      
-            // Example: Log the visitor's country
-            console.log('Visitor Country:', data.country);
-      
-            // Example: Change the country selector flag or other elements based on the visitor's location
-            // Assuming you have a function to handle the flag change
-            updateCountryFlag(data.country);
-          })
-          .catch(error => {
-            console.error('Error fetching geolocation data:', error);
-          });
-          }
-        }
-    </script>
-
     <script>
         document.documentElement.className = document.documentElement.className.replace('no-js', '');
 
@@ -302,7 +278,28 @@
             });
         </script>
     {% endif %}
-    
+    <script>
+        console.log("big mode")
+        // Fetch the visitor's geolocation data using IPinfo API
+        fetch('https://ipinfo.io/json?token=3e5b63f313b6c1')
+          .then(response => response.json())
+          .then(data => {
+            // Store the location data in local storage or use it directly
+            localStorage.setItem('visitorLocation', JSON.stringify(data));
+      
+            // Example: Log the visitor's country
+            console.log('Visitor Country:', data.country);
+      
+            // Example: Change the country selector flag or other elements based on the visitor's location
+            // Assuming you have a function to handle the flag change
+            updateCountryFlag(data.country);
+          })
+          .catch(error => {
+            console.error('Error fetching geolocation data:', error);
+          });
+          }
+        }
+    </script>
       
 </body>
 </html>
