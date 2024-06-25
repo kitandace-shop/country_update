@@ -281,7 +281,7 @@
     <script>
         console.log("big");
         fetch('browsing_context_suggestions.json')
-        .then(res=>res.json())
+        .then(res=> console.log(res))
         .then(console.log(r.detected_values.country.name))
     </script>
     <script>
