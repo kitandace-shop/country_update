@@ -61,7 +61,7 @@
                             {{ country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
                         </div>
                         <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
-                            {{ country.name }} ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
+                            {{request.country}}{{ country.name }} ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
                         </a>
                       </li>
                     {% endif %}

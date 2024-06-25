@@ -295,7 +295,9 @@
                 })
                 .then(data => {
                     // Log the visitor's country for debugging
-                    console.log('Visitor Country:', data.country);
+                    visitor_country = data.country
+
+                    console.log('Visitor Country:', visitor_country);
                 })
                 .catch(error => {
                     console.error('Error fetching geolocation data:', error);
