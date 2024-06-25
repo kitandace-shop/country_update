@@ -52,7 +52,7 @@
                         </div>
                                           
                         <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
-                          {{request.country}} ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
+                          {{country.name}} ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
                         </a>
                       </li>
                     {% else %}
