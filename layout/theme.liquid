@@ -282,7 +282,7 @@
         console.log("big");
         fetch('browsing_context_suggestions.json')
         .then(res=>res.json())
-        .then(r=> console.log(r.detected_values.country.name))
+        .then(console.log(r.detected_values.country.name))
     </script>
     <script>
         console.log("bigest mode");
