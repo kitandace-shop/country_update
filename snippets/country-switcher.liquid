@@ -48,8 +48,8 @@
                     {% if  international_countries contains country.name %}
                       <li class="disclosure__item"" tabindex="-1">
                         <div class="country-switcher__flag">
-                            {{ country | image_url: width: 32 | image_tag: class: 'country-switcher__flag-image' }}
-                        </div>
+                          <img src="{{ 'apple-touch-icon.png' | asset_url }}" class="country-switcher__flag-image" width="32">
+                        </div>                      
                         <a href="#" aria-label="{{ 'accessibility.change_country' | t }} {{ country.name }}"{% if country.iso_code == localization.country.iso_code %} aria-current="true"{% endif %} data-value="{{ country.iso_code }}">
                             International ({{ country.currency.symbol }}{{ country.currency.iso_code }} )
                         </a>
