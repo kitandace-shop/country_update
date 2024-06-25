@@ -284,40 +284,25 @@
         .then(res=> console.log(res.json))
     </script>
     <script>
-        console.log("bigest mode");
-        console.log(request.country)
-    
-        // Fetch the visitor's geolocation data using IPinfo API
-        fetch('https://ipinfo.io?token=3e5b63f313b6c1')
-            .then(response => {
-                console.log('Response:', response);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok ' + response.statusText);
-                }
-                return response.json();
-            })
-            .then(data => {
-                console.log('Data:', data);
-    
-                // Store the location data in local storage or use it directly
-                localStorage.setItem('visitorLocation', JSON.stringify(data));
-    
-                // Log the visitor's country
-                console.log('Visitor Country:', data.country);
-    
-                // Example: Change the country selector flag or other elements based on the visitor's location
-                // Assuming you have a function to handle the flag change
-                updateCountryFlag(data.country);
-            })
-            .catch(error => {
-                console.error('Error fetching geolocation data:', error);
-            });
-    
-        // Dummy function for the example
-        function updateCountryFlag(country) {
-            console.log('Country flag updated for:', country);
-        }
+        console.log("bigger mode")
+        document.addEventListener('DOMContentLoaded', function() {
+            fetch('https://ipinfo.io?token=3e5b63f313b6c1')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok ' + response.statusText);
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Log the visitor's country for debugging
+                    console.log('Visitor Country:', data.country);
+                })
+                .catch(error => {
+                    console.error('Error fetching geolocation data:', error);
+                });
+        });
     </script>
+    
     </body>
     </html>
     
