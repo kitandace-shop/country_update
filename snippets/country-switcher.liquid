@@ -18,7 +18,7 @@
 
               <ul id="CountryList" role="list" class="disclosure__list country__list country-switcher__list country-switcher" hidden>
                 {% assign international_countries = "Australia,Hong Kong SAR,Japan,Netherlands,United Kingdom," | split: ',' %}
-                {% assign int_stand_in = "Hong Kong SAR" %}
+                {% assign int_stand_in = "United Kingdom" %}
                 {% for country in localization.available_countries %}
                   {% if country.name == "Canada" or country.name == "United States" %}
                     {% if  international_countries contains country.name %}
