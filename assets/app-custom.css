@@ -1,0 +1,30 @@
+.hero-banner .background-media__content {
+  padding: 5px 0 30px;
+}
+.hero-banner__description {
+  margin: -20px 0 0 0;
+}
+.collection-filters-container .filter__type {
+  font-weight: 500;
+}
+.hero-banner .background-media__content .hero-banner__button-collection {
+  margin-top: 10px;
+}
+.hero-banner {
+    grid-template-rows: [image-start] 50px minmax(430px, 1fr) 0px [image-end];
+}
+@media (min-width: 768px) {
+  .hero-banner {
+    margin-top: -50px;
+  }
+  .hero-banner__description {
+    margin: -20px 0 20px 0;
+  }
+  .hero-banner .background-media__content {
+    padding: 15px 0 30px;
+    margin-bottom: 80px;
+  }
+  .hero-banner .background-media__content .hero-banner__button-collection {
+    margin-top: 20px;
+  }
+}
