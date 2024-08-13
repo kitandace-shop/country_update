@@ -165,7 +165,7 @@
     {% section 'header' %}
 
     <main role="main" id="MainContent" class="main container layout--one-column">
-        {{ content_for_layout }}
+        {% capture ICART_FULL_PAGE_LAYOUT %}{{ content_for_layout }}{% endcapture %}{% include 'icart-variables', ICART_FULL_PAGE_LAYOUT: ICART_FULL_PAGE_LAYOUT %}
 
         {% comment %} Add Section Everywhere to the Cart page only when the cart is empty. {% endcomment %}
         {% if template == 'cart' and cart.item_count == 0 %}
@@ -311,6 +311,8 @@ AddShoppers tracking script:
           document.getElementsByTagName("head")[0].appendChild(t)
       }());
 </script>
+
+
 
     
 </body>
