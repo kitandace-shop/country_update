@@ -13,7 +13,7 @@ if (!customElements.get('pickup-availability')) {
   
         fetchAvailability(variantId) {
           var bopis_id="0";
-          console.log("bopis_cookie:"+this.getCookie("bopis"));
+          //console.log("bopis_cookie:"+this.getCookie("bopis"));
           /*
           if (sessionStorage.bopis_store == null){
             bopis_id="0";
@@ -23,14 +23,14 @@ if (!customElements.get('pickup-availability')) {
           if (this.getCookie("bopis")==""){
             bopis_id="0";
           }else{
-            bopis_id=this.getCookie("bopis");
+            bopis_id=this.getCookie("bopis"); 
           }
-          console.log("bopis_store:"+bopis_id);
+          //console.log("bopis_store:"+bopis_id);
           let rootUrl = this.dataset.rootUrl;
           if (!rootUrl.endsWith('/')) {
             rootUrl = rootUrl + '/';
           }
-          const variantSectionUrl = `${rootUrl}variants/${variantId}/?section_id=pickup-availability&bopis_store=${bopis_id}`;
+          const variantSectionUrl = `${rootUrl}variants/${variantId}/?section_id=pickup-availability&bopis_store=${bopis_id}`; 
   
           fetch(variantSectionUrl)
             .then((response) => response.text())

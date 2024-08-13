@@ -120,6 +120,9 @@
             {% if section.settings.hero-banner-title != blank %}
                 <h1 class="hero-banner__title">{{ section.settings.hero-banner-title }}</h1>
             {% endif %}
+            {% if section.settings.hero-banner-description != blank %}
+                <h3 class="hero-banner__description">{{ section.settings.hero-banner-description }}</h3>
+            {% endif %}
 
             <div class="hero-banner__button-collection">
                 {% if section.settings.hero-banner-button-text != blank and section.settings.hero-banner-link != blank %}
@@ -168,6 +171,11 @@
             "type": "text",
             "id": "hero-banner-title",
             "label": "Heading"
+        },
+        {
+            "type": "text",
+            "id": "hero-banner-description",
+            "label": "Description"
         },
         {
             "type": "select",

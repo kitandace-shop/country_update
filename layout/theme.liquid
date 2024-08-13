@@ -153,8 +153,8 @@
             t.src = "https://shop.pe/widget/widget_async.js#651fdf3fbb4125f93a7cb965",
             document.getElementsByTagName("head")[0].appendChild(t)
         }());
-
 </script>
+{{ 'app-custom.css' | asset_url | stylesheet_tag }}
 </head>
 
 <body id="{{ page_title | handle }}" class="template-{{ template.name | handle }}">
@@ -185,6 +185,10 @@
 
     {%- render 'swymSnippet' -%}
     {%- render 'swym-login-require' -%}
+
+  
+
+
 
     <!--Gorgias Chat Widget Start-->
     <script id="gorgias-chat-widget-install-v2" src="https://config.gorgias.chat/gorgias-chat-bundle-loader.js?applicationId=15954"></script>
@@ -278,33 +282,36 @@
             });
         </script>
     {% endif %}
-    <script>
-        console.log("big");
-        fetch('browsing_context_suggestions.json')
-        .then(res=> console.log(res.json))
-    </script>
-    <script>
-        console.log("bigger mode")
-        document.addEventListener('DOMContentLoaded', function() {
-            fetch('https://ipinfo.io?token=3e5b63f313b6c1')
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok ' + response.statusText);
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Log the visitor's country for debugging
-                    visitor_country = data.country
 
-                    console.log('Visitor Country:', visitor_country);
-                })
-                .catch(error => {
-                    console.error('Error fetching geolocation data:', error);
-                });
+<script>
+    window.addEventListener("load", function() {
+        const elements = document.querySelectorAll(".filter-group");
+        elements.forEach(function(element) {
+            element.removeAttribute("open");
+            element.style.width = "250px";
         });
-    </script>
+    });
+</script>
+
+{% comment %}
+
+AddShoppers tracking script:
+
+{% endcomment %}
+
+<script type="text/javascript">
+  //DO NOT REMOVE - DRIVES REVENUE
+  var AddShoppersWidgetOptions = { 'loadCss': false, 'pushResponse': false };
+      (!function(){
+          var t=document.createElement("script");
+          t.type="text/javascript",
+          t.async=!0,
+          t.id="AddShoppers",
+          t.src="https://shop.pe/widget/widget_async.js#651fdf3fbb4125f93a7cb965",
+          document.getElementsByTagName("head")[0].appendChild(t)
+      }());
+</script>
+
     
-    </body>
-    </html>
-    
+</body>
+</html>
