@@ -6,7 +6,7 @@ document.querySelector("#productStickyContainer").style.pointerEvents = 'none';
 const targetNode = document.body;
 const config = { childList: true, subtree: true };
 
-//modifications to the smart cart widget on render use mutation observer to detect the loading of the object
+//modifications to the smart cart widget and add to cart button on render. Use mutation observer to detect the loading of the object
 const callback = function(mutationsList, observer) {
     for (let mutation of mutationsList) {
         if (mutation.type === 'childList') {
@@ -19,6 +19,7 @@ const callback = function(mutationsList, observer) {
                 document.querySelectorAll('.rebuy-cart__progress-bar-container.below').forEach(function(element) {
                     element.style.display = 'none';
                 });
+                document.querySelector("#productStickyContainer").style.pointerEvents = 'auto';
                 observer.disconnect();
             }
         }
