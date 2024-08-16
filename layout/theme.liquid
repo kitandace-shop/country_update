@@ -9,6 +9,9 @@
     <meta name="theme-color" content="{{ settings.color_accent }}">
     <link rel="canonical" href="{{ canonical_url }}">
 
+    <!--disable the add to cart button until rebuy loads-->
+    <script src="{{ 'rebuy-cart.js' | asset_url }}" defer ></script>
+
       <!-- Favicon -->
   {%- render 'favicon' -%}
 
