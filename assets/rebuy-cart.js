@@ -1,7 +1,27 @@
+
+//these functions grey out and disble buttons within a div and vice versa
+function disableButtons(element) {
+    const buttons = element.querySelectorAll('button');
+    buttons.forEach(function(button) {
+        button.style.pointerEvents = 'none';
+        button.style.color = 'lightgrey';
+        button.style.backgroundColor = 'lightgrey';
+    });
+}
+
+function enableButtons(element) {
+    const buttons = element.querySelectorAll('button');
+    buttons.forEach(function(button) {
+        button.style.pointerEvents = 'auto';
+        button.style.color = '';
+        button.style.backgroundColor = '';
+    });
+}
+
+
 //make the add to bag button unclickable until the rebuy widget loads
-document.querySelector("#productStickyContainer").style.pointerEvents = 'none';
-
-
+cartButtonDiv = document.querySelector("#productStickyContainer");
+disableButtons(cartButtonDiv);
 
 const targetNode = document.body;
 const config = { childList: true, subtree: true };
@@ -19,7 +39,9 @@ const callback = function(mutationsList, observer) {
                 document.querySelectorAll('.rebuy-cart__progress-bar-container.below').forEach(function(element) {
                     element.style.display = 'none';
                 });
-                document.querySelector("#productStickyContainer").style.pointerEvents = 'auto';
+                //enable the add to cart and wishlist buttons
+                enableButtons(cartButtonDiv);
+                
                 observer.disconnect();
             }
         }
