@@ -1,1 +1,259 @@
-{"sections":{"hero_banner_9NhiMU":{"type":"hero-banner","settings":{"desktop-hero-image":"shopify:\/\/shop_images\/Thank_you_page.jpg","mobile-hero-image":"shopify:\/\/shop_images\/Thank_you_page.jpg","hero-banner-title":"Homepage Hero","hero-banner-button-text":"Link","hero-banner-link":"shopify:\/\/pages\/contact-us","hero-banner-button-text2":"","hero-banner-link2":""}},"page-header":{"type":"page-header","settings":{"page-header-image":"shopify:\/\/shop_images\/Page_Hero.png","page-header-title":"Page Hero","page-header-text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.","page-header-button-text":"See More","page-header-link":"shopify:\/\/pages\/core-values","page-header-button-text2":"","page-header-link2":""}},"intro_block_KMCBDx":{"type":"intro-block","settings":{"section_id":"","intro-block-background-color":"shoreline","intro-block-icon-toggle":"on","intro-block-title":"<p>Intro Block<\/p>","intro-block-text":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<\/p>","intro-block-button-text":"Test","intro-block-link":"shopify:\/\/pages\/careers","intro-block-alignment":"left"}},"tabs_collection_list_fppkEC":{"type":"tabs--collection-list","blocks":{"collection_EA83tH":{"type":"collection","settings":{"collection":"6-pack-season","collection_tab":"mens"}},"collection_W9X7EC":{"type":"collection","settings":{"collection":"accessories-men","collection_tab":"mens"}},"collection_6AG3bp":{"type":"collection","settings":{"collection":"bestsellers-men","collection_tab":"mens"}},"collection_AdTmQA":{"type":"collection","settings":{"collection":"men-business-casual","collection_tab":"mens"}},"collection_tqhTLw":{"type":"collection","settings":{"collection":"jackets-blazers","collection_tab":"mens"}},"collection_kWnFzx":{"type":"collection","settings":{"collection":"cashmere","collection_tab":"womens"}},"collection_Fa3bA3":{"type":"collection","settings":{"collection":"shorts-skirts","collection_tab":"womens"}},"collection_aDHhhi":{"type":"collection","settings":{"collection":"pants-women","collection_tab":"womens"}},"collection_JL37Ef":{"type":"collection","settings":{"collection":"jackets-women","collection_tab":"womens"}},"collection_wmBfxq":{"type":"collection","settings":{"collection":"women-loungewear","collection_tab":"mens"}},"collection_J3in9q":{"type":"collection","settings":{"collection":"brushed-french-terry-women","collection_tab":"mens"}}},"block_order":["collection_EA83tH","collection_W9X7EC","collection_6AG3bp","collection_AdTmQA","collection_tqhTLw","collection_kWnFzx","collection_Fa3bA3","collection_aDHhhi","collection_JL37Ef","collection_wmBfxq","collection_J3in9q"],"settings":{"section_id":"","tab_label":"","tab_title_womens":"Womens","tab_title_mens":"Mens"}},"featured_collection_Lt4jpH":{"type":"featured-collection","settings":{"title":"Featured collection","collection":"fall-work-essentials","copy_block_button_text":"","copy_block_button_link":""}},"faqs_JViUFU":{"type":"faqs","blocks":{"accordion_qKj3Gd":{"type":"accordion","settings":{"title":"Lorem ipsum dolor sit amet","accordion-content":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<\/p>"}},"accordion_MUT8B3":{"type":"accordion","settings":{"title":"Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.","accordion-content":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<\/p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<\/p>"}}},"block_order":["accordion_qKj3Gd","accordion_MUT8B3"],"settings":{"accordion-section-title":"FAQ Accordion","accordion-section-content":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<\/p>","faq_block_button_text":"","faq_block_button_link":""}},"newsletter_UAMXkC":{"type":"newsletter","settings":{"section_title":"Subscribe to our newsletter","subheading":"A short sentence describing what someone will receive by subscribing"}},"content_panel_3qE4A3":{"type":"content-panel","settings":{"section_id":"","panel_orientation":"right","content_panel_image":"shopify:\/\/shop_images\/Frame_6319.png","copy_block_title":"Content Panel","copy_block_text":"<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.<\/p>","copy_block_button_text":"Learn More","copy_block_button_link":"shopify:\/\/pages\/kit-and-ace-our-fabrics","video_url":"","use_play_button":false}},"banner_block_LBWQRR":{"type":"banner-block","settings":{"section_id":"","banner-block-image":"shopify:\/\/shop_images\/Frame_6352.png","banner-block-title":"Banner Block","banner-block-text":"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.","banner-block-button-text":"Learn More","banner-block-link":"shopify:\/\/pages\/contact-us"}},"featured_product_D9xjj8":{"type":"featured-product","settings":{"product":"marbella-boyfriend-shirt-striped","display_price":false}},"video_block_bEdcCq":{"type":"video-block","settings":{"mobile_video":"shopify:\/\/files\/videos\/SP24-Spend+Get-Homepage-Desktop.mp4","mobile_cover_image":"shopify:\/\/shop_images\/Page_Hero_1.png","desktop_video":"shopify:\/\/files\/videos\/SP24-Spend+Get-Homepage-Desktop.mp4","desktop_cover_image":"shopify:\/\/shop_images\/Page_Hero_2.png"}},"rich_text_3FDK6n":{"type":"rich-text","settings":{"title":"Talk about your brand","text":"<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.<\/p>","rich-text-block-alignment":"left"}}},"order":["hero_banner_9NhiMU","page-header","intro_block_KMCBDx","tabs_collection_list_fppkEC","featured_collection_Lt4jpH","faqs_JViUFU","newsletter_UAMXkC","content_panel_3qE4A3","banner_block_LBWQRR","featured_product_D9xjj8","video_block_bEdcCq","rich_text_3FDK6n"]}
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "hero_banner_9NhiMU": {
+      "type": "hero-banner",
+      "settings": {
+        "desktop-hero-image": "shopify://shop_images/Thank_you_page.jpg",
+        "mobile-hero-image": "shopify://shop_images/Thank_you_page.jpg",
+        "hero-banner-title": "Homepage Hero",
+        "hero-banner-button-text": "Link",
+        "hero-banner-link": "shopify://pages/contact-us",
+        "hero-banner-button-text2": "",
+        "hero-banner-link2": ""
+      }
+    },
+    "page-header": {
+      "type": "page-header",
+      "settings": {
+        "page-header-image": "shopify://shop_images/Page_Hero.png",
+        "page-header-title": "Page Hero",
+        "page-header-text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "page-header-button-text": "See More",
+        "page-header-link": "shopify://pages/core-values",
+        "page-header-button-text2": "",
+        "page-header-link2": ""
+      }
+    },
+    "intro_block_KMCBDx": {
+      "type": "intro-block",
+      "settings": {
+        "section_id": "",
+        "intro-block-background-color": "shoreline",
+        "intro-block-icon-toggle": "on",
+        "intro-block-title": "<p>Intro Block</p>",
+        "intro-block-text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "intro-block-button-text": "Test",
+        "intro-block-link": "shopify://pages/careers",
+        "intro-block-alignment": "left"
+      }
+    },
+    "tabs_collection_list_fppkEC": {
+      "type": "tabs--collection-list",
+      "blocks": {
+        "collection_EA83tH": {
+          "type": "collection",
+          "settings": {
+            "collection": "6-pack-season",
+            "collection_tab": "mens"
+          }
+        },
+        "collection_W9X7EC": {
+          "type": "collection",
+          "settings": {
+            "collection": "accessories-men",
+            "collection_tab": "mens"
+          }
+        },
+        "collection_6AG3bp": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers-men",
+            "collection_tab": "mens"
+          }
+        },
+        "collection_AdTmQA": {
+          "type": "collection",
+          "settings": {
+            "collection": "men-business-casual",
+            "collection_tab": "mens"
+          }
+        },
+        "collection_tqhTLw": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-jackets-blazers",
+            "collection_tab": "mens"
+          }
+        },
+        "collection_kWnFzx": {
+          "type": "collection",
+          "settings": {
+            "collection": "cashmere",
+            "collection_tab": "womens"
+          }
+        },
+        "collection_Fa3bA3": {
+          "type": "collection",
+          "settings": {
+            "collection": "shorts-skirts",
+            "collection_tab": "womens"
+          }
+        },
+        "collection_aDHhhi": {
+          "type": "collection",
+          "settings": {
+            "collection": "pants-women",
+            "collection_tab": "womens"
+          }
+        },
+        "collection_JL37Ef": {
+          "type": "collection",
+          "settings": {
+            "collection": "jackets-women",
+            "collection_tab": "womens"
+          }
+        },
+        "collection_wmBfxq": {
+          "type": "collection",
+          "settings": {
+            "collection": "women-loungewear",
+            "collection_tab": "mens"
+          }
+        },
+        "collection_J3in9q": {
+          "type": "collection",
+          "settings": {
+            "collection": "brushed-french-terry-women",
+            "collection_tab": "mens"
+          }
+        }
+      },
+      "block_order": [
+        "collection_EA83tH",
+        "collection_W9X7EC",
+        "collection_6AG3bp",
+        "collection_AdTmQA",
+        "collection_tqhTLw",
+        "collection_kWnFzx",
+        "collection_Fa3bA3",
+        "collection_aDHhhi",
+        "collection_JL37Ef",
+        "collection_wmBfxq",
+        "collection_J3in9q"
+      ],
+      "settings": {
+        "section_id": "",
+        "tab_label": "",
+        "tab_title_womens": "Womens",
+        "tab_title_mens": "Mens"
+      }
+    },
+    "featured_collection_Lt4jpH": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Featured collection",
+        "collection": "fall-work-essentials",
+        "copy_block_button_text": "",
+        "copy_block_button_link": ""
+      }
+    },
+    "faqs_JViUFU": {
+      "type": "faqs",
+      "blocks": {
+        "accordion_qKj3Gd": {
+          "type": "accordion",
+          "settings": {
+            "title": "Lorem ipsum dolor sit amet",
+            "accordion-content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+          }
+        },
+        "accordion_MUT8B3": {
+          "type": "accordion",
+          "settings": {
+            "title": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+            "accordion-content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p><p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "accordion_qKj3Gd",
+        "accordion_MUT8B3"
+      ],
+      "settings": {
+        "accordion-section-title": "FAQ Accordion",
+        "accordion-section-content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "faq_block_button_text": "",
+        "faq_block_button_link": ""
+      }
+    },
+    "newsletter_UAMXkC": {
+      "type": "newsletter",
+      "settings": {
+        "section_title": "Subscribe to our newsletter",
+        "subheading": "A short sentence describing what someone will receive by subscribing"
+      }
+    },
+    "content_panel_3qE4A3": {
+      "type": "content-panel",
+      "settings": {
+        "section_id": "",
+        "panel_orientation": "right",
+        "content_panel_image": "shopify://shop_images/Frame_6319.png",
+        "copy_block_title": "Content Panel",
+        "copy_block_text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>",
+        "copy_block_button_text": "Learn More",
+        "copy_block_button_link": "shopify://pages/kit-and-ace-our-fabrics",
+        "video_url": "",
+        "use_play_button": false
+      }
+    },
+    "banner_block_LBWQRR": {
+      "type": "banner-block",
+      "settings": {
+        "section_id": "",
+        "banner-block-image": "shopify://shop_images/Frame_6352.png",
+        "banner-block-title": "Banner Block",
+        "banner-block-text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "banner-block-button-text": "Learn More",
+        "banner-block-link": "shopify://pages/contact-us"
+      }
+    },
+    "featured_product_D9xjj8": {
+      "type": "featured-product",
+      "settings": {
+        "product": "marbella-boyfriend-shirt-striped",
+        "display_price": false
+      }
+    },
+    "video_block_bEdcCq": {
+      "type": "video-block",
+      "settings": {
+        "mobile_video": "shopify://files/videos/SP24-Spend+Get-Homepage-Desktop.mp4",
+        "mobile_cover_image": "shopify://shop_images/Page_Hero_1.png",
+        "desktop_video": "shopify://files/videos/SP24-Spend+Get-Homepage-Desktop.mp4",
+        "desktop_cover_image": "shopify://shop_images/Page_Hero_2.png"
+      }
+    },
+    "rich_text_3FDK6n": {
+      "type": "rich-text",
+      "settings": {
+        "title": "Talk about your brand",
+        "text": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>",
+        "rich-text-block-alignment": "left"
+      }
+    }
+  },
+  "order": [
+    "hero_banner_9NhiMU",
+    "page-header",
+    "intro_block_KMCBDx",
+    "tabs_collection_list_fppkEC",
+    "featured_collection_Lt4jpH",
+    "faqs_JViUFU",
+    "newsletter_UAMXkC",
+    "content_panel_3qE4A3",
+    "banner_block_LBWQRR",
+    "featured_product_D9xjj8",
+    "video_block_bEdcCq",
+    "rich_text_3FDK6n"
+  ]
+}
