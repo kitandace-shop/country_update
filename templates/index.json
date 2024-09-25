@@ -16,12 +16,12 @@
         ".hero-banner .video-block__control {bottom: 20px; left: auto; right: 20px; top: auto;}"
       ],
       "settings": {
-        "desktop-hero-image": "shopify:\/\/shop_images\/Kit_Ace_HomepageHero_Desktop_SUMMER_01_3840x2030_0a4e5d1e-a808-4252-b91a-34002222782a.jpg",
-        "mobile-hero-image": "shopify:\/\/shop_images\/Kit_Ace_HomepageHero_Mobile_SUMMER_01_1534x1927_81e486a3-0fba-4151-866c-139f8d1b6862.jpg",
+        "desktop-hero-image": "shopify://shop_images/Kit_Ace_HomepageHero_Desktop_SUMMER_01_3840x2030_0a4e5d1e-a808-4252-b91a-34002222782a.jpg",
+        "mobile-hero-image": "shopify://shop_images/Kit_Ace_HomepageHero_Mobile_SUMMER_01_1534x1927_81e486a3-0fba-4151-866c-139f8d1b6862.jpg",
         "hero-banner-title": "",
         "hero_text_color": "white",
         "hero-banner-button-text": "SHOP SUMMER SALE",
-        "hero-banner-link": "shopify:\/\/collections\/summer-sale-mens-womens",
+        "hero-banner-link": "shopify://collections/summer-sale-mens-womens",
         "hero-banner-button-text2": "",
         "hero-banner-link2": ""
       }
@@ -33,7 +33,7 @@
         "section_id": "",
         "intro-block-background-color": "shoreline",
         "intro-block-icon-toggle": "on",
-        "intro-block-title": "<h2>Long Weekend Free Shipping Event on now<\/h2>",
+        "intro-block-title": "<h2>Long Weekend Free Shipping Event on now</h2>",
         "intro-block-text": "",
         "intro-block-button-text": "",
         "intro-block-link": "",
@@ -46,7 +46,7 @@
         "title": "Get it before it’s gone for good.",
         "collection": "summer-sale-mens-womens",
         "copy_block_button_text": "Shop Summer Sale",
-        "copy_block_button_link": "shopify:\/\/collections\/summer-sale-mens-womens"
+        "copy_block_button_link": "shopify://collections/summer-sale-mens-womens"
       }
     },
     "35352dca-c21f-4650-bc35-d89734f2af8e": {
@@ -55,10 +55,10 @@
         "section_id": "",
         "intro-block-background-color": "shoreline",
         "intro-block-icon-toggle": "off",
-        "intro-block-title": "<h1><strong>Designed for your real life—every moment of it.<\/strong><\/h1>",
+        "intro-block-title": "<h1><strong>Designed for your real life—every moment of it.</strong></h1>",
         "intro-block-text": "",
         "intro-block-button-text": "",
-        "intro-block-link": "shopify:\/\/pages\/our-story",
+        "intro-block-link": "shopify://pages/our-story",
         "intro-block-alignment": "center"
       }
     },
@@ -66,8 +66,8 @@
       "type": "featured-product",
       "settings": {
         "product": "pleated-tennis-skirt-bright-white",
-        "image1": "shopify:\/\/shop_images\/Womens_Featured_Product_2.jpg",
-        "image2": "shopify:\/\/shop_images\/Womens_Featured_Product_1.jpg",
+        "image1": "shopify://shop_images/Womens_Featured_Product_2.jpg",
+        "image2": "shopify://shop_images/Womens_Featured_Product_1.jpg",
         "display_price": true
       }
     },
@@ -77,7 +77,7 @@
         "title": "30% Off All Women's Shorts",
         "collection": "womens-summer-shorts-sale",
         "copy_block_button_text": "Shop Sale",
-        "copy_block_button_link": "shopify:\/\/collections\/mens-womens-shorts"
+        "copy_block_button_link": "shopify://collections/mens-womens-shorts"
       }
     },
     "intro_block_gBehAn": {
@@ -86,7 +86,7 @@
         "section_id": "",
         "intro-block-background-color": "shoreline",
         "intro-block-icon-toggle": "on",
-        "intro-block-title": "<h1><strong>Simplify the daily ritual of getting dressed. <\/strong><\/h1>",
+        "intro-block-title": "<h1><strong>Simplify the daily ritual of getting dressed. </strong></h1>",
         "intro-block-text": "",
         "intro-block-button-text": "",
         "intro-block-link": "",
@@ -97,8 +97,8 @@
       "type": "featured-product",
       "settings": {
         "product": "tech-polo-cloud",
-        "image1": "shopify:\/\/shop_images\/Mens_Featured_Product_1.jpg",
-        "image2": "shopify:\/\/shop_images\/Mens_Featured_Product_2.jpg",
+        "image1": "shopify://shop_images/Mens_Featured_Product_1.jpg",
+        "image2": "shopify://shop_images/Mens_Featured_Product_2.jpg",
         "display_price": true
       }
     },
@@ -108,7 +108,7 @@
         "title": "30% Off All Men's Shorts",
         "collection": "mens-summer-shorts-sale",
         "copy_block_button_text": "Shop Men's Shorts",
-        "copy_block_button_link": "shopify:\/\/collections\/mens-summer-shorts-sale"
+        "copy_block_button_link": "shopify://collections/mens-summer-shorts-sale"
       }
     },
     "tabs_collection_list_MrB4fM": {
@@ -159,7 +159,7 @@
         "collection_KYyJp6": {
           "type": "collection",
           "settings": {
-            "collection": "men-travel-essentials",
+            "collection": "mens-travel-essentials",
             "collection_tab": "mens"
           }
         },
@@ -194,8 +194,8 @@
         "section_id": "",
         "intro-block-background-color": "shoreline",
         "intro-block-icon-toggle": "off",
-        "intro-block-title": "<h2>Our Fabrics<\/h2>",
-        "intro-block-text": "<h3>Innovative fabrics focused on function, comfort, natural fibers, and recycled materials. <\/h3>",
+        "intro-block-title": "<h2>Our Fabrics</h2>",
+        "intro-block-text": "<h3>Innovative fabrics focused on function, comfort, natural fibers, and recycled materials. </h3>",
         "intro-block-button-text": "",
         "intro-block-link": "",
         "intro-block-alignment": "center"
@@ -207,34 +207,34 @@
         "slide_ibBzbc": {
           "type": "slide",
           "settings": {
-            "large_image": "shopify:\/\/shop_images\/DevonStudioTunic_bluemelange_048.jpg",
-            "small_image": "shopify:\/\/shop_images\/DevonStudioTunic_bluemelange_152.jpg",
+            "large_image": "shopify://shop_images/DevonStudioTunic_bluemelange_048.jpg",
+            "small_image": "shopify://shop_images/DevonStudioTunic_bluemelange_152.jpg",
             "title": "Brushed French Terry",
-            "description": "<h4>Feels like a hug. Super soft. Flexible stretch. Insulating warmth. <\/h4>",
+            "description": "<h4>Feels like a hug. Super soft. Flexible stretch. Insulating warmth. </h4>",
             "button_text": "READ",
-            "button_link": "shopify:\/\/pages\/our-fabrics"
+            "button_link": "shopify://pages/our-fabrics"
           }
         },
         "slide_U8GPjk": {
           "type": "slide",
           "settings": {
-            "large_image": "shopify:\/\/shop_images\/N_urbanshortsleevepolosweater_navyoffwhitestripe_047_7c6b227c-e0f0-4252-9b32-f714dd9ebe8a.jpg",
-            "small_image": "shopify:\/\/shop_images\/N_urbanshortsleevepolosweater_navyoffwhitestripe_173_1b4b1d68-3123-474b-8e1a-2c3bb6d96a91.jpg",
+            "large_image": "shopify://shop_images/N_urbanshortsleevepolosweater_navyoffwhitestripe_047_7c6b227c-e0f0-4252-9b32-f714dd9ebe8a.jpg",
+            "small_image": "shopify://shop_images/N_urbanshortsleevepolosweater_navyoffwhitestripe_173_1b4b1d68-3123-474b-8e1a-2c3bb6d96a91.jpg",
             "title": "Cooling Cotton",
-            "description": "<h4>Feels like a deep breath. Stretch that moves with you. A soft touch that cools you.<\/h4>",
+            "description": "<h4>Feels like a deep breath. Stretch that moves with you. A soft touch that cools you.</h4>",
             "button_text": "READ",
-            "button_link": "shopify:\/\/pages\/our-fabrics"
+            "button_link": "shopify://pages/our-fabrics"
           }
         },
         "slide_YFDHUr": {
           "type": "slide",
           "settings": {
-            "large_image": "shopify:\/\/shop_images\/N_navigator2buttonblazer_dknavy_053_0dc9f43d-10ff-4e82-a4c4-37d5f3985de9.jpg",
-            "small_image": "shopify:\/\/shop_images\/N_navigator2buttonblazer_dknavy_065_c5442676-d868-4976-8fac-a202101d01aa.jpg",
+            "large_image": "shopify://shop_images/N_navigator2buttonblazer_dknavy_053_0dc9f43d-10ff-4e82-a4c4-37d5f3985de9.jpg",
+            "small_image": "shopify://shop_images/N_navigator2buttonblazer_dknavy_065_c5442676-d868-4976-8fac-a202101d01aa.jpg",
             "title": "Navigator",
-            "description": "<h4>Feels like a step in the right direction. Eco-minded with a timeless feel and technical details.<\/h4>",
+            "description": "<h4>Feels like a step in the right direction. Eco-minded with a timeless feel and technical details.</h4>",
             "button_text": "READ",
-            "button_link": "shopify:\/\/pages\/our-fabrics"
+            "button_link": "shopify://pages/our-fabrics"
           }
         }
       },
@@ -252,7 +252,7 @@
       "type": "app-wrapper",
       "blocks": {
         "instafeed_app_block_9zMyiK": {
-          "type": "shopify:\/\/apps\/instafeed\/blocks\/app-block\/c447db20-095d-4a10-9725-b5977662c9d5",
+          "type": "shopify://apps/instafeed/blocks/app-block/c447db20-095d-4a10-9725-b5977662c9d5",
           "settings": {
             "title": "",
             "title_color": "",
