@@ -1,1 +1,80 @@
-{"sections":{"page-header-collection":{"type":"page-header--collection","settings":{}},"collection_list_LH9CmH":{"type":"collection-list","blocks":{"collection_K8YUE3":{"type":"collection","settings":{"collection":"women-and-men-new-arrivals"}},"collection_BqyDyB":{"type":"collection","settings":{"collection":"womens-and-mens-bestsellers"}},"collection_BQ34Nk":{"type":"collection","settings":{"collection":"thank-you-sale-20-off"}},"collection_fJYAGk":{"type":"collection","settings":{"collection":"bestsellers-men"}},"collection_dfWkJ8":{"type":"collection","settings":{"collection":""}}},"block_order":["collection_K8YUE3","collection_BqyDyB","collection_BQ34Nk","collection_fJYAGk","collection_dfWkJ8"],"settings":{"section_id":"","title":"Shop by Feature Collection"}},"main-collection":{"type":"main-content--collection","settings":{"collection-driver-title":"","collection-driver-text":"","collection-driver-button-text":"","collection-driver-link":"","enable_sorting":true,"enable_filtering":true}}},"order":["page-header-collection","collection_list_LH9CmH","main-collection"]}
+/*
+* ------------------------------------------------------------
+* IMPORTANT: The contents of this file are auto-generated.
+*
+* This file may be updated by the Shopify admin theme editor
+* or related systems. Please exercise caution as any changes
+* made to this file may be overwritten.
+* ------------------------------------------------------------
+*/
+{
+  "sections": {
+    "page-header-collection": {
+      "type": "page-header--collection",
+      "settings": {
+      }
+    },
+    "collection_list_LH9CmH": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_K8YUE3": {
+          "type": "collection",
+          "settings": {
+            "collection": "women-and-men-new-arrivals"
+          }
+        },
+        "collection_BqyDyB": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers"
+          }
+        },
+        "collection_BQ34Nk": {
+          "type": "collection",
+          "settings": {
+            "collection": "thank-you-sale-20-off"
+          }
+        },
+        "collection_fJYAGk": {
+          "type": "collection",
+          "settings": {
+            "collection": "bestsellers-men"
+          }
+        },
+        "collection_dfWkJ8": {
+          "type": "collection",
+          "settings": {
+            "collection": ""
+          }
+        }
+      },
+      "block_order": [
+        "collection_K8YUE3",
+        "collection_BqyDyB",
+        "collection_BQ34Nk",
+        "collection_fJYAGk",
+        "collection_dfWkJ8"
+      ],
+      "settings": {
+        "section_id": "",
+        "title": "Shop by Feature Collection"
+      }
+    },
+    "main-collection": {
+      "type": "main-content--collection",
+      "settings": {
+        "collection-driver-title": "",
+        "collection-driver-text": "",
+        "collection-driver-button-text": "",
+        "collection-driver-link": "",
+        "enable_sorting": true,
+        "enable_filtering": true
+      }
+    }
+  },
+  "order": [
+    "page-header-collection",
+    "collection_list_LH9CmH",
+    "main-collection"
+  ]
+}
