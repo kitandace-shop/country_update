@@ -97,9 +97,9 @@
       "disabled": true,
       "settings": {
         "title": "Men's Bestsellers",
-        "collection": "bestsellers-men",
+        "collection": "mens-bestsellers",
         "copy_block_button_text": "Shop Men's Bestsellers",
-        "copy_block_button_link": "shopify://collections/bestsellers-men"
+        "copy_block_button_link": "shopify://collections/mens-bestsellers"
       }
     },
     "tabs_collection_list_MrB4fM": {
@@ -157,7 +157,7 @@
         "collection_3GmeMx": {
           "type": "collection",
           "settings": {
-            "collection": "bestsellers-men",
+            "collection": "mens-bestsellers",
             "collection_tab": "mens"
           }
         }
