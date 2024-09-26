@@ -45,9 +45,9 @@
       "type": "featured-collection",
       "settings": {
         "title": "Best Sellers",
-        "collection": "womens-and-mens-bestsellers",
+        "collection": "bestsellers",
         "copy_block_button_text": "Shop Now",
-        "copy_block_button_link": "shopify://collections/womens-and-mens-bestsellers"
+        "copy_block_button_link": "shopify://collections/bestsellers"
       }
     },
     "35352dca-c21f-4650-bc35-d89734f2af8e": {
