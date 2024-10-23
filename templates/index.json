@@ -1,12 +1,12 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "homepage-hero": {
@@ -204,7 +204,7 @@
             "title": "Brushed French Terry",
             "description": "<h4>Feels like a hug. Super soft. Flexible stretch. Insulating warmth. </h4>",
             "button_text": "Shop Collection",
-            "button_link": "shopify://collections/women-and-men-brushed-french-terry"
+            "button_link": "shopify://collections/brushed-french-terry"
           }
         },
         "slide_U8GPjk": {
