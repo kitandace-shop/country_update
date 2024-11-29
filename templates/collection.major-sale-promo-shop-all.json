@@ -1,1 +1,86 @@
-{"sections":{"page-header-collection":{"type":"page-header--collection","settings":{}},"collection_list_LH9CmH":{"type":"collection-list","blocks":{"collection_BqyDyB":{"type":"collection","settings":{"collection":"womens-summer-sale"}},"collection_UrJzct":{"type":"collection","settings":{"collection":"mens-summer-sale"}},"collection_fJYAGk":{"type":"collection","settings":{"collection":"mens-womens-shorts"}},"collection_Mwhkcf":{"type":"collection","settings":{"collection":"gifts-under-100"}},"collection_BQ34Nk":{"type":"collection","settings":{"collection":"mens-and-womens-summer-sale-up-to-30-off"}},"collection_kUKpFU":{"type":"collection","settings":{"collection":"mens-and-womens-summer-sale-30-to-50-off"}}},"block_order":["collection_BqyDyB","collection_UrJzct","collection_fJYAGk","collection_Mwhkcf","collection_BQ34Nk","collection_kUKpFU"],"settings":{"section_id":"","title":""}},"main-collection":{"type":"main-content--collection","settings":{"collection-driver-title":"","collection-driver-text":"","collection-driver-button-text":"","collection-driver-link":"","enable_sorting":true,"enable_filtering":true}}},"order":["page-header-collection","collection_list_LH9CmH","main-collection"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "page-header-collection": {
+      "type": "page-header--collection",
+      "settings": {}
+    },
+    "collection_list_LH9CmH": {
+      "type": "collection-list",
+      "blocks": {
+        "collection_BqyDyB": {
+          "type": "collection",
+          "settings": {
+            "collection": "womens-summer-sale"
+          }
+        },
+        "collection_UrJzct": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-summer-sale"
+          }
+        },
+        "collection_fJYAGk": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-womens-shorts"
+          }
+        },
+        "collection_Mwhkcf": {
+          "type": "collection",
+          "settings": {
+            "collection": "gifts-less-100"
+          }
+        },
+        "collection_BQ34Nk": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-and-womens-summer-sale-up-to-30-off"
+          }
+        },
+        "collection_kUKpFU": {
+          "type": "collection",
+          "settings": {
+            "collection": "mens-and-womens-summer-sale-30-to-50-off"
+          }
+        }
+      },
+      "block_order": [
+        "collection_BqyDyB",
+        "collection_UrJzct",
+        "collection_fJYAGk",
+        "collection_Mwhkcf",
+        "collection_BQ34Nk",
+        "collection_kUKpFU"
+      ],
+      "settings": {
+        "section_id": "",
+        "title": ""
+      }
+    },
+    "main-collection": {
+      "type": "main-content--collection",
+      "settings": {
+        "collection-driver-title": "",
+        "collection-driver-text": "",
+        "collection-driver-button-text": "",
+        "collection-driver-link": "",
+        "enable_sorting": true,
+        "enable_filtering": true
+      }
+    }
+  },
+  "order": [
+    "page-header-collection",
+    "collection_list_LH9CmH",
+    "main-collection"
+  ]
+}
