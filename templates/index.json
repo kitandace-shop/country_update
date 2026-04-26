@@ -1,12 +1,12 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "homepage-hero": {
@@ -65,7 +65,7 @@
     "featured_product_yqFFJ4": {
       "type": "featured-product",
       "settings": {
-        "product": "pleated-tennis-skirt-bright-white",
+        "product": "7764523974852-pleated-tennis-skirt",
         "image1": "shopify://shop_images/Womens_Featured_Product_2.jpg",
         "image2": "shopify://shop_images/Womens_Featured_Product_1.jpg",
         "display_price": true
