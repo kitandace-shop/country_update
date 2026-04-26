@@ -1,18 +1,17 @@
 /*
-* ------------------------------------------------------------
-* IMPORTANT: The contents of this file are auto-generated.
-*
-* This file may be updated by the Shopify admin theme editor
-* or related systems. Please exercise caution as any changes
-* made to this file may be overwritten.
-* ------------------------------------------------------------
-*/
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "page-header-collection": {
       "type": "page-header--collection",
-      "settings": {
-      }
+      "settings": {}
     },
     "collection_list_LH9CmH": {
       "type": "collection-list",
@@ -97,7 +96,7 @@
         "product_wFKfiG": {
           "type": "product",
           "settings": {
-            "product": "stanton-short-sleeve-crew-tee-cool-blue"
+            "product": "7732651327684-stanton-short-sleeve-crew-tee"
           }
         },
         "product_EMqnir": {
