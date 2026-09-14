@@ -1,7 +1,7 @@
 <div class="hero-banner hero-banner--split">
     <div class="hero-banner__media">
         {% assign image_class = "background-image background-image--" | append: section.settings.focal-point %}
-        {% render 'responsive-image' with image: section.settings.hero-banner-image, image_class: image_class %}
+        {% render 'responsive-image' with image, image: section.settings.hero-banner-image, image_class: image_class %}
     </div>
 
     <div class="hero-banner__content">
@@ -63,3 +63,15 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: section.settings.hero-banner-image,
+    image_class: image_class %}"
+  to: "{% render 'responsive-image' with image, image: section.settings.hero-banner-image,
+    image_class: image_class %}"
+  position: 202..313
+{% endcomment %}

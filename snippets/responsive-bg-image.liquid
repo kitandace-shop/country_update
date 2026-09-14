@@ -11,11 +11,24 @@
 {% endcomment %}
 
 
-{% render 'responsive-image' with
-  image:          image,
-  image_mobile:   image_mobile,
-  image_desktop:  image_desktop,
-  widths_mobile:  widths_mobile,
-  widths_desktop: widths_desktop,
-  is_background:  true
-%}
+{% render 'responsive-image' with image, image: image, image_mobile: image_mobile, image_desktop: image_desktop, widths_mobile: widths_mobile, widths_desktop: widths_desktop, is_background: true %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+      image:          image,
+      image_mobile:   image_mobile,
+      image_desktop:  image_desktop,
+      widths_mobile:  widths_mobile,
+      widths_desktop: widths_desktop,
+      is_background:  true
+    %}
+  to: "{% render 'responsive-image' with image, image: image, image_mobile: image_mobile,
+    image_desktop: image_desktop, widths_mobile: widths_mobile, widths_desktop: widths_desktop,
+    is_background: true %}"
+  position: 361..558
+{% endcomment %}

@@ -40,11 +40,7 @@
     {% elsif section.settings.page-header-image != blank %}
         <div class="background-media background-media--image">
             <div class="background-media__background">
-                {% render 'responsive-image' with
-                    image:         section.settings.page-header-image,
-                    image_class:   "background-image",
-                    lazy:          false
-                %}
+                {% render 'responsive-image' with image, image: section.settings.page-header-image, image_class: "background-image", lazy: false %}
             </div>
 
     {% endif %}
@@ -107,3 +103,19 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                        image:         section.settings.page-header-image,
+                        image_class:   "background-image",
+                        lazy:          false
+                    %}
+  to: '{% render ''responsive-image'' with image, image: section.settings.page-header-image,
+    image_class: "background-image", lazy: false %}'
+  position: 2232..2363
+{% endcomment %}

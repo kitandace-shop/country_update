@@ -14,9 +14,9 @@
 
              <div class="card__image-wrapper">
                 {% if collectionImage %}
-                    {% render 'responsive-image' with image: collectionImage, image_class: 'card__collection-image background-image' %}
+                    {% render 'responsive-image' with image, image: collectionImage, image_class: 'card__collection-image background-image' %}
                 {% elsif collection.image != blank %}
-                    {% render 'responsive-image' with image: collection.image, image_class: 'card__collection-image background-image' %}
+                    {% render 'responsive-image' with image, image: collection.image, image_class: 'card__collection-image background-image' %}
                 {% else %}
                     {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
                 {% endif %}
@@ -34,3 +34,20 @@
         </a>
     </article>
 {% endif %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: collectionImage, image_class: 'card__collection-image
+    background-image' %}"
+  to: "{% render 'responsive-image' with image, image: collectionImage, image_class:
+    'card__collection-image background-image' %}"
+  position: 646..768
+- from: "{% render 'responsive-image' with image: collection.image, image_class: 'card__collection-image
+    background-image' %}"
+  to: "{% render 'responsive-image' with image, image: collection.image, image_class:
+    'card__collection-image background-image' %}"
+  position: 843..966
+{% endcomment %}

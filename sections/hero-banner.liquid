@@ -18,12 +18,7 @@
     {% comment %} Capture background image to use in different places below {% endcomment %}
     {% capture hero_image %}
         <div class="background-media__background">
-            {% render 'responsive-image' with
-                    image_desktop: desktop_hero_image,
-                    image_mobile:  mobile_hero_image,
-                    image_class:   "background-image",
-                    lazy:          false
-                %}
+            {% render 'responsive-image' with image_desktop, image_desktop: desktop_hero_image, image_mobile: mobile_hero_image, image_class: "background-image", lazy: false %}
         </div>
     {% endcapture %}
 
@@ -214,3 +209,21 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                        image_desktop: desktop_hero_image,
+                        image_mobile:  mobile_hero_image,
+                        image_class:   "background-image",
+                        lazy:          false
+                    %}
+  to: '{% render ''responsive-image'' with image_desktop, image_desktop: desktop_hero_image,
+    image_mobile: mobile_hero_image, image_class: "background-image", lazy: false
+    %}'
+  position: 828..992
+{% endcomment %}

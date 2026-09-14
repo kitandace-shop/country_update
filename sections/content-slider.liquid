@@ -20,20 +20,14 @@
                             <div class="content-slider__image {% if isSlider == false %}content-slider__image--single-slide{% endif %}">
                                 {% if block.settings.large_image != blank %}
                                     <div class="background-media__background">
-                                        {% render 'responsive-image' with
-                                            image: block.settings.large_image,
-                                            image_class:   "background-image"
-                                        %}
+                                        {% render 'responsive-image' with image, image: block.settings.large_image, image_class: "background-image" %}
                                     </div>
                                 {% endif %}
                             </div>
                             <div class="content-slider__image--small">
                                 {% if block.settings.small_image != blank %}
                                     <div class="background-media__background">
-                                        {% render 'responsive-image' with
-                                            image: block.settings.small_image,
-                                            image_class:   "background-image"
-                                        %}
+                                        {% render 'responsive-image' with image, image: block.settings.small_image, image_class: "background-image" %}
                                     </div>
                                 {% endif %}
                             </div>
@@ -151,3 +145,26 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                                                image: block.settings.large_image,
+                                                image_class:   "background-image"
+                                            %}
+  to: '{% render ''responsive-image'' with image, image: block.settings.large_image,
+    image_class: "background-image" %}'
+  position: 1226..1336
+- from: |-
+    {% render 'responsive-image' with
+                                                image: block.settings.small_image,
+                                                image_class:   "background-image"
+                                            %}
+  to: '{% render ''responsive-image'' with image, image: block.settings.small_image,
+    image_class: "background-image" %}'
+  position: 1726..1836
+{% endcomment %}

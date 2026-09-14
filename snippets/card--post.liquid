@@ -2,7 +2,7 @@
     <a href="{{ article.url }}">
         {% if article.image %}
             <div class="card__image-wrapper">
-                {% render 'responsive-image' with image: article.image, image_class: 'background-image' %}
+                {% render 'responsive-image' with image, image: article.image, image_class: 'background-image' %}
             </div>
         {% endif %}
 
@@ -34,3 +34,15 @@
         </div>
     </a>
 </article>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: article.image, image_class: 'background-image'
+    %}"
+  to: "{% render 'responsive-image' with image, image: article.image, image_class:
+    'background-image' %}"
+  position: 201..298
+{% endcomment %}

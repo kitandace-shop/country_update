@@ -10,7 +10,7 @@
 
                 {% if section.settings.collection-driver-image != blank %}
                     <div class="background-media__background">
-                        {% render 'responsive-image' with image: section.settings.collection-driver-image, image_class: "background-image" %}
+                        {% render 'responsive-image' with image, image: section.settings.collection-driver-image, image_class: "background-image" %}
                     </div>
                 {% endif %}
 
@@ -34,3 +34,15 @@
         {% endif %}
     </div>
 </article>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{% render ''responsive-image'' with image: section.settings.collection-driver-image,
+    image_class: "background-image" %}'
+  to: '{% render ''responsive-image'' with image, image: section.settings.collection-driver-image,
+    image_class: "background-image" %}'
+  position: 632..756
+{% endcomment %}

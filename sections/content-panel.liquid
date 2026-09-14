@@ -9,7 +9,7 @@
     <div class="content-panel__container">
         {% if is_video %}
             <button class="content-panel__meta content-panel__meta--video modal__trigger video-block--is-postered video-block--is-paused modal__trigger--content-panel" type="button" data-modal-target="{{ section.settings.video_url.id }}">
-                {% render 'responsive-image' with image: section.settings.content_panel_image, image_class: "background-image" %}
+                {% render 'responsive-image' with image, image: section.settings.content_panel_image, image_class: "background-image" %}
                 <div class="video-block__control">
                     {% render 'icon', name: 'play', class: 'content-panel__video-icon' %}
                 </div>
@@ -17,7 +17,7 @@
             </button>
         {% else %}
             <div class="content-panel__meta">
-                {% render 'responsive-image' with image: section.settings.content_panel_image, image_class: "background-image" %}
+                {% render 'responsive-image' with image, image: section.settings.content_panel_image, image_class: "background-image" %}
             </div>
         {% endif %}
 
@@ -129,3 +129,20 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{% render ''responsive-image'' with image: section.settings.content_panel_image,
+    image_class: "background-image" %}'
+  to: '{% render ''responsive-image'' with image, image: section.settings.content_panel_image,
+    image_class: "background-image" %}'
+  position: 590..710
+- from: '{% render ''responsive-image'' with image: section.settings.content_panel_image,
+    image_class: "background-image" %}'
+  to: '{% render ''responsive-image'' with image, image: section.settings.content_panel_image,
+    image_class: "background-image" %}'
+  position: 1060..1180
+{% endcomment %}

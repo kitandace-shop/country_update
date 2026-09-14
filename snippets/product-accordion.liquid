@@ -26,7 +26,7 @@
                 <div class="accordion_icon-list">
                     {% for icon in feature-icons -%}
                         <div class="accordion_icon-item">
-                            {% render 'responsive-image' with image: icon.icon.value  %}
+                            {% render 'responsive-image' with image, image: icon.icon.value %}
                             <div class="accordion_icon-title">{{ icon.icon_title.value }}</div>
                         </div>
                     {%- endfor %}
@@ -55,7 +55,7 @@
                     <div class="accordion_icon-list">
                         {% for icon in fabric-icons -%}
                             <div class="accordion_icon-item">
-                                {% render 'responsive-image' with image: icon.icon.value  %}
+                                {% render 'responsive-image' with image, image: icon.icon.value %}
                                 <div class="accordion_icon-title">{{ icon.icon_title.value }}</div>
                             </div>
                         {%- endfor %}
@@ -91,7 +91,7 @@
                     <div class="accordion_icon-list">
                         {% for icon in fit-icons -%}
                             <div class="accordion_icon-item">
-                                {% render 'responsive-image' with image: icon.icon.value  %}
+                                {% render 'responsive-image' with image, image: icon.icon.value %}
 
                                 <div class="accordion_icon-title">{{ icon.icon_title.value }}</div>
                             </div>
@@ -108,3 +108,19 @@
         </div>
     {% endif %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: icon.icon.value  %}"
+  to: "{% render 'responsive-image' with image, image: icon.icon.value %}"
+  position: 1769..1835
+- from: "{% render 'responsive-image' with image: icon.icon.value  %}"
+  to: "{% render 'responsive-image' with image, image: icon.icon.value %}"
+  position: 3483..3549
+- from: "{% render 'responsive-image' with image: icon.icon.value  %}"
+  to: "{% render 'responsive-image' with image, image: icon.icon.value %}"
+  position: 5422..5488
+{% endcomment %}

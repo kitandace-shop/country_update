@@ -98,7 +98,7 @@
                                             <span>{{ 'custom.sale.final.label' | t }}</span>
 
                                             {% assign toggletip_text_translation = 'custom.sale.final.message' | t %}
-                                            {% render 'toggletip' with toggletip_text: toggletip_text_translation %}
+                                            {% render 'toggletip' with toggletip_text, toggletip_text: toggletip_text_translation %}
                                         </div>
                                     {% endif %}
                                 {% endfor %}
@@ -255,3 +255,14 @@
       "tag": "section"
     }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'toggletip' with toggletip_text: toggletip_text_translation %}"
+  to: "{% render 'toggletip' with toggletip_text, toggletip_text: toggletip_text_translation
+    %}"
+  position: 5624..5712
+{% endcomment %}

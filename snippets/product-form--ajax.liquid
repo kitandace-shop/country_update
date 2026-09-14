@@ -43,7 +43,7 @@
                 <div class="line-item__final-sale">
                     <span>Final Sale</span>
                     {% assign toggletip_text_translation = 'custom.sale.final.message' | t %}
-                    {% render 'toggletip' with toggletip_text: toggletip_text_translation %}
+                    {% render 'toggletip' with toggletip_text, toggletip_text: toggletip_text_translation %}
                 </div>
             {% endif %}
 
@@ -149,3 +149,14 @@
 {% endif %}
 
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'toggletip' with toggletip_text: toggletip_text_translation %}"
+  to: "{% render 'toggletip' with toggletip_text, toggletip_text: toggletip_text_translation
+    %}"
+  position: 2021..2109
+{% endcomment %}

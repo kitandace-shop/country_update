@@ -20,16 +20,10 @@
     <a href="{{product.url}}">
         <div class="featured-product__image">
             {% comment %} Shows up on mobile and desktop {% endcomment %}
-            {% render 'responsive-image' with
-            image: featured_image,
-            image_class: "background-image background-image--1"
-            %}
+            {% render 'responsive-image' with image, image: featured_image, image_class: "background-image background-image--1" %}
 
             {% comment %} Shows up on desktop only {% endcomment %}
-            {% render 'responsive-image' with
-            image: featured_image_2,
-            image_class: "background-image background-image--2"
-            %}
+            {% render 'responsive-image' with image, image: featured_image_2, image_class: "background-image background-image--2" %}
         </div>
     </a>
 
@@ -166,3 +160,26 @@
     {% endif %}
 }
 </script>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                image: featured_image,
+                image_class: "background-image background-image--1"
+                %}
+  to: '{% render ''responsive-image'' with image, image: featured_image, image_class:
+    "background-image background-image--1" %}'
+  position: 913..1031
+- from: |-
+    {% render 'responsive-image' with
+                image: featured_image_2,
+                image_class: "background-image background-image--2"
+                %}
+  to: '{% render ''responsive-image'' with image, image: featured_image_2, image_class:
+    "background-image background-image--2" %}'
+  position: 1113..1233
+{% endcomment %}

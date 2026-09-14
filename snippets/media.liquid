@@ -39,10 +39,7 @@
 
     {% case media.media_type %}
         {% when 'image' %}
-            {% render 'responsive-image' with
-                image: media,
-                image_class: "background-image drift-img js--image-zoom",
-            %}
+            {% render 'responsive-image' with image, image: media, image_class: "background-image drift-img js--image-zoom" %}
         {% when 'external_video' %}
             <div class="product-single__media" style="padding-top: {{ 1 | divided_by: media.aspect_ratio | times: 100 }}%;">
                 {{ media | external_video_tag }}
@@ -61,3 +58,18 @@
             </div>
     {% endcase %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                    image: media,
+                    image_class: "background-image drift-img js--image-zoom",
+                %}
+  to: '{% render ''responsive-image'' with image, image: media, image_class: "background-image
+    drift-img js--image-zoom" %}'
+  position: 2077..2191
+{% endcomment %}

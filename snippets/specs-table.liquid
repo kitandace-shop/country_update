@@ -39,7 +39,7 @@
             <td class="specification-title">
                 {{ title }}
                 {% if specification_modal_informations[forloop.index0] != blank %}
-                    {% render 'toggletip' with toggletip_text: specification_modal_informations[forloop.index0] %}
+                    {% render 'toggletip' with toggletip_text, toggletip_text: specification_modal_informations[forloop.index0] %}
                 {% endif %}
                 </td>
             <td>
@@ -48,3 +48,15 @@
         </tr>
     {% endfor %}
 </table>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'toggletip' with toggletip_text: specification_modal_informations[forloop.index0]
+    %}"
+  to: "{% render 'toggletip' with toggletip_text, toggletip_text: specification_modal_informations[forloop.index0]
+    %}"
+  position: 1682..1792
+{% endcomment %}

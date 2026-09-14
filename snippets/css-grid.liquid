@@ -21,11 +21,7 @@
             {% if collection.image != blank or collection.products.first != blank %}
                 {%- assign image_object = collection.image | default: collection.products.first.featured_image -%}
                 <div class="collection-list__image">
-                    {% render 'responsive-image' with
-                        image: image_object,
-                        max_width: 480,
-                        max_height: 480
-                    %}
+                    {% render 'responsive-image' with image, image: image_object, max_width: 480, max_height: 480 %}
                 </div>
             {% elsif collection == empty %}
                 {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
@@ -36,4 +32,19 @@
             <p>{{ collection.title | default: default_label }}</p>
         </a>
     {% endfor %}
-</section>
+</section>{%- comment -%}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                            image: image_object,
+                            max_width: 480,
+                            max_height: 480
+                        %}
+  to: "{% render 'responsive-image' with image, image: image_object, max_width: 480,
+    max_height: 480 %}"
+  position: 1278..1374
+{%- endcomment -%}

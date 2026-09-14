@@ -2,12 +2,7 @@
 
     {% if collection.metafields.iamota.header-collection-image != blank %}
         <div class="background-media__background">
-            {% render 'responsive-image' with
-            image_desktop: collection.metafields.iamota.header-collection-image,
-            image_mobile:  collection.metafields.iamota.header-collection-image-mobile,
-            image_class:   "background-image",
-            lazy:          false
-            %}
+            {% render 'responsive-image' with image_desktop, image_desktop: collection.metafields.iamota.header-collection-image, image_mobile: collection.metafields.iamota.header-collection-image-mobile, image_class: "background-image", lazy: false %}
         </div>
     {% endif %}
 
@@ -31,3 +26,21 @@
     "class": "page-section page-section--collection-header page-section--full-bleed page-section--no-gap"
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                image_desktop: collection.metafields.iamota.header-collection-image,
+                image_mobile:  collection.metafields.iamota.header-collection-image-mobile,
+                image_class:   "background-image",
+                lazy:          false
+                %}
+  to: '{% render ''responsive-image'' with image_desktop, image_desktop: collection.metafields.iamota.header-collection-image,
+    image_mobile: collection.metafields.iamota.header-collection-image-mobile, image_class:
+    "background-image", lazy: false %}'
+  position: 189..429
+{% endcomment %}
