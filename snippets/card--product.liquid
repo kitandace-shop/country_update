@@ -86,13 +86,13 @@
 
             {% if product_card_image %}
                 <div class="card__image card__image--primary">
-                    {% render 'responsive-image' with image: product_card_image, image_class: 'card__product-image background-image image--primary' %}
+                    {% render 'responsive-image' with image, image: product_card_image, image_class: 'card__product-image background-image image--primary' %}
                 </div>
             {% endif %}
 
             {% if product_card_image %}
                 <div class="card__image card__image--secondary">
-                    {% render 'responsive-image' with image: product_card_image_secondary, image_class: 'card__product-image background-image image--secondary' %}
+                    {% render 'responsive-image' with image, image: product_card_image_secondary, image_class: 'card__product-image background-image image--secondary' %}
                 </div>
             {% endif %}
         </div>
@@ -353,3 +353,20 @@
             {%- endif -%}
         </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: product_card_image, image_class:
+    'card__product-image background-image image--primary' %}"
+  to: "{% render 'responsive-image' with image, image: product_card_image, image_class:
+    'card__product-image background-image image--primary' %}"
+  position: 3218..3355
+- from: "{% render 'responsive-image' with image: product_card_image_secondary, image_class:
+    'card__product-image background-image image--secondary' %}"
+  to: "{% render 'responsive-image' with image, image: product_card_image_secondary,
+    image_class: 'card__product-image background-image image--secondary' %}"
+  position: 3529..3678
+{% endcomment %}

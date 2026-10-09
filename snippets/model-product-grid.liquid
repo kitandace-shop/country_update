@@ -25,7 +25,7 @@
                     <button data-with-epi="true" class="swym-button swym-add-to-wishlist-view-product product_{{product.id}}" data-swaction="addToWishlist" data-product-id="{{product.id | json}}" data-variant-id="{{product.variants[0].id}}" data-product-url="{{ shop.url }}{{ product.url }}"></button>
                 </div>
                 <div class="card__image">
-                    {% render 'responsive-image' with image: product.featured_image  %}
+                    {% render 'responsive-image' with image, image: product.featured_image %}
                 </div>
                 <div class="card__content">
                     <h4 class="card__title">{{ product.title }}</h4>
@@ -58,3 +58,13 @@
         {%- endfor %}
     </div>
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: product.featured_image  %}"
+  to: "{% render 'responsive-image' with image, image: product.featured_image %}"
+  position: 1217..1290
+{% endcomment %}

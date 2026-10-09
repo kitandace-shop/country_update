@@ -47,7 +47,7 @@
 
         <article role="article" class="article">
             <div class="article__feature-image">
-                {% render 'responsive-image' with image: article.image, image_class: "background-image" %}
+                {% render 'responsive-image' with image, image: article.image, image_class: "background-image" %}
             </div>
             <div class="page-header__content">
                 <h1 class="page-header__title">{{ article.title | escape }}</h1>
@@ -236,3 +236,15 @@
         "settings": []
     }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{% render ''responsive-image'' with image: article.image, image_class: "background-image"
+    %}'
+  to: '{% render ''responsive-image'' with image, image: article.image, image_class:
+    "background-image" %}'
+  position: 1484..1581
+{% endcomment %}

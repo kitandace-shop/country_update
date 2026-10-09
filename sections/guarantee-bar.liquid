@@ -17,9 +17,7 @@
                 <span class="guarantee__item">
                     <span class="guarantee__icon">
                         {% if block.settings.guarantee-image != blank %}
-                            {% render 'responsive-image' with
-                                image: block.settings.guarantee-image
-                            %}
+                            {% render 'responsive-image' with image, image: block.settings.guarantee-image %}
                         {% endif %}
                     </span>
                     {% if block.settings.title != blank %}
@@ -96,3 +94,17 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                                    image: block.settings.guarantee-image
+                                %}
+  to: "{% render 'responsive-image' with image, image: block.settings.guarantee-image
+    %}"
+  position: 755..836
+{% endcomment %}

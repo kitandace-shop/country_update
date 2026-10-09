@@ -32,7 +32,7 @@
                             <li class="swiper-slide css-grid__item card card--default">
                                 {% if block.settings.card-image %}
                                     <div class="card__image-wrapper">
-                                        {% render 'responsive-image' with image: block.settings.card-image, image_class: 'background-image' %}
+                                        {% render 'responsive-image' with image, image: block.settings.card-image, image_class: 'background-image' %}
                                     </div>
                                 {% endif %}
 
@@ -127,3 +127,15 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'responsive-image' with image: block.settings.card-image, image_class:
+    'background-image' %}"
+  to: "{% render 'responsive-image' with image, image: block.settings.card-image,
+    image_class: 'background-image' %}"
+  position: 1733..1842
+{% endcomment %}

@@ -16,9 +16,7 @@
                     <li class="icon-block__item animate-in--list-delay">
                         <div class="icon-block__icon">
                             {% if block.settings.icon-image != blank %}
-                                {% render 'responsive-image' with
-                                    image: block.settings.icon-image
-                                %}
+                                {% render 'responsive-image' with image, image: block.settings.icon-image %}
                             {% endif %}
                         </div>
                         <div class="icon-block__content-wrapper">
@@ -114,3 +112,16 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                                        image: block.settings.icon-image
+                                    %}
+  to: "{% render 'responsive-image' with image, image: block.settings.icon-image %}"
+  position: 842..918
+{% endcomment %}

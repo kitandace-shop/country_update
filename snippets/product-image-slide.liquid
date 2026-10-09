@@ -20,7 +20,7 @@
     {% endif %}
 
     <div class="swiper-slide" tabindex="-1" data-index="{{ forloop }}" data-hash="slide{{ forloop }}">
-        {% render 'media' with media: media, featured_media: featured_media, height: 530, product_image_scale: 2 %}
+        {% render 'media' with media, media: media, featured_media: featured_media, height: 530, product_image_scale: 2 %}
     </div>
 
 
@@ -41,3 +41,15 @@
             </div>
         </div><!-- close container -->
 {% endif %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'media' with media: media, featured_media: featured_media, height:
+    530, product_image_scale: 2 %}"
+  to: "{% render 'media' with media, media: media, featured_media: featured_media,
+    height: 530, product_image_scale: 2 %}"
+  position: 1196..1310
+{% endcomment %}

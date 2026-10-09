@@ -43,9 +43,7 @@
 
                                     {% if collectionImage %}
                                         <div class="header-item__image">
-                                            {% render 'responsive-image' with
-                                                image: collectionImage
-                                            %}
+                                            {% render 'responsive-image' with image, image: collectionImage %}
                                         </div>
                                     {% endif %}
                                 {% endif %}
@@ -61,3 +59,16 @@
         </li>
     {% endfor %}
 </div>
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                                                    image: collectionImage
+                                                %}
+  to: "{% render 'responsive-image' with image, image: collectionImage %}"
+  position: 2277..2343
+{% endcomment %}

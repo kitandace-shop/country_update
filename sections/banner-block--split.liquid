@@ -20,12 +20,7 @@
         <div class="background-media background-media--{{section.settings.text-orientation}}">
             {% if section.settings.banner-block-image != blank %}
                 <div class="background-media__background">
-                    {% render 'responsive-image' with
-                    image_desktop: section.settings.banner-block-image,
-                    image_mobile:  section.settings.mobile-banner-block-image,
-                    image_class:   "background-image",
-                    lazy:          false
-                    %}
+                    {% render 'responsive-image' with image_desktop, image_desktop: section.settings.banner-block-image, image_mobile: section.settings.mobile-banner-block-image, image_class: "background-image", lazy: false %}
                 </div>
             {% endif %}
         </div>
@@ -91,3 +86,21 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {% render 'responsive-image' with
+                        image_desktop: section.settings.banner-block-image,
+                        image_mobile:  section.settings.mobile-banner-block-image,
+                        image_class:   "background-image",
+                        lazy:          false
+                        %}
+  to: '{% render ''responsive-image'' with image_desktop, image_desktop: section.settings.banner-block-image,
+    image_mobile: section.settings.mobile-banner-block-image, image_class: "background-image",
+    lazy: false %}'
+  position: 1321..1527
+{% endcomment %}

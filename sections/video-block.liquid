@@ -4,7 +4,7 @@
         {% if section.settings.mobile_cover_image %}
             <button id="{{section.id}}--mobile-video" class="video-block__play-button" type="button" aria-label="Play Video">
                 <div class="video-block__cover">
-                    {% render 'responsive-image' with image: section.settings.mobile_cover_image, image_class: "background-image" %}
+                    {% render 'responsive-image' with image, image: section.settings.mobile_cover_image, image_class: "background-image" %}
                 </div>
                 <div class="video-block__control">
                     {% render 'icon', name: 'play' %}
@@ -19,7 +19,7 @@
         {% if section.settings.desktop_cover_image %}
             <button id="{{section.id}}--desktop-video" class="video-block__play-button" type="button" aria-label="Play Video">
                 <div class="video-block__cover">
-                    {% render 'responsive-image' with image: section.settings.desktop_cover_image, image_class: "background-image" %}
+                    {% render 'responsive-image' with image, image: section.settings.desktop_cover_image, image_class: "background-image" %}
                 </div>
                 <div class="video-block__control">
                     {% render 'icon', name: 'play' %}
@@ -76,3 +76,20 @@
     ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{% render ''responsive-image'' with image: section.settings.mobile_cover_image,
+    image_class: "background-image" %}'
+  to: '{% render ''responsive-image'' with image, image: section.settings.mobile_cover_image,
+    image_class: "background-image" %}'
+  position: 372..491
+- from: '{% render ''responsive-image'' with image: section.settings.desktop_cover_image,
+    image_class: "background-image" %}'
+  to: '{% render ''responsive-image'' with image, image: section.settings.desktop_cover_image,
+    image_class: "background-image" %}'
+  position: 1185..1305
+{% endcomment %}

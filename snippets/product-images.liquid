@@ -44,7 +44,7 @@
         <div class="swiper-wrapper">
         {% for media in product.media %}
             <div class="swiper-slide" tabindex="-1" data-index="{{ forloop}}">
-                {% render 'media' with media: media, featured_media: featured_media, height: 530, product_image_scale: 2 %}
+                {% render 'media' with media, media: media, featured_media: featured_media, height: 530, product_image_scale: 2 %}
             </div>
         {% endfor %}
         </div>
@@ -53,3 +53,15 @@
         </div>
     </div>
 {% endif %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{% render 'media' with media: media, featured_media: featured_media, height:
+    530, product_image_scale: 2 %}"
+  to: "{% render 'media' with media, media: media, featured_media: featured_media,
+    height: 530, product_image_scale: 2 %}"
+  position: 1995..2109
+{% endcomment %}
